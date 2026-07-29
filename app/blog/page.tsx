@@ -1,0 +1,563 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Link from 'next/link';
+
+// Add animation keyframes
+const style = `
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+  @keyframes wave {
+    0% { transform: translateX(0) translateY(0); }
+    50% { transform: translateX(-25px) translateY(10px); }
+    100% { transform: translateX(0) translateY(0); }
+  }
+  @keyframes waveMove {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-50px); }
+    100% { transform: translateX(0); }
+  }
+  @keyframes marquee {
+    0% { transform: translateX(100%) translateY(0); }
+    25% { transform: translateX(50%) translateY(-10px); }
+    50% { transform: translateX(0%) translateY(0); }
+    75% { transform: translateX(-50%) translateY(10px); }
+    100% { transform: translateX(-100%) translateY(0); }
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+const blogPosts = [
+  {
+    title: 'How AI Is Changing B2B Lead Generation for IT & SaaS in 2026',
+    excerpt: 'Discover how artificial intelligence is revolutionizing B2B lead generation strategies for IT and SaaS companies in 2026.',
+    date: '2026',
+    category: 'AI & Technology'
+  },
+  {
+    title: 'Common B2B Lead Generation Mistakes That Hurt Conversion Rates',
+    excerpt: 'Learn about the most common mistakes in B2B lead generation that can negatively impact your conversion rates and how to avoid them.',
+    date: '2026',
+    category: 'Lead Generation'
+  },
+  {
+    title: 'Why Marketing Qualified Leads Aren\'t Always Sales Qualified Leads',
+    excerpt: 'Understanding the crucial difference between MQLs and SQLs and why this distinction matters for your sales pipeline.',
+    date: '2026',
+    category: 'Sales & Marketing'
+  },
+  {
+    title: 'How B2B Data Enrichment Services Improve Lead Quality and Conversion',
+    excerpt: 'Explore how data enrichment services can significantly enhance your lead quality and boost conversion rates.',
+    date: '2026',
+    category: 'Data Solutions'
+  },
+  {
+    title: 'How Can B2B Email Marketing Drive Authentic Engagement and ROI in 2026?',
+    excerpt: 'Discover effective B2B email marketing strategies that drive authentic engagement and deliver measurable ROI.',
+    date: '2026',
+    category: 'Email Marketing'
+  },
+  {
+    title: 'Why Email Nurturing Is Critical for Converting B2B Leads Into Sales Meetings',
+    excerpt: 'Learn why email nurturing campaigns are essential for converting B2B leads into actual sales meetings.',
+    date: '2026',
+    category: 'Email Marketing'
+  },
+  {
+    title: 'How AI Sales Tools Help Reduce Sales Cycle Length',
+    excerpt: 'Explore how AI-powered sales tools can help shorten your sales cycle and improve overall efficiency.',
+    date: '2026',
+    category: 'AI & Technology'
+  },
+  {
+    title: 'Why Most B2B Leads Never Convert (And What IT Marketers Are Missing)',
+    excerpt: 'Understanding why many B2B leads fail to convert and what critical elements IT marketers often overlook.',
+    date: '2026',
+    category: 'Lead Generation'
+  },
+  {
+    title: 'From MQLs to Revenue: Rethinking B2B Lead Generation for Tech Companies',
+    excerpt: 'A fresh perspective on B2B lead generation strategies specifically designed for technology companies.',
+    date: '2026',
+    category: 'Lead Generation'
+  }
+];
+
+const categories = ['All', 'AI & Technology', 'Lead Generation', 'Sales & Marketing', 'Data Solutions', 'Email Marketing'];
+
+interface BlogCardProps {
+  post: {
+    title: string;
+    excerpt: string;
+    date: string;
+    category: string;
+  };
+  index: number;
+  isVisible: boolean;
+}
+
+const BlogCard = ({ post, index, isVisible }: BlogCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <article
+      className="bg-gray-50 rounded-lg overflow-hidden transition-all duration-500"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+        transitionDelay: `${index * 50}ms`,
+        boxShadow: isHovered ? '0 20px 40px rgba(0,0,0,0.1)' : '0 4px 12px rgba(0,0,0,0.05)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="p-6 relative overflow-hidden">
+        {/* Hover gradient background */}
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-[#FECB0F]/5 to-transparent pointer-events-none"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
+        />
+
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-4">
+            <span
+              className="text-xs font-semibold px-3 py-1 rounded-full transition-all duration-300"
+              style={{
+                backgroundColor: isHovered ? '#FECB0F' : 'rgba(254, 203, 15, 0.2)',
+                color: isHovered ? '#000' : '#FECB0F',
+              }}
+            >
+              {post.category}
+            </span>
+            <span className="text-gray-500 text-sm">{post.date}</span>
+          </div>
+
+          <h2
+            className="text-xl font-bold mb-3 text-gray-900 transition-colors duration-300"
+            style={{ color: isHovered ? '#FECB0F' : '#111827' }}
+          >
+            <Link href={`/blog/${encodeURIComponent(post.title)}`}>
+              {post.title}
+            </Link>
+          </h2>
+
+          <p className="text-gray-600 mb-4">{post.excerpt}</p>
+
+          <Link
+            href={`/blog/${encodeURIComponent(post.title)}`}
+            className="inline-block font-semibold transition-all duration-300"
+            style={{
+              color: '#FECB0F',
+              transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
+            }}
+          >
+            Read More →
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+};
+
+export default function Blog() {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [visibleCards, setVisibleCards] = useState(new Set());
+  const postsPerPage = 6;
+
+  // Filter posts based on category and search
+  const filteredPosts = blogPosts.filter((post) => {
+    const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const paginatedPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, searchQuery]);
+
+  useEffect(() => {
+    // Simulate scroll reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement;
+          setVisibleCards((prev) => new Set([...prev, target.dataset.index]));
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const cards = document.querySelectorAll('[data-index]');
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [paginatedPosts]);
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <style>{style}</style>
+      <Header />
+      <main className="flex-1">
+        {/* Hero Section with Enhanced Animations */}
+        <section className="relative overflow-hidden py-24 md:py-32">
+          
+          {/* Overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-white" style={{ zIndex: 1 }}></div>
+
+          {/* Animated Decorative Elements */}
+          <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 2 }}>
+            <div
+              className="absolute -top-40 -right-40 w-80 h-80 bg-[#FECB0F]/10 rounded-full blur-3xl"
+              style={{
+                animation: 'float 8s ease-in-out infinite',
+              }}
+            ></div>
+            <div
+              className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#FECB0F]/10 rounded-full blur-3xl"
+              style={{
+                animation: 'float 10s ease-in-out infinite 1s',
+              }}
+            ></div>
+            <div
+              className="absolute top-1/2 left-1/4 w-40 h-40 bg-[#FECB0F]/5 rounded-full blur-2xl"
+              style={{
+                animation: 'float 12s ease-in-out infinite 2s',
+              }}
+            ></div>
+
+            {/* Wave Text Animations */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {/* Wave 1 - LEADS */}
+              <div className="absolute top-[15%] left-0 right-0 opacity-70">
+                <svg viewBox="0 0 1440 100" className="w-full h-24" preserveAspectRatio="none">
+                  <path
+                    d="M0,50 Q180,20 360,50 T720,50 T1080,50 T1440,50"
+                    fill="none"
+                    stroke="#FECB0F"
+                    strokeWidth="2"
+                    opacity="0.8"
+                    style={{ animation: 'waveMove 8s ease-in-out infinite' }}
+                  />
+                  <text x="50" y="30" fill="#FECB0F" fontSize="24" fontWeight="bold" letterSpacing="4" style={{ animation: 'marquee 15s linear infinite' }}>
+                    LEADS
+                  </text>
+                </svg>
+              </div>
+
+              {/* Wave 2 - TELEMARKETING */}
+              <div className="absolute top-[30%] left-0 right-0 opacity-65">
+                <svg viewBox="0 0 1440 100" className="w-full h-24" preserveAspectRatio="none">
+                  <path
+                    d="M0,50 Q180,80 360,50 T720,50 T1080,50 T1440,50"
+                    fill="none"
+                    stroke="#FECB0F"
+                    strokeWidth="1.5"
+                    opacity="0.75"
+                    style={{ animation: 'waveMove 10s ease-in-out infinite 1s' }}
+                  />
+                  <text x="100" y="30" fill="#FECB0F" fontSize="20" fontWeight="bold" letterSpacing="3" style={{ animation: 'marquee 18s linear infinite' }}>
+                    TELEMARKETING
+                  </text>
+                </svg>
+              </div>
+
+              {/* Wave 3 - CONTACT DISCOVERY */}
+              <div className="absolute top-[45%] left-0 right-0 opacity-60">
+                <svg viewBox="0 0 1440 100" className="w-full h-24" preserveAspectRatio="none">
+                  <path
+                    d="M0,50 Q180,20 360,50 T720,50 T1080,50 T1440,50"
+                    fill="none"
+                    stroke="#FECB0F"
+                    strokeWidth="1.2"
+                    opacity="0.7"
+                    style={{ animation: 'waveMove 12s ease-in-out infinite 2s' }}
+                  />
+                  <text x="150" y="30" fill="#FECB0F" fontSize="18" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 20s linear infinite' }}>
+                    CONTACT DISCOVERY
+                  </text>
+                </svg>
+              </div>
+
+              {/* Wave 4 - EMAIL MARKETING */}
+              <div className="absolute top-[60%] left-0 right-0 opacity-55">
+                <svg viewBox="0 0 1440 100" className="w-full h-24" preserveAspectRatio="none">
+                  <path
+                    d="M0,50 Q180,80 360,50 T720,50 T1080,50 T1440,50"
+                    fill="none"
+                    stroke="#FECB0F"
+                    strokeWidth="1"
+                    opacity="0.65"
+                    style={{ animation: 'waveMove 14s ease-in-out infinite 3s' }}
+                  />
+                  <text x="200" y="30" fill="#FECB0F" fontSize="16" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 22s linear infinite' }}>
+                    EMAIL MARKETING
+                  </text>
+                </svg>
+              </div>
+
+              {/* Wave 5 - B2B SALES */}
+              <div className="absolute top-[75%] left-0 right-0 opacity-50">
+                <svg viewBox="0 0 1440 100" className="w-full h-24" preserveAspectRatio="none">
+                  <path
+                    d="M0,50 Q180,20 360,50 T720,50 T1080,50 T1440,50"
+                    fill="none"
+                    stroke="#FECB0F"
+                    strokeWidth="0.8"
+                    opacity="0.6"
+                    style={{ animation: 'waveMove 16s ease-in-out infinite 4s' }}
+                  />
+                  <text x="250" y="30" fill="#FECB0F" fontSize="14" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 25s linear infinite' }}>
+                    B2B SALES
+                  </text>
+                </svg>
+              </div>
+
+              {/* Wave 6 - DATA */}
+              <div className="absolute top-[85%] left-0 right-0 opacity-45">
+                <svg viewBox="0 0 1440 100" className="w-full h-24" preserveAspectRatio="none">
+                  <path
+                    d="M0,50 Q180,80 360,50 T720,50 T1080,50 T1440,50"
+                    fill="none"
+                    stroke="#FECB0F"
+                    strokeWidth="0.6"
+                    opacity="0.55"
+                    style={{ animation: 'waveMove 18s ease-in-out infinite 5s' }}
+                  />
+                  <text x="300" y="30" fill="#FECB0F" fontSize="12" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 28s linear infinite' }}>
+                    DATA
+                  </text>
+                </svg>
+              </div>
+            </div>
+
+            {/* Wave animations */}
+            <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
+              <svg className="w-full h-32" viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path
+                  d="M0,60 C360,120 720,0 1080,60 C1260,90 1350,75 1440,60 L1440,120 L0,120 Z"
+                  fill="#FECB0F"
+                  opacity="0.1"
+                  style={{ animation: 'wave 8s ease-in-out infinite' }}
+                />
+                <path
+                  d="M0,80 C360,140 720,20 1080,80 C1260,110 1350,95 1440,80 L1440,120 L0,120 Z"
+                  fill="#FECB0F"
+                  opacity="0.05"
+                  style={{ animation: 'wave 10s ease-in-out infinite 2s' }}
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div className="container mx-auto px-4 text-left relative z-10" style={{ zIndex: 10 }}>
+            {/* Hero Image - Right Corner */}
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block z-0">
+              <div className="relative">
+                {/* White circular background */}
+                <div className="absolute inset-0 bg-white rounded-full opacity-90 blur-sm"></div>
+                <img
+                  src="https://res.cloudinary.com/vobojthd/image/upload/v1783944510/Section-6_hxna2g.png"
+                  alt="MQL and SQL Generation Funnel"
+                  className="w-[28rem] h-auto object-contain drop-shadow-2xl relative z-10"
+                />
+              </div>
+            </div>
+
+            {/* Badge with Animation */}
+            <div
+              className="inline-flex items-center gap-2 bg-[#FECB0F]/10 backdrop-blur-sm px-4 py-2 rounded-full mb-8 animate-pulse border border-[#FECB0F]/30"
+              style={{
+                animation: 'slideDown 0.8s ease-out',
+              }}
+            >
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              <span className="text-sm font-semibold text-gray-900">Latest Insights & Trends</span>
+            </div>
+
+            {/* Main Heading */}
+            <h1
+              className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 text-black leading-tight"
+              style={{
+                animation: 'slideDown 1s ease-out 0.2s both',
+              }}
+            >
+              Expert B2B Lead
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-700">
+                Generation Strategies
+              </span>
+            </h1>
+
+            {/* Subheading */}
+            <p
+              className="text-lg md:text-xl max-w-3xl mb-10 text-black/80 leading-relaxed"
+              style={{
+                animation: 'slideDown 1s ease-out 0.4s both',
+              }}
+            >
+              Unlock the power of data-driven marketing with our comprehensive guides,
+              industry insights, and proven tactics to supercharge your B2B growth.
+            </p>
+
+            {/* CTA Buttons */}
+            <div
+              className="flex flex-col sm:flex-row gap-4"
+              style={{
+                animation: 'slideDown 1s ease-out 0.6s both',
+              }}
+            >
+              <button className="px-8 py-4 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+                Start Reading
+              </button>
+              <button className="px-8 py-4 bg-[#FECB0F] text-black rounded-xl font-semibold hover:bg-[#FFD54F] transition-all border-2 border-[#FECB0F]">
+                Browse Categories
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-10 grid grid-cols-3 gap-8 max-w-md">
+              {[
+                { number: '150+', label: 'Articles' },
+                { number: '50K+', label: 'Readers' },
+                { number: '10+', label: 'Categories' }
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="text-left"
+                  style={{
+                    animation: `slideUp 0.8s ease-out ${0.8 + i * 0.1}s both`,
+                  }}
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-black">{stat.number}</div>
+                  <div className="text-sm text-black/70 mt-1">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Wave */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+              <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white" />
+            </svg>
+          </div>
+        </section>
+
+        {/* Search and Filter Section */}
+        <section className="py-12 bg-white border-b border-gray-200">
+          <div className="container mx-auto px-4">
+            {/* Search Bar */}
+            <div className="mb-8">
+              <div className="relative max-w-2xl mx-auto">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-6 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors duration-300 text-gray-900 placeholder-gray-500"
+                />
+                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  🔍
+                </span>
+              </div>
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-3 justify-center">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryClick(category)}
+                  className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                    selectedCategory === category
+                      ? 'bg-[#FECB0F] text-black shadow-lg'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  style={{
+                    boxShadow: selectedCategory === category ? '0 10px 25px rgba(254, 203, 15, 0.3)' : 'none',
+                  }}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Blog Posts Section */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4">
+            {paginatedPosts.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {paginatedPosts.map((post, index) => (
+                    <div
+                      key={`${currentPage}-${index}`}
+                      data-index={`${currentPage}-${index}`}
+                    >
+                      <BlogCard
+                        post={post}
+                        index={index}
+                        isVisible={visibleCards.has(`${currentPage}-${index}`)}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-16 flex justify-center gap-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className="px-4 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-110"
+                        style={{
+                          backgroundColor: currentPage === page ? '#FECB0F' : '#E5E7EB',
+                          color: currentPage === page ? '#000' : '#374151',
+                          boxShadow: currentPage === page ? '0 10px 25px rgba(254, 203, 15, 0.3)' : 'none',
+                        }}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-xl text-gray-600 mb-4">No articles found</p>
+                <p className="text-gray-500">Try adjusting your search or filter criteria</p>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
