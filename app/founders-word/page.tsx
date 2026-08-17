@@ -7,33 +7,64 @@ import { Award, Target, Users, TrendingUp, Lightbulb, Heart } from "lucide-react
 
 export default function FoundersWord() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen font-sans bg-black">
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative min-h-[40vh] flex items-center bg-gradient-to-r from-black to-gray-900 text-white overflow-hidden">
-          {/* Background Decorative Elements */}
-          <div className="absolute top-0 left-0 w-96 h-96 bg-[#FECB0F]/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#FECB0F]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-[#FECB0F]/5 rounded-full blur-2xl"></div>
+        <section className="relative bg-black text-white overflow-hidden rounded-b-[2.5rem]">
+          <div className="relative z-10 px-6 md:px-16 py-20 md:py-28">
+            {/* Main Content */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+              {/* Left - Portrait */}
+              <div className="relative flex justify-center lg:justify-end">
+                <div className="relative w-full max-w-sm lg:max-w-md">
+                  <img
+                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784806502/1000938160-removebg-preview_ladj4x.png"
+                    alt="Shrish Chandra Mishra - Founder & CEO"
+                    className="w-full h-[420px] md:h-[480px] object-cover"
+                  />
 
-          <div className="container mx-auto px-4 py-20 relative z-10">
-            <div className="flex flex-col lg:flex-row items-center gap-12">
-              <div className="flex-1 flex justify-center">
-                <img
-                  src="https://res.cloudinary.com/vobojthd/image/upload/v1784808645/1000938163-removebg-preview_tb3kkw.png"
-                  alt="Shrish Chandra Mishra - CEO"
-                  className="w-full h-full md:w-[500px] md:h-[700px] object-contain"
-                />
+                  
+                </div>
               </div>
-              <div className="flex-1">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-xl">
-                  <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                    Founder's <span className="text-[#FECB0F]">Word</span>
-                  </h1>
-                  <p className="text-lg md:text-xl text-gray-300 max-w-3xl">
-                    A journey of resilience, leadership, and building PMG B2B from the ground up.
-                  </p>
+
+              {/* Right - Copy */}
+              <div className="lg:pr-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="w-8 h-px bg-[#FECB0F]"></span>
+                  <span className="text-[#FECB0F] text-xs font-bold tracking-[0.2em] uppercase">
+                    Shrish Chandra Mishra — Founder &amp; CEO
+                  </span>
+                </div>
+
+                <h1 className="font-extrabold leading-[1.05] text-4xl sm:text-5xl lg:text-6xl">
+                  <span className="text-white px-4">We</span>
+                  <span className="text-gray-500">lead</span>
+                  <span className="text-white">,</span><br/>
+                  <span className="text-white px-4">You</span>
+                  <span className="text-[#FECB0F]">Succeed</span>
+                </h1>
+
+                <p className="mt-6 text-gray-400 text-base md:text-lg max-w-md leading-relaxed">
+                  Stop playing safe. We transform mid-market enterprises into
+                  category killers with ruthless execution and uncompromising
+                  strategy.
+                </p>
+
+                <div className="mt-8 flex flex-wrap items-center gap-6">
+                  <a
+                    href="/contact"
+                    className="inline-flex items-center gap-2 bg-[#FECB0F] text-black font-bold text-sm uppercase tracking-wide px-6 py-4 rounded-md hover:bg-[#ffd94a] transition"
+                  >
+                    Dominate Your Market
+                    <span aria-hidden="true">→</span>
+                  </a>
+                  <a
+                    href="#journey"
+                    className="text-white text-sm font-semibold uppercase tracking-wide border-b border-white/40 pb-1 hover:border-[#FECB0F] hover:text-[#FECB0F] transition"
+                  >
+                    See The Results
+                  </a>
                 </div>
               </div>
             </div>
@@ -41,64 +72,103 @@ export default function FoundersWord() {
         </section>
 
         {/* Award Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-gradient-to-br from-[#FFF8E7] to-white rounded-3xl p-8 md:p-12 shadow-xl border-2 border-[#FECB0F]">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#FECB0F] to-[#F5A623] rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
+        <section id="award" className="py-24 bg-black relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-0 w-full h-full opacity-5">
+            <div className="absolute top-20 left-10 w-64 h-64 bg-[#FECB0F] rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#FECB0F] rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-5xl mx-auto">
+              <div className="relative">
+                {/* Main Card */}
+                <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-10 md:p-16 border border-white/10 shadow-2xl">
+                  {/* Header */}
+                  <div className="text-center mb-10">
+                    <span className="inline-block px-4 py-2 bg-[#FECB0F]/10 border border-[#FECB0F]/30 rounded-full text-[#FECB0F] text-sm font-semibold tracking-wider uppercase mb-6">
+                      Recognition & Achievement
+                    </span>
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                      ETNow Business Conclave
+                      <span className="block text-[#FECB0F]">& Awards 2026</span>
+                    </h2>
+                    <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#FECB0F] to-transparent mx-auto"></div>
                   </div>
-                  <div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900">ETNow Business Conclave & Awards 2026</h2>
-                    <p className="text-[#FECB0F] font-semibold">Most Influential CEO - AI-driven B2B Innovation & Global Growth</p>
+
+                  {/* Award Title */}
+                  <div className="bg-gradient-to-r from-[#FECB0F]/20 to-[#F5A623]/20 rounded-2xl p-6 md:p-8 border border-[#FECB0F]/30 mb-8">
+                    <p className="text-xl md:text-2xl font-bold text-white text-center leading-relaxed">
+                      Most Influential CEO
+                      <span className="block text-[#FECB0F] text-lg md:text-xl font-semibold mt-2">
+                        AI-driven B2B Innovation & Global Growth
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Description */}
+                  <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
+                    <p>
+                      Shrish Chandra Mishra, CEO of PMG B2B, has been recognized for his exceptional leadership in demand generation, AI-integrated marketing, and his decade-long commitment to building scalable B2B demand generation growth systems.
+                    </p>
+                    <p>
+                      The ETNow Business Conclave & Awards 2026 brought together policymakers, industry pioneers, business decision-makers, and innovators to discuss India's economic future, emerging technologies, sustainable growth, and global leadership.
+                    </p>
+                  </div>
+
+                  {/* Stats/Highlights */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-white/10">
+                    <div className="text-center">
+                      <div className="text-3xl md:text-4xl font-bold text-[#FECB0F] mb-2">2026</div>
+                      <div className="text-gray-400 text-sm uppercase tracking-wider">Year</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl md:text-4xl font-bold text-[#FECB0F] mb-2">Ahmedabad</div>
+                      <div className="text-gray-400 text-sm uppercase tracking-wider">Location</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl md:text-4xl font-bold text-[#FECB0F] mb-2">CEO</div>
+                      <div className="text-gray-400 text-sm uppercase tracking-wider">Category</div>
+                    </div>
                   </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed text-lg">
-                  Shrish Chandra Mishra, CEO of PMG B2B, has been named Most Influential CEO - AI-driven B2B Innovation & Global Growth at the ETNow Business Conclave & Awards 2026, held on 16 June in Ahmedabad. The award recognises his leadership in demand generation, AI-integrated marketing, and his decade-long commitment to building scalable B2B demand generation growth systems.
-                </p>
-                <p className="text-gray-700 leading-relaxed text-lg mt-4">
-                  The ETNow Business Conclave & Awards 2026 brought together policymakers, industry pioneers, business decision-makers, and innovators to discuss India's economic future, emerging technologies, sustainable growth, and global leadership.
-                </p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Journey Section */}
-        <section className="py-20 bg-gray-50">
+        <section id="journey" className="py-20 bg-black">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-gray-900">
+              <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-white">
                 The <span className="text-[#FECB0F]">Journey</span>
               </h2>
-              
+
               <div className="space-y-8">
-                <div className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-[#FECB0F]">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900">The Beginning</h3>
-                  <p className="text-gray-700 leading-relaxed">
+                <div className="bg-gray-900 rounded-2xl p-8 shadow-lg border-l-4 border-[#FECB0F]">
+                  <h3 className="text-2xl font-bold mb-4 text-white">The Beginning</h3>
+                  <p className="text-gray-300 leading-relaxed">
                     Awards often capture the outcome, but not the years behind it. His journey did not begin with privilege. After clearing multiple entrance exams for a postgraduate programme, financial constraints forced him to step back from that path entirely.
                   </p>
-                  <p className="text-gray-700 leading-relaxed mt-4">
+                  <p className="text-gray-300 leading-relaxed mt-4">
                     So, he chose to work, learn, and build his way forward.
                   </p>
                 </div>
 
-                <div className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-[#FECB0F]">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900">The Grind</h3>
-                  <p className="text-gray-700 leading-relaxed">
+                <div className="bg-gray-900 rounded-2xl p-8 shadow-lg border-l-4 border-[#FECB0F]">
+                  <h3 className="text-2xl font-bold mb-4 text-white">The Grind</h3>
+                  <p className="text-gray-300 leading-relaxed">
                     The early years were shaped by cold calls, night shifts, rejections, targets, and the daily pressure of proving himself. Those experiences built the discipline that continues to define him today. Even as the CEO of PMG B2B, leading a team of more than 120 people, he carries the mindset of someone who remembers the grind behind every opportunity.
                   </p>
                 </div>
 
-                <div className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-[#FECB0F]">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900">The Recognition</h3>
-                  <p className="text-gray-700 leading-relaxed italic">
+                <div className="bg-gray-900 rounded-2xl p-8 shadow-lg border-l-4 border-[#FECB0F]">
+                  <h3 className="text-2xl font-bold mb-4 text-white">The Recognition</h3>
+                  <p className="text-gray-300 leading-relaxed italic">
                     "This recognition is deeply special to me, but it also belongs to the team as much as it belongs to any individual. Every client wins, every campaign delivered, every late night, and every improvement reflects our effort. This award is a reminder of how far we have come together and motivates us to keep raising the bar for ourselves and for our clients."
                   </p>
-                  <p className="text-gray-700 leading-relaxed mt-4 italic">
+                  <p className="text-gray-300 leading-relaxed mt-4 italic">
                     "I am grateful to ETNow for this honour, and even more grateful to the team behind the work. None of this would have been possible without the unwavering support of my family and friends, and especially my wife, whose belief in me has been a constant through every phase of this journey."
                   </p>
                 </div>
@@ -123,9 +193,14 @@ export default function FoundersWord() {
                 {/* Top Row - 3 hexagons */}
                 <div className="hex-row hex-row-top">
                   <div className="hexagon-container">
-                    <div className="hexagon">
+                    <div className="hexagon" style={{
+                      backgroundImage: 'url(https://res.cloudinary.com/vobojthd/image/upload/v1786101803/5799223fb32ccb409cf525e342c42707_zpxp3l.jpg)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}>
+                      <div className="hexagon-overlay"></div>
                       <div className="hexagon-content">
-                        <h3 className="hex-title">Ambassadors</h3>
+                        <h3 className="hex-title">Lead Generation</h3>
                         <button className="hex-btn">
                           Learn More
                         </button>
@@ -133,9 +208,14 @@ export default function FoundersWord() {
                     </div>
                   </div>
                   <div className="hexagon-container">
-                    <div className="hexagon">
+                    <div className="hexagon" style={{
+                      backgroundImage: 'url(https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400&h=400&fit=crop)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}>
+                      <div className="hexagon-overlay"></div>
                       <div className="hexagon-content">
-                        <h3 className="hex-title">Shop</h3>
+                        <h3 className="hex-title">Sales Development</h3>
                         <button className="hex-btn">
                           Learn More
                         </button>
@@ -143,9 +223,14 @@ export default function FoundersWord() {
                     </div>
                   </div>
                   <div className="hexagon-container">
-                    <div className="hexagon">
+                    <div className="hexagon" style={{
+                      backgroundImage: 'url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=400&fit=crop)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}>
+                      <div className="hexagon-overlay"></div>
                       <div className="hexagon-content">
-                        <h3 className="hex-title">Adventures</h3>
+                        <h3 className="hex-title">Account-Based Marketing</h3>
                         <button className="hex-btn">
                           Learn More
                         </button>
@@ -157,9 +242,14 @@ export default function FoundersWord() {
                 {/* Bottom Row - 2 hexagons */}
                 <div className="hex-row hex-row-bottom">
                   <div className="hexagon-container">
-                    <div className="hexagon">
+                    <div className="hexagon" style={{
+                      backgroundImage: 'url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=400&fit=crop)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}>
+                      <div className="hexagon-overlay"></div>
                       <div className="hexagon-content">
-                        <h3 className="hex-title">Materials &amp; Design</h3>
+                        <h3 className="hex-title">Data Solutions</h3>
                         <button className="hex-btn">
                           Learn More
                         </button>
@@ -167,9 +257,14 @@ export default function FoundersWord() {
                     </div>
                   </div>
                   <div className="hexagon-container">
-                    <div className="hexagon">
+                    <div className="hexagon" style={{
+                      backgroundImage: 'url(https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=400&h=400&fit=crop)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}>
+                      <div className="hexagon-overlay"></div>
                       <div className="hexagon-content">
-                        <h3 className="hex-title">Special Features</h3>
+                        <h3 className="hex-title">Email Marketing</h3>
                         <button className="hex-btn">
                           Learn More
                         </button>
@@ -249,12 +344,21 @@ export default function FoundersWord() {
                   transition: opacity 0.35s ease;
                 }
                 .hexagon:hover {
-                  background: linear-gradient(145deg, #ffffff 0%, #e8e8e8 100%);
                   transform: scale(1.06);
                   box-shadow: 0 12px 32px rgba(254, 203, 15, 0.35);
                 }
+                .hexagon:hover .hexagon-overlay {
+                  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
+                }
                 .hexagon:hover::before {
                   opacity: 1;
+                }
+                .hexagon-overlay {
+                  position: absolute;
+                  inset: 0;
+                  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%);
+                  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+                  z-index: 0;
                 }
                 .hexagon-content {
                   text-align: center;
@@ -263,30 +367,31 @@ export default function FoundersWord() {
                   z-index: 1;
                 }
                 .hex-title {
-                  color: #1a1a1a;
+                  color: #ffffff;
                   font-weight: 700;
                   font-size: 1.15rem;
                   margin-bottom: 0.85rem;
                   text-transform: uppercase;
                   letter-spacing: 0.06em;
                   line-height: 1.3;
+                  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
                 }
                 .hex-btn {
-                  color: #b8860b;
+                  color: #FECB0F;
                   font-size: 0.8rem;
                   font-weight: 600;
                   text-transform: uppercase;
                   letter-spacing: 0.12em;
                   background: transparent;
                   border: none;
-                  border-bottom: 1px solid rgba(184, 134, 11, 0.4);
+                  border-bottom: 1px solid rgba(254, 203, 15, 0.6);
                   padding-bottom: 4px;
                   transition: all 0.25s ease;
                   cursor: pointer;
                 }
                 .hex-btn:hover {
-                  color: #1a1a1a;
-                  border-bottom-color: #1a1a1a;
+                  color: #ffffff;
+                  border-bottom-color: #ffffff;
                 }
 
                 @media (max-width: 768px) {
@@ -318,7 +423,7 @@ export default function FoundersWord() {
         </section>
 
         {/* Closing Section */}
-        <section className="py-20 bg-gradient-to-r from-black to-gray-900 text-white">
+        <section className="py-20 bg-black text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -335,7 +440,7 @@ export default function FoundersWord() {
         </section>
 
         {/* Glowing Grid Section */}
-        <section className="py-20 bg-black">
+        <section id="values" className="py-20 bg-black">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-white">
               Core <span className="text-[#FECB0F]">Values</span>

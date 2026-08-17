@@ -44,8 +44,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-heading: var(--font-sans);
+  --font-sans: var(--font-poppins);
+  --font-heading: var(--font-poppins);
+  --font-geometric: var(--font-montserrat);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -92,6 +93,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+}
+
 .liquid-glass {
   background: rgba(0, 0, 0, 0.4);
   background-blend-mode: luminosity;
@@ -115,6 +120,7 @@ body {
     rgba(255,255,255,0.1) 80%, rgba(255,255,255,0.3) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   pointer-events: none;
 }
@@ -166,6 +172,15 @@ body {
 }
 
 /* Blog Page Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);

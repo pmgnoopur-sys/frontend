@@ -63,15 +63,13 @@ export default function Footer() {
               </li>
               <li>
                 <strong>Pune:</strong><br />
-                Office No. 708, Seventh Floor,<br />
-                Pride-Icon, Thite Nagar, Kharadi,<br />
-                Pune, Maharashtra India 411014
+                14, Second Floor, A wing, City Vista, Kharadi, Pune, Maharashtra 411014
               </li>
               <li>
                 <strong>Phone:</strong> +91 7972722487
               </li>
               <li>
-                <strong>Email:</strong> hr@pmg-b2b.com
+                <strong>Email:</strong> info@pmg-b2b.com
               </li>
             </ul>
           </div>

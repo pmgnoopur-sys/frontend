@@ -2,6 +2,22 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import OctagonVideoCollage from '@/components/CircleVideoCollage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faRocket,
+  faCalendarCheck,
+  faGamepad,
+  faChampagneGlasses,
+  faSackDollar,
+  faCalendarDays,
+  faUmbrellaBeach,
+  faGift,
+  faDoorOpen,
+  faPlane,
+  faBaby,
+  faTrophy
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function LifeAtPMG() {
   const sections = [
@@ -54,6 +70,58 @@ export default function LifeAtPMG() {
             <p className="text-lg md:text-xl max-w-3xl mx-auto text-white/90 leading-relaxed">
               Discover what makes PMG B2B a great place to work and grow your career.
             </p>
+          </div>
+        </section>
+
+        {/* Circle Video Collage Section */}
+        <OctagonVideoCollage />
+
+        {/* Benefits Cards Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+                Benefits & Perks
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                We believe in taking care of our team with comprehensive benefits and exciting perks.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[
+                { title: 'Internal Growth Opportunities', icon: faRocket },
+                { title: 'Monthly R&R', icon: faCalendarCheck },
+                { title: 'Fun Friday', icon: faGamepad },
+                { title: 'Yearly Parties', icon: faChampagneGlasses },
+                { title: 'Uncapped Incentives', icon: faSackDollar },
+                { title: 'Fixed Weekend-Offs', icon: faCalendarDays },
+                { title: 'Team Outing', icon: faUmbrellaBeach },
+                { title: 'Gratuity', icon: faGift },
+                { title: 'Open Door Policy', icon: faDoorOpen },
+                { title: 'Paid Time-Off & Holiday', icon: faPlane },
+                { title: 'Maternity & Paternity Leave', icon: faBaby },
+                { title: 'Annual Awards', icon: faTrophy }
+              ].map((benefit, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                  style={{
+                    backgroundColor: 'rgba(254, 203, 15, 0.7)',
+                    backdropFilter: 'blur(10px)',
+                    border: '4px solid #FECB0F',
+                    minHeight: '200px'
+                  }}
+                >
+                  <div className="text-5xl mb-6 text-gray-900">
+                    <FontAwesomeIcon icon={benefit.icon} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {benefit.title}
+                  </h3>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

@@ -27,13 +27,14 @@ export default function BlogAdminDashboard() {
     }
   }, [isAuthenticated]);
 
-  const loadBlogs = () => {
-    setBlogs(getBlogs());
+  const loadBlogs = async () => {
+    const blogs = await getBlogs();
+    setBlogs(blogs);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this blog?")) {
-      deleteBlog(id);
+      await deleteBlog(id);
       loadBlogs();
     }
   };
@@ -48,13 +49,13 @@ export default function BlogAdminDashboard() {
     setShowForm(true);
   };
 
-  const handleFormSubmit = (data: Omit<Blog, "id" | "createdAt" | "updatedAt" | "slug">) => {
+  const handleFormSubmit = async (data: Omit<Blog, "id" | "createdAt" | "updatedAt">) => {
     if (editingBlog) {
-      updateBlog(editingBlog.id, data);
+      await updateBlog(editingBlog.id, data);
     } else {
-      saveBlog(data);
+      await saveBlog(data);
     }
-    loadBlogs();
+    await loadBlogs();
     setShowForm(false);
     setEditingBlog(null);
   };
@@ -77,23 +78,23 @@ export default function BlogAdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-gray-900 border-b-2 border-[#FECB0F] shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <button
               onClick={() => router.push("/admin/dashboard")}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-2 text-white hover:text-[#FECB0F] transition-all duration-300 transform hover:scale-105"
             >
               <ArrowLeft className="w-5 h-5" />
               Back to Dashboard
             </button>
-            <h1 className="text-2xl font-bold text-gray-900">Blog Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-white">Blog Admin Dashboard</h1>
           </div>
           <button
             onClick={logout}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-white hover:text-[#FECB0F] transition-all duration-300 transform hover:scale-105"
           >
             <LogOut className="w-5 h-5" />
             Logout
@@ -113,7 +114,7 @@ export default function BlogAdminDashboard() {
             {/* Add Blog Button */}
             <button
               onClick={handleAddNew}
-              className="mb-6 flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors font-medium"
+              className="mb-6 flex items-center gap-2 bg-[#FECB0F] text-black px-4 py-2 rounded-md hover:bg-[#FFD54F] transition-all duration-300 transform hover:scale-105 font-medium shadow-lg"
             >
               <Plus className="w-5 h-5" />
               Add New Blog
@@ -121,68 +122,68 @@ export default function BlogAdminDashboard() {
 
             {/* Blogs List */}
             {blogs.length === 0 ? (
-              <div className="bg-white rounded-lg shadow p-8 text-center">
-                <p className="text-gray-500">No blogs yet. Create your first blog!</p>
+              <div className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] p-8 text-center">
+                <p className="text-gray-300">No blogs yet. Create your first blog!</p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+              <div className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-700">
+                  <thead className="bg-gray-800">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
                         Title
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
                         Author
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
                         Keywords
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
                         Created
                       </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-right text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-gray-900 divide-y divide-gray-700">
                     {blogs.map((blog) => (
-                      <tr key={blog.id} className="hover:bg-gray-50">
+                      <tr key={blog.id} className="hover:bg-gray-800 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{blog.title}</div>
-                          <div className="text-sm text-gray-500">{blog.slug}</div>
+                          <div className="text-sm font-medium text-white">{blog.title}</div>
+                          <div className="text-sm text-gray-400">{blog.slug}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{blog.author}</div>
+                          <div className="text-sm text-white">{blog.author}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex flex-wrap gap-1">
-                            {blog.keywords.map((keyword, index) => (
+                            {blog.keywords?.map((keyword, index) => (
                               <span
                                 key={index}
-                                className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
+                                className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-[#FECB0F] text-black"
                               >
                                 {keyword}
                               </span>
                             ))}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                           {new Date(blog.createdAt).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex justify-end gap-2">
                             <button
                               onClick={() => handleEdit(blog)}
-                              className="text-blue-600 hover:text-blue-900 transition-colors"
+                              className="text-[#FECB0F] hover:text-[#FFD54F] transition-colors"
                               title="Edit"
                             >
                               <Edit className="w-5 h-5" />
                             </button>
                             <button
                               onClick={() => handleDelete(blog.id)}
-                              className="text-red-600 hover:text-red-900 transition-colors"
+                              className="text-red-500 hover:text-red-400 transition-colors"
                               title="Delete"
                             >
                               <Trash2 className="w-5 h-5" />

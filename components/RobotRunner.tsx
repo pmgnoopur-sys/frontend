@@ -1,27 +1,93 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, Minimize2, Maximize2 } from 'lucide-react';
+import { X, Minimize2, Maximize2 } from 'lucide-react';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
+interface Question {
+  id: number;
+  question: string;
+  options: string[];
+}
+
+const surveyQuestions: Question[] = [
+  {
+    id: 1,
+    question: "What's your primary business goal?",
+    options: [
+      "Increase lead generation",
+      "Improve conversion rates", 
+      "Expand market reach",
+      "Enhance brand awareness"
+    ]
+  },
+  {
+    id: 2,
+    question: "What's your current monthly lead volume?",
+    options: [
+      "Less than 100 leads",
+      "100-500 leads",
+      "500-1000 leads",
+      "More than 1000 leads"
+    ]
+  },
+  {
+    id: 3,
+    question: "Which industry do you operate in?",
+    options: [
+      "Technology/SaaS",
+      "Healthcare",
+      "Finance/Banking",
+      "Manufacturing",
+      "Other"
+    ]
+  },
+  {
+    id: 4,
+    question: "What's your biggest challenge with lead generation?",
+    options: [
+      "Low quality leads",
+      "High cost per lead",
+      "Long sales cycle",
+      "Lack of targeting"
+    ]
+  },
+  {
+    id: 5,
+    question: "Are you interested in a demo of our services?",
+    options: [
+      "Yes, schedule a demo",
+      "Send me more information",
+      "Not right now"
+    ]
+  }
+];
+
 export default function RobotRunner() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isBackendConnected, setIsBackendConnected] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Hi! I\'m the PMG AI assistant. How can I help you with lead generation or our services today?'
+      content: 'Hi! I\'m the PMG AI assistant. Let me ask you a few questions to better understand your needs.'
+    },
+    {
+      role: 'assistant',
+      content: surveyQuestions[0].question
     }
   ]);
-  const [input, setInput] = useState('');
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [surveyComplete, setSurveyComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const currentQuestionIndexRef = useRef(0);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -30,6 +96,20 @@ export default function RobotRunner() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Track viewport size so only the robot's face shows on mobile screens
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const handleChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
+  }, []);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    currentQuestionIndexRef.current = currentQuestionIndex;
+  }, [currentQuestionIndex]);
 
   useEffect(() => {
     const checkBackendConnection = async () => {
@@ -49,50 +129,38 @@ export default function RobotRunner() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  const handleOptionSelect = (option: string) => {
+    if (isLoading || surveyComplete) return;
 
-    const userMessage = input.trim();
-    setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    // Add user's selection as a message
+    setMessages(prev => [...prev, { role: 'user', content: option }]);
     setIsLoading(true);
 
-    try {
-      const response = await fetch('http://localhost:5000/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          conversationHistory: messages.slice(1)
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error(data.error);
+    // Simulate processing delay
+    setTimeout(() => {
+      const currentIndex = currentQuestionIndexRef.current;
+      const nextIndex = currentIndex + 1;
+      
+      if (nextIndex < surveyQuestions.length) {
+        // Move to next question
+        setCurrentQuestionIndex(nextIndex);
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          content: surveyQuestions[nextIndex].question 
+        }]);
+      } else {
+        // Survey complete
+        setSurveyComplete(true);
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          content: 'Thank you for completing the survey! Based on your responses, our team will reach out to you with personalized recommendations.' 
+        }]);
       }
-
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
-    } catch (error) {
-      console.error('Chat error:', error);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Sorry, I encountered an error. Please try again or contact our team directly.' 
-      }]);
-    } finally {
       setIsLoading(false);
-    }
+    }, 500);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
+
 
   return (
     <>
@@ -108,6 +176,18 @@ export default function RobotRunner() {
         @keyframes robot-run-x {
           0%   { transform: translateX(-220px); }
           100% { transform: translateX(calc(100vw - 210px)); }
+        }
+        @media (max-width: 767px) {
+          @keyframes robot-run-x {
+            0%   { transform: translateX(-140px); }
+            100% { transform: translateX(calc(100vw - 130px)); }
+          }
+          .robot-hii {
+            top: -30px;
+            left: 4px;
+            font-size: 13px;
+            padding: 6px 10px;
+          }
         }
         .robot-bob {
           animation: robot-bob 0.32s ease-in-out 15 alternate;
@@ -162,11 +242,11 @@ export default function RobotRunner() {
         </div>
         <div className="robot-bob">
           <div className="robot-face">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="20 80 470 490" 
-              width="160" 
-              role="img" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="20 80 470 490"
+              width={isMobile ? '100' : '160'}
+              role="img"
               aria-label="Cute robot waving hi"
               className="robot-svg"
               onClick={() => setIsOpen(true)}
@@ -206,10 +286,10 @@ export default function RobotRunner() {
               </defs>
 
               {/* antennae */}
-              <ellipse cx="205" cy="120" rx="16" ry="42" fill="url(#blue3d)" transform="rotate(-32 205 120)" />
-              <ellipse cx="199" cy="104" rx="5" ry="14" fill="#e8d8ff" opacity="0.8" transform="rotate(-32 199 104)" />
-              <ellipse cx="418" cy="128" rx="15" ry="44" fill="url(#blue3d)" transform="rotate(34 418 128)" />
-              <ellipse cx="424" cy="112" rx="5" ry="14" fill="#e8d8ff" opacity="0.8" transform="rotate(34 424 112)" />
+              <ellipse cx="245" cy="115" rx="16" ry="42" fill="url(#blue3d)" transform="rotate(-32 245 115)" />
+              <ellipse cx="239" cy="99" rx="5" ry="14" fill="#e8d8ff" opacity="0.8" transform="rotate(-32 239 99)" />
+              <ellipse cx="415" cy="115" rx="16" ry="42" fill="url(#blue3d)" transform="rotate(32 415 115)" />
+              <ellipse cx="421" cy="99" rx="5" ry="14" fill="#e8d8ff" opacity="0.8" transform="rotate(32 421 99)" />
 
               {/* right arm swept back */}
               <ellipse cx="424" cy="388" rx="26" ry="58" fill="url(#blueDeep)" transform="rotate(-36 424 388)" />
@@ -265,9 +345,11 @@ export default function RobotRunner() {
               <ellipse cx="242" cy="352" rx="20" ry="24" fill="url(#blueDeep)" transform="rotate(24 242 352)" />
               <ellipse cx="412" cy="356" rx="20" ry="24" fill="url(#blueDeep)" transform="rotate(-20 412 356)" />
 
-              {/* head */}
+              {/* head / face */}
               <path d="M232 196 C232 132 286 92 330 92 C380 92 428 130 428 196 C428 258 382 296 330 296 C280 296 232 258 232 196 Z" fill="url(#white3d)" />
               <ellipse cx="300" cy="122" rx="52" ry="18" fill="#ffffff" opacity="0.8" transform="rotate(-10 300 122)" />
+              <ellipse cx="228" cy="212" rx="24" ry="34" fill="url(#blue3d)" />
+              <ellipse cx="234" cy="198" rx="9" ry="13" fill="#e8d8ff" opacity="0.8" />
               <ellipse cx="432" cy="212" rx="24" ry="34" fill="url(#blue3d)" />
               <ellipse cx="426" cy="198" rx="9" ry="13" fill="#e8d8ff" opacity="0.8" />
               <rect x="256" y="140" width="150" height="112" rx="30" fill="url(#screen)" />
@@ -288,8 +370,8 @@ export default function RobotRunner() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className={`fixed bottom-24 right-6 bg-white rounded-2xl shadow-2xl z-[10000] transition-all ${
-          isMinimized ? 'w-80 h-16' : 'w-96 h-[500px]'
+        <div className={`fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 bg-white rounded-2xl shadow-2xl z-[10000] transition-all ${
+          isMinimized ? 'w-auto sm:w-80 h-16' : 'w-auto sm:w-96 h-[500px] max-h-[70vh]'
         }`}>
           {/* Header */}
           <div className="bg-[#7255F6] p-4 rounded-t-2xl flex items-center justify-between">
@@ -329,8 +411,8 @@ export default function RobotRunner() {
 
           {/* Messages */}
           {!isMinimized && (
-            <>
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100%-140px)]">
+            <div className="flex flex-col h-[calc(100%-60px)]">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((message, index) => (
                   <div
                     key={index}
@@ -361,29 +443,40 @@ export default function RobotRunner() {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Input */}
-              <div className="p-4 border-t border-gray-200">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Type your message..."
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[#7255F6] text-sm"
-                    disabled={isLoading}
-                  />
+              {/* Options */}
+              {!surveyComplete && currentQuestionIndex < surveyQuestions.length && (
+                <div className="p-4 border-t border-gray-200 bg-white">
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {surveyQuestions[currentQuestionIndex]?.options.map((option, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleOptionSelect(option)}
+                        disabled={isLoading}
+                        className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-[#7255F6] hover:text-white border border-gray-200 hover:border-[#7255F6] rounded-lg transition-all duration-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Survey Complete Message */}
+              {surveyComplete && (
+                <div className="p-4 border-t border-gray-200 bg-white">
                   <button
-                    onClick={handleSend}
-                    disabled={isLoading || !input.trim()}
-                    className="bg-[#7255F6] text-white p-2 rounded-full hover:bg-[#5a3ad8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    aria-label="Send message"
+                    onClick={() => {
+                      setMessages([{ role: 'assistant', content: 'Hi! I\'m the PMG AI assistant. Let me ask you a few questions to better understand your needs.' }]);
+                      setCurrentQuestionIndex(0);
+                      setSurveyComplete(false);
+                    }}
+                    className="w-full px-4 py-3 bg-[#7255F6] text-white rounded-lg hover:bg-[#5a3ad8] transition-colors text-sm font-medium"
                   >
-                    <Send className="w-5 h-5" />
+                    Start New Survey
                   </button>
                 </div>
-              </div>
-            </>
+              )}
+            </div>
           )}
         </div>
       )}

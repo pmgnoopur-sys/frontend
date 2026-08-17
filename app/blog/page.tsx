@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { getBlogs } from '@/lib/blogStorage';
 
 // Add animation keyframes
 const style = `
@@ -38,71 +39,18 @@ const style = `
   }
 `;
 
-const blogPosts = [
-  {
-    title: 'How AI Is Changing B2B Lead Generation for IT & SaaS in 2026',
-    excerpt: 'Discover how artificial intelligence is revolutionizing B2B lead generation strategies for IT and SaaS companies in 2026.',
-    date: '2026',
-    category: 'AI & Technology'
-  },
-  {
-    title: 'Common B2B Lead Generation Mistakes That Hurt Conversion Rates',
-    excerpt: 'Learn about the most common mistakes in B2B lead generation that can negatively impact your conversion rates and how to avoid them.',
-    date: '2026',
-    category: 'Lead Generation'
-  },
-  {
-    title: 'Why Marketing Qualified Leads Aren\'t Always Sales Qualified Leads',
-    excerpt: 'Understanding the crucial difference between MQLs and SQLs and why this distinction matters for your sales pipeline.',
-    date: '2026',
-    category: 'Sales & Marketing'
-  },
-  {
-    title: 'How B2B Data Enrichment Services Improve Lead Quality and Conversion',
-    excerpt: 'Explore how data enrichment services can significantly enhance your lead quality and boost conversion rates.',
-    date: '2026',
-    category: 'Data Solutions'
-  },
-  {
-    title: 'How Can B2B Email Marketing Drive Authentic Engagement and ROI in 2026?',
-    excerpt: 'Discover effective B2B email marketing strategies that drive authentic engagement and deliver measurable ROI.',
-    date: '2026',
-    category: 'Email Marketing'
-  },
-  {
-    title: 'Why Email Nurturing Is Critical for Converting B2B Leads Into Sales Meetings',
-    excerpt: 'Learn why email nurturing campaigns are essential for converting B2B leads into actual sales meetings.',
-    date: '2026',
-    category: 'Email Marketing'
-  },
-  {
-    title: 'How AI Sales Tools Help Reduce Sales Cycle Length',
-    excerpt: 'Explore how AI-powered sales tools can help shorten your sales cycle and improve overall efficiency.',
-    date: '2026',
-    category: 'AI & Technology'
-  },
-  {
-    title: 'Why Most B2B Leads Never Convert (And What IT Marketers Are Missing)',
-    excerpt: 'Understanding why many B2B leads fail to convert and what critical elements IT marketers often overlook.',
-    date: '2026',
-    category: 'Lead Generation'
-  },
-  {
-    title: 'From MQLs to Revenue: Rethinking B2B Lead Generation for Tech Companies',
-    excerpt: 'A fresh perspective on B2B lead generation strategies specifically designed for technology companies.',
-    date: '2026',
-    category: 'Lead Generation'
-  }
-];
-
 const categories = ['All', 'AI & Technology', 'Lead Generation', 'Sales & Marketing', 'Data Solutions', 'Email Marketing'];
 
 interface BlogCardProps {
   post: {
     title: string;
-    excerpt: string;
-    date: string;
-    category: string;
+    content: string;
+    author: string;
+    createdAt: string;
+    slug: string;
+    tags?: string[];
+    images?: { url: string; altText: string }[];
+    excerpt?: string;
   };
   index: number;
   isVisible: boolean;
@@ -113,61 +61,80 @@ const BlogCard = ({ post, index, isVisible }: BlogCardProps) => {
 
   return (
     <article
-      className="bg-gray-50 rounded-lg overflow-hidden transition-all duration-500"
+      className="bg-white rounded-2xl overflow-hidden transition-all duration-500 border border-gray-100"
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
         transitionDelay: `${index * 50}ms`,
-        boxShadow: isHovered ? '0 20px 40px rgba(0,0,0,0.1)' : '0 4px 12px rgba(0,0,0,0.05)',
+        boxShadow: isHovered ? '0 25px 50px -12px rgba(0,0,0,0.15)' : '0 4px 6px -1px rgba(0,0,0,0.05)',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="p-6 relative overflow-hidden">
-        {/* Hover gradient background */}
-        <div
-          className="absolute inset-0 bg-gradient-to-br from-[#FECB0F]/5 to-transparent pointer-events-none"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            transition: 'opacity 0.3s ease',
-          }}
-        />
+      {/* Blog Image */}
+      {post.images && post.images.length > 0 && (
+        <div className="relative h-56 overflow-hidden">
+          <img
+            src={post.images[0].url}
+            alt={post.images[0].altText || post.title}
+            className="w-full h-full object-cover transition-transform duration-700"
+            style={{ transform: isHovered ? 'scale(1.08)' : 'scale(1)' }}
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"
+          />
+        </div>
+      )}
 
+      <div className="p-6 relative overflow-hidden">
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-4">
-            <span
-              className="text-xs font-semibold px-3 py-1 rounded-full transition-all duration-300"
-              style={{
-                backgroundColor: isHovered ? '#FECB0F' : 'rgba(254, 203, 15, 0.2)',
-                color: isHovered ? '#000' : '#FECB0F',
-              }}
-            >
-              {post.category}
-            </span>
-            <span className="text-gray-500 text-sm">{post.date}</span>
+          {/* Tags and Date */}
+          <div className="flex items-center justify-between mb-4">
+            {post.tags && post.tags.length > 0 && (
+              <span
+                className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#FECB0F]/10 text-[#FECB0F]"
+              >
+                {post.tags[0]}
+              </span>
+            )}
+            <span className="text-gray-400 text-xs">{new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </div>
 
+          {/* Title */}
           <h2
-            className="text-xl font-bold mb-3 text-gray-900 transition-colors duration-300"
-            style={{ color: isHovered ? '#FECB0F' : '#111827' }}
+            className="text-xl font-bold mb-3 text-gray-900 leading-snug line-clamp-2 transition-colors duration-300"
           >
-            <Link href={`/blog/${encodeURIComponent(post.title)}`}>
+            <Link href={`/blog/${post.slug}`} className="hover:text-[#FECB0F] transition-colors">
               {post.title}
             </Link>
           </h2>
 
-          <p className="text-gray-600 mb-4">{post.excerpt}</p>
+          {/* Excerpt */}
+          <p className="text-gray-600 mb-5 text-sm leading-relaxed line-clamp-3">
+            {post.excerpt || post.content.substring(0, 150)}...
+          </p>
 
-          <Link
-            href={`/blog/${encodeURIComponent(post.title)}`}
-            className="inline-block font-semibold transition-all duration-300"
-            style={{
-              color: '#FECB0F',
-              transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
-            }}
-          >
-            Read More →
-          </Link>
+          {/* Author and Read More */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#FECB0F] to-[#F5A623] rounded-full flex items-center justify-center text-white font-bold text-xs">
+                {post.author.charAt(0)}
+              </div>
+              <span className="text-sm text-gray-600 font-medium">{post.author}</span>
+            </div>
+            <Link
+              href={`/blog/${post.slug}`}
+              className="inline-flex items-center gap-1 text-sm font-semibold text-[#FECB0F] hover:text-[#F5A623] transition-colors"
+            >
+              Read
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </article>
@@ -179,13 +146,29 @@ export default function Blog() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [visibleCards, setVisibleCards] = useState(new Set());
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const postsPerPage = 6;
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const blogs = await getBlogs();
+        setBlogPosts(blogs);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, []);
 
   // Filter posts based on category and search
   const filteredPosts = blogPosts.filter((post) => {
-    const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'All' || (post.tags && post.tags.includes(selectedCategory));
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      post.content.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 

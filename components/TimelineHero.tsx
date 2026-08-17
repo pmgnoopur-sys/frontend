@@ -362,8 +362,17 @@ export function TimelineHero() {
           overflow: hidden;
         }
         @media (max-width: 1100px) {
-          .hud-wrap { grid-template-columns: 1fr; padding: 40px 0; gap: 40px; }
+          .hud-wrap { grid-template-columns: 1fr; padding: 40px 0; gap: 40px; min-height: auto; }
           .hud-arc { height: 420px !important; }
+          .hud-right { padding: 0 20px; }
+        }
+        @media (max-width: 640px) {
+          .hud-arc { height: 320px !important; }
+          .hud-mid { padding: 0 16px; gap: 12px; }
+          .hud-right { padding: 0 16px; }
+          .hud-card { padding: 12px 16px; font-size: 13px; }
+          .hud-panel { padding: 18px; }
+          .hud-panel-text { padding: 20px; font-size: 14px; }
         }
 
         /* ===== floating particles ===== */

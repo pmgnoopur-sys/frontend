@@ -4,6 +4,7 @@ export interface User {
   username: string;
   password: string;
   role: "superadmin" | "hr" | "blog";
+  accessLevel?: "edit" | "view";
   createdAt: string;
   lastLogin?: string;
 }
@@ -33,6 +34,7 @@ export const initializeUsers = () => {
       username: "admin",
       password: "admin123",
       role: "superadmin",
+      accessLevel: "edit",
       createdAt: new Date().toISOString(),
     };
     localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([defaultAdmin]));

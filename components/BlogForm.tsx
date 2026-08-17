@@ -10,6 +10,10 @@ import {
   CheckCircle,
   ImagePlus,
   X,
+  Bold,
+  Link as LinkIcon,
+  Minus,
+  AlignLeft,
 } from "lucide-react";
 
 interface BlogFormProps {
@@ -35,10 +39,19 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
   const [ogImage, setOgImage] = useState(blog?.ogImage || "");
   const [canonicalUrl, setCanonicalUrl] = useState(blog?.canonicalUrl || "");
 
+  // New content options
+  const [category, setCategory] = useState(blog?.category || "general");
+  const [excerpt, setExcerpt] = useState(blog?.excerpt || "");
+  const [readingTime, setReadingTime] = useState(blog?.readingTime || 0);
+  const [scheduledDate, setScheduledDate] = useState(blog?.scheduledDate || "");
+  const [status, setStatus] = useState(blog?.status || "draft");
+
   // Images state
   const [images, setImages] = useState<{ url: string; altText: string }[]>(blog?.images || []);
   const [newImageUrl, setNewImageUrl] = useState("");
   const [newImageAlt, setNewImageAlt] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [activeTab, setActiveTab] = useState<TabType>("content");
   const [shareLink, setShareLink] = useState("");
@@ -55,6 +68,13 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
       setSlug(generated);
     }
   }, [title, blog, slug]);
+
+  // Auto-calculate reading time (average 200 words per minute)
+  useEffect(() => {
+    const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
+    const calculatedTime = Math.ceil(wordCount / 200);
+    setReadingTime(calculatedTime);
+  }, [content]);
 
   // Generate share link
   useEffect(() => {
@@ -107,6 +127,27 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
     }
   };
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadedFile(file);
+      setIsUploading(true);
+
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setNewImageUrl(base64String);
+        setIsUploading(false);
+      };
+      reader.onerror = () => {
+        console.error('Error reading file');
+        setIsUploading(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleRemoveImage = (index: number) => {
     setImages(images.filter((_, i) => i !== index));
   };
@@ -125,11 +166,59 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
       ogImage,
       canonicalUrl,
       images,
+      category,
+      excerpt,
+      readingTime,
+      scheduledDate,
+      status,
     });
   };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
+  };
+
+  // Insert HTML tag at cursor position
+  const insertTag = (before: string, after: string = "") => {
+    const textarea = document.getElementById('content') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end);
+    
+    const newText = content.substring(0, start) + before + selectedText + after + content.substring(end);
+    setContent(newText);
+    
+    // Restore cursor position after the inserted tag
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + before.length + selectedText.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
+  };
+
+  const handleBold = () => {
+    insertTag('<strong>', '</strong>');
+  };
+
+  const handleLink = () => {
+    const url = prompt('Enter URL:');
+    if (url) {
+      insertTag(`<a href="${url}">`, '</a>');
+    }
+  };
+
+  const handleLineBreak = () => {
+    insertTag('<br>', '');
+  };
+
+  const handleHorizontalRule = () => {
+    insertTag('<hr>', '');
+  };
+
+  const handleParagraph = () => {
+    insertTag('<p>', '</p>');
   };
 
   return (
@@ -235,21 +324,156 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                   </div>
                 </div>
 
+                {/* Content Options */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-4">Content Options</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                        Category
+                      </label>
+                      <select
+                        id="category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      >
+                        <option value="general">General</option>
+                        <option value="technology">Technology</option>
+                        <option value="business">Business</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="education">Education</option>
+                        <option value="health">Health</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="news">News</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+                        Publication Status
+                      </label>
+                      <select
+                        id="status"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value as "draft" | "published" | "scheduled")}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      >
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                        <option value="scheduled">Scheduled</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="scheduled-date" className="block text-sm font-medium text-gray-700 mb-1">
+                        Scheduled Date
+                      </label>
+                      <input
+                        type="datetime-local"
+                        id="scheduled-date"
+                        value={scheduledDate}
+                        onChange={(e) => setScheduledDate(e.target.value)}
+                        disabled={status !== 'scheduled'}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Required when status is 'Scheduled'</p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Reading Time
+                      </label>
+                      <div className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-600">
+                        {readingTime} minute{readingTime !== 1 ? 's' : ''} (auto-calculated)
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-1">
+                      Excerpt / Summary
+                    </label>
+                    <textarea
+                      id="excerpt"
+                      value={excerpt}
+                      onChange={(e) => setExcerpt(e.target.value)}
+                      rows={3}
+                      placeholder="Brief summary for blog listing pages (150-200 characters recommended)..."
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {excerpt.length} characters (Optional: used in blog previews)
+                    </p>
+                  </div>
+                </div>
+
                 <div>
                   <label htmlFor="content" className="block text-sm font-semibold text-gray-900 mb-2">
                     Blog Content
                   </label>
+                  
+                  {/* Formatting Toolbar */}
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    <button
+                      type="button"
+                      onClick={handleBold}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+                      title="Bold (Ctrl+B)"
+                    >
+                      <Bold className="w-4 h-4" />
+                      Bold
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleLink}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+                      title="Insert Link"
+                    >
+                      <LinkIcon className="w-4 h-4" />
+                      Link
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleLineBreak}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+                      title="Line Break"
+                    >
+                      <AlignLeft className="w-4 h-4" />
+                      Break
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleHorizontalRule}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+                      title="Horizontal Rule"
+                    >
+                      <Minus className="w-4 h-4" />
+                      Divider
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleParagraph}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+                      title="Paragraph"
+                    >
+                      <span className="w-4 h-4 font-bold text-gray-600">¶</span>
+                      Paragraph
+                    </button>
+                  </div>
+
                   <textarea
                     id="content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    rows={12}
-                    placeholder="Write your blog content here..."
+                    rows={20}
+                    placeholder="Write your blog content here... (HTML tags supported)"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
                     required
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    {content.length} characters (~{Math.ceil(content.length / 5)} words)
+                    {content.length} characters (~{Math.ceil(content.length / 5)} words) • HTML tags supported
                   </p>
                 </div>
 
@@ -262,38 +486,93 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
 
                   {/* Add New Image */}
                   <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                      <div>
-                        <label htmlFor="image-url" className="block text-sm font-medium text-gray-700 mb-1">
-                          Image URL
-                        </label>
-                        <input
-                          type="url"
-                          id="image-url"
-                          value={newImageUrl}
-                          onChange={(e) => setNewImageUrl(e.target.value)}
-                          placeholder="https://example.com/image.jpg"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="image-alt" className="block text-sm font-medium text-gray-700 mb-1">
-                          Alt Text
-                        </label>
-                        <input
-                          type="text"
-                          id="image-alt"
-                          value={newImageAlt}
-                          onChange={(e) => setNewImageAlt(e.target.value)}
-                          placeholder="Describe the image for accessibility"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                        />
-                      </div>
+                    {/* Upload or URL Toggle */}
+                    <div className="flex gap-2 mb-4">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUploadedFile(null);
+                          setNewImageUrl('');
+                        }}
+                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${!uploadedFile ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                      >
+                        URL
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUploadedFile({} as File);
+                          setNewImageUrl('');
+                        }}
+                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${uploadedFile ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                      >
+                        Upload
+                      </button>
                     </div>
+
+                    {!uploadedFile ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                        <div>
+                          <label htmlFor="image-url" className="block text-sm font-medium text-gray-700 mb-1">
+                            Image URL
+                          </label>
+                          <input
+                            type="url"
+                            id="image-url"
+                            value={newImageUrl}
+                            onChange={(e) => setNewImageUrl(e.target.value)}
+                            placeholder="https://example.com/image.jpg"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="image-alt" className="block text-sm font-medium text-gray-700 mb-1">
+                            Alt Text
+                          </label>
+                          <input
+                            type="text"
+                            id="image-alt"
+                            value={newImageAlt}
+                            onChange={(e) => setNewImageAlt(e.target.value)}
+                            placeholder="Describe the image for accessibility"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mb-3">
+                        <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700 mb-1">
+                          Upload Image
+                        </label>
+                        <input
+                          type="file"
+                          id="file-upload"
+                          accept="image/*"
+                          onChange={handleFileUpload}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        />
+                        {isUploading && (
+                          <p className="text-xs text-blue-600 mt-1">Uploading...</p>
+                        )}
+                        <div className="mt-3">
+                          <label htmlFor="image-alt-upload" className="block text-sm font-medium text-gray-700 mb-1">
+                            Alt Text
+                          </label>
+                          <input
+                            type="text"
+                            id="image-alt-upload"
+                            value={newImageAlt}
+                            onChange={(e) => setNewImageAlt(e.target.value)}
+                            placeholder="Describe the image for accessibility"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                          />
+                        </div>
+                      </div>
+                    )}
                     <button
                       type="button"
                       onClick={handleAddImage}
-                      disabled={!newImageUrl || !newImageAlt}
+                      disabled={!newImageUrl || !newImageAlt || isUploading}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
                       Add Image

@@ -12,12 +12,30 @@ export default function Contact() {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', phone: '', message: '' });
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          type: 'contact'
+        }),
+      });
+      
+      if (response.ok) {
+        alert('Thank you for your message! We will get back to you soon.');
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      } else {
+        alert('Failed to submit form');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Error submitting form');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -113,71 +131,45 @@ export default function Contact() {
                 </form>
               </div>
 
-              {/* Image and Contact Information */}
-              <div className="space-y-6">
-                {/* Image */}
-                <div className="rounded-lg overflow-hidden shadow-lg">
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1783944509/Banner-InboxOracle-Email-Marketing-Solutions.jpg_xhv3xv.webp"
-                    alt="Email Marketing Solutions"
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-
-                {/* Contact Information */}
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Call us</h3>
-                  <p className="text-gray-700 text-lg">+91 7972722487</p>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Email US</h3>
-                  <p className="text-gray-700 text-lg">hr@pmg-b2b.com</p>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Mumbai Office</h3>
-                  <p className="text-gray-700">
-                    PMG B2B – Headquarters (Navi Mumbai)<br />
-                    Block A, Millennium Business Park,<br />
-                    TTC Industrial Area Sector 3 Mahape,<br />
-                    Navi Mumbai, Maharashtra, India 400710
-                  </p>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Pune Office</h3>
-                  <p className="text-gray-700">
-                    PMG B2B – PUNE OFFICE<br />
-                    Office No. 708, Seventh Floor,<br />
-                    Pride-Icon, Thite Nagar, Kharadi,<br />
-                    Pune, Maharashtra India 411014
-                  </p>
-                </div>
+              {/* Lottie Animation */}
+              <div className="rounded-lg overflow-hidden shadow-lg" style={{height: '600px'}}>
+                <iframe
+                  src="https://lottie.host/embed/4ce9974f-29ac-4b78-998f-feed47d001b7/GX32KxTs1i.lottie"
+                  style={{width: '100%', height: '100%', border: 'none'}}
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
 
-            {/* FAQ Section */}
-            <div className="mt-16">
-              <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  'How to find your office?',
-                  'What is digital marketing?',
-                  'How does SEO affect your sales?',
-                  'How to start web-development?',
-                  'When will I be billed?',
-                  'What is SEO?',
-                  'What is UI design?',
-                  'How does UI/UX affect your sales?',
-                  'How to get a refund?'
-                ].map((faq, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition cursor-pointer">
-                    <p className="text-gray-700 font-medium">{faq}</p>
-                  </div>
-                ))}
+            {/* Contact Information */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Call us</h3>
+                <p className="text-gray-700 text-lg">+91 7972722487</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Email US</h3>
+                <p className="text-gray-700 text-lg">info@pmg-b2b.com</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Mumbai Office</h3>
+                <p className="text-gray-700">
+                  Navi Mumbai, Maharashtra, India 400710
+                </p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Pune Office</h3>
+                <p className="text-gray-700">
+                  PMG B2B – PUNE OFFICE<br />
+                  14, Second Floor, A wing, City Vista, Kharadi, Pune, Maharashtra 411014
+                </p>
               </div>
             </div>
+
+            
           </div>
         </section>
       </main>

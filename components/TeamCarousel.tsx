@@ -33,7 +33,10 @@ export default function TeamCarousel({
 
       <div className="team__accordion">
         {members.map((member, i) => (
-          <div key={member.name + i} className="accordion-card">
+          <div
+            key={member.name + i}
+            className="accordion-card"
+          >
             <div className="accordion-panel">
               <img
                 src={member.imageUrl}

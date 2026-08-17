@@ -2,6 +2,8 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import BusinessProcess from '@/components/BusinessProcess';
+import Demo from '@/components/Demo';
 
 
 export default function Services() {
@@ -123,79 +125,12 @@ export default function Services() {
           </div>
         </section>
 
-        {/* How We Work Section */}
+        {/* Business Process Section */}
+        <BusinessProcess />
+
+        {/* Demo Section */}
         <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">How We <span className="text-[#FECB0F]">Work</span></h2>
-              <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                Our proven process for delivering exceptional results
-              </p>
-            </div>
-
-            <div className="max-w-5xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {/* Step 1 */}
-                <div className="relative">
-                  <div className="bg-gradient-to-br from-[#FECB0F] to-[#F5A623] text-white rounded-2xl p-6 h-full">
-                    <div className="text-5xl font-bold mb-4 opacity-50">01</div>
-                    <h3 className="text-xl font-bold mb-3">Discovery</h3>
-                    <p className="text-sm opacity-90">
-                      We analyze your business, target audience, and goals to create a tailored strategy.
-                    </p>
-                  </div>
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-[#FECB0F]">
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Step 2 */}
-                <div className="relative">
-                  <div className="bg-gray-900 text-white rounded-2xl p-6 h-full">
-                    <div className="text-5xl font-bold mb-4 opacity-50">02</div>
-                    <h3 className="text-xl font-bold mb-3">Strategy</h3>
-                    <p className="text-sm opacity-90">
-                      We develop a comprehensive plan with clear milestones and KPIs to measure success.
-                    </p>
-                  </div>
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-gray-400">
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Step 3 */}
-                <div className="relative">
-                  <div className="bg-gray-100 text-gray-900 rounded-2xl p-6 h-full">
-                    <div className="text-5xl font-bold mb-4 text-[#FECB0F]">03</div>
-                    <h3 className="text-xl font-bold mb-3">Execution</h3>
-                    <p className="text-sm text-gray-600">
-                      Our team implements campaigns with precision, continuously optimizing for maximum impact.
-                    </p>
-                  </div>
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-gray-400">
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Step 4 */}
-                <div className="relative">
-                  <div className="bg-gradient-to-br from-[#FECB0F] to-[#F5A623] text-white rounded-2xl p-6 h-full">
-                    <div className="text-5xl font-bold mb-4 opacity-50">04</div>
-                    <h3 className="text-xl font-bold mb-3">Growth</h3>
-                    <p className="text-sm opacity-90">
-                      We analyze results, refine strategies, and scale successful campaigns for sustained growth.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Demo />
         </section>
       </main>
       <Footer />

@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HologramNetwork from '@/components/HologramNetwork';
+import TypewriterText from '@/components/TypewriterText';
+import { SingleTrendGraph3D } from '@/components/TrendComparison3D';
+import { TrendingDown, RefreshCw, AlertTriangle, BarChart3 } from 'lucide-react';
 
 export default function Proffer() {
   const [activeTab, setActiveTab] = useState(0);
@@ -83,19 +86,19 @@ export default function Proffer() {
     },
     {
       id: 2,
-      name: 'TrustCheck AI',
-      tagline: 'Quality You Can Trust',
-      whatItDoes: 'Automatically reviews call transcripts, flags job authority/consent/compliance gaps, creates a compliance record per lead',
-      whyItMatters: 'Fewer client disputes; audit-proof evidence of authority & consent',
-      outcome: 'Delivery confidence with compliance built in'
-    },
-    {
-      id: 3,
       name: 'ClearBoard AI',
       tagline: 'Real-Time Transparency',
       whatItDoes: 'Live dashboards for pacing/validation/verification/compliance, predictive risk alerts, drill-down logs, exportable reports',
       whyItMatters: 'Builds client trust with live visibility; monitor quality without waiting on reports',
       outcome: 'Eliminates the "black box" in demand gen'
+    },
+    {
+      id: 3,
+      name: 'TrustCheck AI',
+      tagline: 'Quality You Can Trust',
+      whatItDoes: 'Automatically reviews call transcripts, flags job authority/consent/compliance gaps, creates a compliance record per lead',
+      whyItMatters: 'Fewer client disputes; audit-proof evidence of authority & consent',
+      outcome: 'Delivery confidence with compliance built in'
     },
     {
       id: 4,
@@ -195,7 +198,7 @@ export default function Proffer() {
         <section 
           ref={(el) => { sectionRefs.current['problem'] = el; }}
           id="problem"
-          className="py-24 bg-gray-900"
+          className="py-16 md:py-24 bg-gray-900"
         >
           <div className="container mx-auto px-4">
             <div className={`max-w-4xl mx-auto text-center mb-16 transition-all duration-1000 ${isVisible['problem'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -209,18 +212,18 @@ export default function Proffer() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {[
-                { icon: '📉', text: '20–35% lead rejection rates eating into ROI and sales time' },
-                { icon: '🔄', text: 'Manual, inconsistent verification leading to client escalations' },
-                { icon: '⚠️', text: 'Compliance as a checkbox, not a certainty — limited proof of consent' },
-                { icon: '📊', text: 'Enterprises expect scale & accountability, get opaque reporting instead' }
+                { icon: <TrendingDown className="w-12 h-12" />, text: '20–35% lead rejection rates eating into ROI and sales time' },
+                { icon: <RefreshCw className="w-12 h-12" />, text: 'Manual, inconsistent verification leading to client escalations' },
+                { icon: <AlertTriangle className="w-12 h-12" />, text: 'Compliance as a checkbox, not a certainty — limited proof of consent' },
+                { icon: <BarChart3 className="w-12 h-12" />, text: 'Enterprises expect scale & accountability, get opaque reporting instead' }
               ].map((item, index) => (
-                <div 
+                <div
                   key={index}
-                  className={`bg-gray-800 p-8 rounded-xl border border-gray-700 hover:border-[#FECB0F]/50 transition-all duration-300 ${isVisible['problem'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                  className={`bg-black/60 backdrop-blur-md p-5 sm:p-8 rounded-xl border-2 border-[#FECB0F] hover:bg-[#FECB0F]/10 transition-all duration-300 ${isVisible['problem'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <div className="text-4xl mb-4">{item.icon}</div>
-                  <p className="text-gray-300">{item.text}</p>
+                  <div className="mb-4 text-[#FECB0F] filter drop-shadow-[0_0_10px_rgba(254,203,15,0.5)]">{item.icon}</div>
+                  <p className="text-[#FECB0F] font-medium">{item.text}</p>
                 </div>
               ))}
             </div>
@@ -237,7 +240,7 @@ export default function Proffer() {
         <section 
           ref={(el) => { sectionRefs.current['intro'] = el; }}
           id="intro"
-          className="py-24 bg-black"
+          className="py-16 md:py-24 bg-black"
         >
           <div className="container mx-auto px-4">
             <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['intro'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -246,24 +249,39 @@ export default function Proffer() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {[
-                { title: 'Built by PMG B2B', desc: 'Transform how agencies & enterprises approach demand generation' },
-                { title: 'AI Integration', desc: 'Embeds AI automation and intelligence across every stage of the lead lifecycle' },
-                { title: 'Predictable Results', desc: 'Delivers cleaner data, verified consent, transparent reporting, and predictive outcomes' }
-              ].map((item, index) => (
-                <div 
-                  key={index}
-                  className={`text-center p-8 transition-all duration-1000 ${isVisible['intro'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
-                >
-                  <div className="w-16 h-16 mx-auto mb-6 bg-[#FECB0F]/10 rounded-full flex items-center justify-center">
-                    <div className="w-8 h-8 bg-[#FECB0F] rounded-full"></div>
-                  </div>
-                  <h3 className="text-xl font-bold mb-4">{item.title}</h3>
-                  <p className="text-gray-400">{item.desc}</p>
+            {/* System Architecture Diagram */}
+            <div className={`mb-16 transition-all duration-1000 ${isVisible['intro'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
+                <div className="max-w-md bg-black rounded-2xl p-4 border border-gray-800">
+                  <img
+                    src="/www.pmg-b2b.com-2-1.gif"
+                    alt="Proffer AI System Architecture"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-              ))}
+
+                <div className="grid grid-cols-1 gap-8 flex-1 max-w-xl">
+                  {[
+                    { title: 'Built by PMG B2B', desc: 'Transform how agencies & enterprises approach demand generation' },
+                    { title: 'AI Integration', desc: 'Embeds AI automation and intelligence across every stage of the lead lifecycle' },
+                    { title: 'Predictable Results', desc: 'Delivers cleaner data, verified consent, transparent reporting, and predictive outcomes' }
+                  ].map((item, index) => (
+                    <div 
+                      key={index}
+                      className={`flex items-center gap-6 p-5 sm:p-8 transition-all duration-1000 ${isVisible['intro'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                      style={{ transitionDelay: `${index * 150}ms` }}
+                    >
+                      <div className="w-16 h-16 bg-[#FECB0F]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 bg-[#FECB0F] rounded-full"></div>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold mb-4">{item.title}</h3>
+                        <p className="text-gray-400">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -272,7 +290,7 @@ export default function Proffer() {
         <section 
           ref={(el) => { sectionRefs.current['capabilities'] = el; }}
           id="capabilities"
-          className="py-24 bg-gray-900"
+          className="py-16 md:py-24 bg-gray-900"
         >
           <div className="container mx-auto px-4">
             <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['capabilities'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -284,63 +302,71 @@ export default function Proffer() {
               </p>
             </div>
 
-            {/* Hologram Network Visualization */}
-            <div className={`mb-16 transition-all duration-1000 ${isVisible['capabilities'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <HologramNetwork />
-            </div>
+            {/* Hologram Network + Capability Details (merged) */}
+            <div className={`transition-all duration-1000 ${isVisible['capabilities'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center max-w-[1600px] mx-auto">
+                {/* Left: Interactive Hologram */}
+                <div className="w-full lg:w-3/5">
+                  <HologramNetwork activeIndex={activeTab} onNodeClick={setActiveTab} />
+                  <p className="text-center text-gray-500 text-sm mt-4">
+                    Click a node to explore each AI module
+                  </p>
+                </div>
 
-            {/* Tab Navigation */}
-            <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-4xl mx-auto">
-              {capabilities.map((cap, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveTab(index)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    activeTab === index 
-                      ? 'bg-[#FECB0F] text-black' 
-                      : 'bg-gray-800 text-gray-400 hover:text-white'
-                  }`}
-                >
-                  {cap.name}
-                </button>
-              ))}
-            </div>
+                {/* Right: Capability Details */}
+                <div className="w-full lg:w-2/5">
+                  {capabilities.map((cap, index) => (
+                    <div
+                      key={index}
+                      className={`transition-all duration-500 ${activeTab === index ? 'block' : 'hidden'}`}
+                    >
+                      <div className="bg-gray-800 p-5 sm:p-8 md:p-10 rounded-2xl border border-gray-700">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 bg-[#FECB0F]/10 rounded-lg flex items-center justify-center">
+                            <div className="w-6 h-6 bg-[#FECB0F] rounded"></div>
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-bold">{cap.name}</h3>
+                            <p className="text-[#FECB0F]">{cap.tagline}</p>
+                          </div>
+                        </div>
 
-            {/* Tab Content */}
-            <div className="max-w-4xl mx-auto">
-              {capabilities.map((cap, index) => (
-                <div
-                  key={index}
-                  className={`transition-all duration-500 ${activeTab === index ? 'block' : 'hidden'}`}
-                >
-                  <div className="bg-gray-800 p-8 md:p-12 rounded-2xl border border-gray-700">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-12 h-12 bg-[#FECB0F]/10 rounded-lg flex items-center justify-center">
-                        <div className="w-6 h-6 bg-[#FECB0F] rounded"></div>
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold">{cap.name}</h3>
-                        <p className="text-[#FECB0F]">{cap.tagline}</p>
+                        <div className="space-y-6">
+                          <div>
+                            <h4 className="text-lg font-semibold mb-2 text-white">What It Does</h4>
+                            <TypewriterText text={cap.whatItDoes} />
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold mb-2 text-white">Why It Matters</h4>
+                            <TypewriterText text={cap.whyItMatters} />
+                          </div>
+                          <div className="bg-[#FECB0F]/10 p-4 rounded-lg">
+                            <h4 className="text-lg font-semibold mb-2 text-[#FECB0F]">Outcome</h4>
+                            <TypewriterText text={cap.outcome} />
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  ))}
 
-                    <div className="space-y-6">
-                      <div>
-                        <h4 className="text-lg font-semibold mb-2 text-white">What It Does</h4>
-                        <p className="text-gray-400">{cap.whatItDoes}</p>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold mb-2 text-white">Why It Matters</h4>
-                        <p className="text-gray-400">{cap.whyItMatters}</p>
-                      </div>
-                      <div className="bg-[#FECB0F]/10 p-4 rounded-lg">
-                        <h4 className="text-lg font-semibold mb-2 text-[#FECB0F]">Outcome</h4>
-                        <p className="text-white">{cap.outcome}</p>
-                      </div>
-                    </div>
+                  {/* Mobile-friendly tab buttons as fallback selector */}
+                  <div className="flex flex-wrap justify-center gap-2 mt-6 lg:hidden">
+                    {capabilities.map((cap, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setActiveTab(index)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                          activeTab === index 
+                            ? 'bg-[#FECB0F] text-black' 
+                            : 'bg-gray-800 text-gray-400 hover:text-white'
+                        }`}
+                      >
+                        {cap.name}
+                      </button>
+                    ))}
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </section>
@@ -349,7 +375,7 @@ export default function Proffer() {
         <section 
           ref={(el) => { sectionRefs.current['advantage'] = el; }}
           id="advantage"
-          className="py-24 bg-black"
+          className="py-16 md:py-24 bg-black"
         >
           <div className="container mx-auto px-4">
             <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['advantage'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -385,10 +411,10 @@ export default function Proffer() {
         </section>
 
         {/* Proof Section */}
-        <section 
+        <section
           ref={(el) => { sectionRefs.current['proof'] = el; }}
           id="proof"
-          className="py-24 bg-gray-900"
+          className="py-16 md:py-24 bg-gray-900"
         >
           <div className="container mx-auto px-4">
             <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['proof'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -398,9 +424,9 @@ export default function Proffer() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-              <div className={`bg-gray-800 p-8 rounded-xl border border-red-900/50 ${isVisible['proof'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className={`bg-gray-800 p-5 sm:p-8 rounded-xl border border-red-900/50 ${isVisible['proof'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <h3 className="text-xl font-bold mb-6 text-red-400">Before Proffer.ai</h3>
-                <ul className="space-y-4">
+                <ul className="space-y-4 mb-6">
                   <li className="flex items-center gap-3">
                     <span className="text-red-400">~</span>
                     <span><Counter end={28} />% rejection rate</span>
@@ -414,11 +440,20 @@ export default function Proffer() {
                     <span>Clients request ad-hoc reports due to no visibility</span>
                   </li>
                 </ul>
+                {/* Red Downward Graph */}
+                <div className="bg-black rounded-lg overflow-hidden">
+                  <SingleTrendGraph3D
+                    values={[90, 70, 78, 60, 40]}
+                    color="#EF4444"
+                    direction="down"
+                    height={220}
+                  />
+                </div>
               </div>
 
-              <div className={`bg-gray-800 p-8 rounded-xl border border-[#FECB0F]/50 ${isVisible['proof'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '200ms' }}>
+              <div className={`bg-gray-800 p-5 sm:p-8 rounded-xl border border-[#FECB0F]/50 ${isVisible['proof'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '200ms' }}>
                 <h3 className="text-xl font-bold mb-6 text-[#FECB0F]">With Proffer.ai</h3>
-                <ul className="space-y-4">
+                <ul className="space-y-4 mb-6">
                   <li className="flex items-center gap-3">
                     <span className="text-[#FECB0F]">✓</span>
                     <span>Rejections under <Counter end={12} />%</span>
@@ -432,10 +467,19 @@ export default function Proffer() {
                     <span>Clients see delivery health live</span>
                   </li>
                 </ul>
+                {/* Yellow Upward Graph */}
+                <div className="bg-black rounded-lg overflow-hidden">
+                  <SingleTrendGraph3D
+                    values={[40, 60, 78, 70, 90]}
+                    color="#FECB0F"
+                    direction="up"
+                    height={220}
+                  />
+                </div>
               </div>
             </div>
 
-            <div className={`text-center max-w-3xl mx-auto bg-[#FECB0F]/10 p-8 rounded-xl border border-[#FECB0F]/30 ${isVisible['proof'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '400ms' }}>
+            <div className={`text-center max-w-3xl mx-auto bg-[#FECB0F]/10 p-5 sm:p-8 rounded-xl border border-[#FECB0F]/30 ${isVisible['proof'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '400ms' }}>
               <p className="text-xl text-white mb-4">
                 Saved <Counter end={25} /> hours/month in manual QA effort. Faster delivery boosted client satisfaction and renewal likelihood.
               </p>
@@ -447,7 +491,7 @@ export default function Proffer() {
         <section 
           ref={(el) => { sectionRefs.current['vision'] = el; }}
           id="vision"
-          className="py-24 bg-black"
+          className="py-16 md:py-24 bg-black"
         >
           <div className="container mx-auto px-4">
             <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['vision'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -485,7 +529,7 @@ export default function Proffer() {
         <section
           ref={(el) => { sectionRefs.current['faq'] = el; }}
           id="faq"
-          className="py-24 bg-black"
+          className="py-16 md:py-24 bg-black"
         >
           <div className="container mx-auto px-4">
             <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['faq'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -529,88 +573,251 @@ export default function Proffer() {
           </div>
         </section>
 
+        {/* ClearBoard AI Feature Section */}
+        <section 
+          ref={(el) => { sectionRefs.current['clearboard'] = el; }}
+          id="clearboard"
+          className="py-16 md:py-24 bg-black"
+        >
+          <div className="container mx-auto px-4">
+            <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['clearboard'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">
+                ClearBoard AI - Real-Time Transparency
+              </h2>
+              <p className="text-xl text-[#FECB0F] font-semibold">
+                See campaign health as it happens.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 max-w-[1700px] mx-auto items-start">
+              {/* Left: Information */}
+              <div className={`lg:col-span-2 space-y-8 transition-all duration-1000 ${isVisible['clearboard'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className="bg-gray-800 p-5 sm:p-8 rounded-xl border border-gray-700">
+                  <h3 className="text-2xl font-bold mb-6 text-[#FECB0F]">What It Does</h3>
+                  <ul className="space-y-4">
+                    {[
+                      'Provides live dashboards showing pacing, validation, verification, and compliance status.',
+                      'Sends predictive alerts when delivery risks or slowdowns appear.',
+                      'Tracks lead acceptance, rejection, and quality scores in real time.',
+                      'Offers drill-down views into validation and verification logs.',
+                      'Generates exportable reports for client, procurement, and legal teams.'
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-[#FECB0F] rounded-full mt-2 flex-shrink-0"></div>
+                        <p className="text-gray-300">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-[#FECB0F]/10 p-5 sm:p-8 rounded-xl border border-[#FECB0F]/30">
+                  <h3 className="text-2xl font-bold mb-6 text-[#FECB0F]">Outcome</h3>
+                  <ul className="space-y-4">
+                    {[
+                      'Eliminates the "black box" in demand gen.',
+                      'Campaigns run with clarity, predictability, and accountability.'
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-[#FECB0F] rounded-full mt-2 flex-shrink-0"></div>
+                        <p className="text-white font-medium">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-gray-800 p-5 sm:p-8 rounded-xl border border-gray-700">
+                  <h3 className="text-2xl font-bold mb-6 text-[#FECB0F]">Why It Matters</h3>
+                  <ul className="space-y-4">
+                    {[
+                      'For Agencies → build client trust with live visibility.',
+                      'For Enterprises → monitor campaign quality and compliance without waiting for reports.'
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-[#FECB0F] rounded-full mt-2 flex-shrink-0"></div>
+                        <p className="text-gray-300">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Right: Visual Dashboard */}
+              <div className={`lg:col-span-3 transition-all duration-1000 ${isVisible['clearboard'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '200ms' }}>
+                <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-[2rem] border-2 border-[#FECB0F]/60 p-4 sm:p-6 shadow-2xl overflow-hidden">
+                  <div className="grid grid-cols-1 sm:grid-cols-[60px_1fr_110px] gap-5">
+
+                    {/* Far Left Icon Rail */}
+                    <div className="flex flex-row sm:flex-col items-center justify-center gap-5 bg-black/40 rounded-2xl sm:rounded-3xl py-3 sm:py-6 order-2 sm:order-1">
+                      {[BarChart3, TrendingDown, RefreshCw, AlertTriangle].map((Icon, i) => (
+                        <div
+                          key={i}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 ${i === 0 ? 'bg-[#FECB0F] text-black' : 'text-gray-400 hover:text-[#FECB0F] transition-colors'}`}
+                        >
+                          <Icon className="w-4.5 h-4.5" />
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Center Content */}
+                    <div className="flex flex-col gap-5 min-w-0 order-1 sm:order-2">
+                      {/* Top Tabs */}
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                          <span className="text-white font-semibold border-b-2 border-[#FECB0F] pb-1">Overview</span>
+                          <span className="text-gray-500">Validation</span>
+                          <span className="text-gray-500">Verification</span>
+                          <span className="text-gray-500 hidden sm:inline">Compliance</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-black/40 flex items-center justify-center text-gray-400 text-xs">+</div>
+                          <div className="w-8 h-8 rounded-full bg-[#FECB0F] flex items-center justify-center text-black text-xs font-bold">A</div>
+                        </div>
+                      </div>
+
+                      {/* Team + Score + Gauge row */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                        <div className="bg-black/40 rounded-2xl p-5">
+                          <div className="flex items-center justify-between mb-4">
+                            <span className="text-gray-400 text-xs">Team</span>
+                            <span className="text-[#FECB0F] text-xs">+</span>
+                          </div>
+                          <div className="flex -space-x-2">
+                            {['A', 'B', 'C', 'D'].map((l, i) => (
+                              <div key={i} className="w-8 h-8 rounded-full bg-gray-700 border-2 border-gray-900 flex items-center justify-center text-xs text-white">
+                                {l}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="bg-black/40 rounded-2xl p-5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-2xl font-bold text-white">94.2<span className="text-sm text-gray-400">%</span></span>
+                            <span className="text-[#FECB0F] text-xs bg-[#FECB0F]/10 px-2 py-1 rounded-full">Live</span>
+                          </div>
+                          <p className="text-gray-500 text-xs mt-1">Validation Rate</p>
+                          <div className="flex items-center gap-1.5 mt-3">
+                            {[24, 26, 22, 28, 25].map((v, i) => (
+                              <div key={i} className="w-1.5 h-5 bg-gray-700 rounded-full overflow-hidden flex items-end">
+                                <div className="w-full bg-[#FECB0F]" style={{ height: `${(v / 28) * 100}%` }}></div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        {/* Circular Gauge */}
+                        <div className="bg-black/40 rounded-2xl p-5 flex flex-col items-center justify-center">
+                          <div
+                            className="relative w-20 h-20 rounded-full flex items-center justify-center"
+                            style={{ background: `conic-gradient(#FECB0F ${98.1 * 3.6}deg, #374151 0deg)` }}
+                          >
+                            <div className="absolute inset-2 bg-gray-900 rounded-full flex items-center justify-center">
+                              <span className="text-base font-bold text-white">98.1%</span>
+                            </div>
+                          </div>
+                          <p className="text-gray-500 text-xs mt-4 text-center">Compliance</p>
+                        </div>
+                      </div>
+
+                      {/* Device Cards + Bar Chart row */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                        {/* Stacked device-style cards */}
+                        <div className="flex flex-col gap-5">
+                          <div className="bg-black/40 rounded-2xl p-5 flex items-center justify-between">
+                            <div>
+                              <p className="text-white text-sm font-medium">New Leads</p>
+                              <p className="text-gray-500 text-xs">1,234 today</p>
+                            </div>
+                            <div className="w-9 h-5 rounded-full bg-[#FECB0F] flex items-center px-0.5">
+                              <div className="w-4 h-4 rounded-full bg-black ml-auto"></div>
+                            </div>
+                          </div>
+                          <div className="bg-black/40 rounded-2xl p-5 flex items-center justify-between">
+                            <div>
+                              <p className="text-white text-sm font-medium">Flagged</p>
+                              <p className="text-gray-500 text-xs">18 pending</p>
+                            </div>
+                            <div className="w-9 h-5 rounded-full bg-gray-700 flex items-center px-0.5">
+                              <div className="w-4 h-4 rounded-full bg-gray-400"></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bar Chart */}
+                        <div className="sm:col-span-2 bg-black/40 rounded-2xl p-5">
+                          <div className="flex items-center justify-between mb-4">
+                            <p className="text-gray-400 text-xs">Leads Processed (Weekly)</p>
+                            <span className="text-[#FECB0F] text-xs">View</span>
+                          </div>
+                          <div className="flex items-end justify-between gap-2 h-24">
+                            {[
+                              { day: 'M', v: 40 },
+                              { day: 'T', v: 65 },
+                              { day: 'W', v: 50 },
+                              { day: 'T', v: 90 },
+                              { day: 'F', v: 60 },
+                              { day: 'S', v: 35 },
+                            ].map((item, i) => (
+                              <div key={i} className="flex flex-col items-center gap-2 flex-1">
+                                <div className="w-full bg-gray-700 rounded-md overflow-hidden flex items-end h-16">
+                                  <div
+                                    className={`w-full rounded-md ${i === 3 ? 'bg-[#FECB0F]' : 'bg-gray-600'}`}
+                                    style={{ height: `${item.v}%` }}
+                                  ></div>
+                                </div>
+                                <span className="text-gray-500 text-xs">{item.day}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bottom "Report" Player Bar */}
+                      <div className="bg-black/40 rounded-2xl p-4 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#FECB0F]/20 flex items-center justify-center flex-shrink-0">
+                          <BarChart3 className="w-5 h-5 text-[#FECB0F]" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-white text-sm font-medium truncate">Compliance Report — Q3 Export</p>
+                          <p className="text-gray-500 text-xs truncate">Auto-generated · PDF</p>
+                        </div>
+                        <div className="flex items-center gap-3 text-gray-400 flex-shrink-0">
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                          <div className="w-8 h-8 rounded-full bg-[#FECB0F] flex items-center justify-center">
+                            <svg className="w-3.5 h-3.5 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                          </div>
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Far Right Toggle Panel */}
+                    <div className="grid grid-cols-4 sm:flex sm:flex-col gap-3 sm:gap-5 order-3">
+                      {[
+                        { label: 'Alerts', on: true },
+                        { label: 'Reports', on: true },
+                        { label: 'Monitoring', on: false },
+                        { label: 'Exports', on: false },
+                      ].map((item, i) => (
+                        <div key={i} className="bg-black/40 rounded-2xl p-2 sm:p-4 flex flex-col items-center gap-2">
+                          <span className="text-gray-400 text-[10px] sm:text-xs text-center">{item.label}</span>
+                          <div className={`w-9 h-5 rounded-full flex items-center px-0.5 ${item.on ? 'bg-[#FECB0F] justify-end' : 'bg-gray-700 justify-start'}`}>
+                            <div className={`w-4 h-4 rounded-full ${item.on ? 'bg-black' : 'bg-gray-400'}`}></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section 
           ref={(el) => { sectionRefs.current['cta'] = el; }}
           id="contact"
-          className="py-24 bg-gray-900"
+          className="py-16 md:py-24 bg-gray-900"
         >
-          <div className="container mx-auto px-4">
-            <div className={`max-w-4xl mx-auto text-center mb-16 transition-all duration-1000 ${isVisible['cta'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                This is not just AI for efficiency — it's PMG B2B's commitment to helping you deliver demand generation that clients and sales teams can finally trust.
-              </h2>
-              <div className="mt-8 inline-block bg-[#FECB0F] text-black px-8 py-4 rounded-lg font-semibold">
-                Let's co-create a pilot campaign together!
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-              {/* Contact Card */}
-              <div className={`bg-gray-800 p-8 rounded-xl ${isVisible['cta'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '200ms' }}>
-                <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-gray-400 mb-1">Shrish Mishra</p>
-                    <p className="text-white font-semibold">CEO, PMG B2B</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-400 mb-1">Email</p>
-                    <a href="mailto:shrim@pmg-b2b.com" className="text-[#FECB0F] hover:underline">shrim@pmg-b2b.com</a>
-                  </div>
-                  <div>
-                    <p className="text-gray-400 mb-1">Phone</p>
-                    <a href="tel:+919940414034" className="text-[#FECB0F] hover:underline">+91 994 041 4034</a>
-                  </div>
-                  <div>
-                    <p className="text-gray-400 mb-1">LinkedIn</p>
-                    <a href="#" className="text-[#FECB0F] hover:underline">Connect with us</a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Contact Form */}
-              <div className={`bg-gray-800 p-8 rounded-xl ${isVisible['cta'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '400ms' }}>
-                <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
-                <form className="space-y-4">
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-[#FECB0F] focus:outline-none transition-all"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Company"
-                      className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-[#FECB0F] focus:outline-none transition-all"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-[#FECB0F] focus:outline-none transition-all"
-                    />
-                  </div>
-                  <div>
-                    <textarea
-                      placeholder="Message"
-                      rows={4}
-                      className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-[#FECB0F] focus:outline-none transition-all resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full px-8 py-4 bg-[#FECB0F] text-black font-semibold rounded-lg hover:bg-[#E5B80D] transition-all transform hover:scale-105"
-                  >
-                    Send Message
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
         </section>
       </main>
       <Footer />

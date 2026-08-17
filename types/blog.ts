@@ -18,4 +18,9 @@ export interface Blog {
   tags?: string[];
   ogImage?: string;
   canonicalUrl?: string;
+  category?: string;
+  excerpt?: string;
+  readingTime?: number;
+  scheduledDate?: string;
+  status?: 'draft' | 'published' | 'scheduled';
 }

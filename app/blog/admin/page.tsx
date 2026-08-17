@@ -29,8 +29,9 @@ export default function BlogAdminDashboard() {
     }
   }, [isAuthenticated]);
 
-  const loadBlogs = () => {
-    setBlogs(getBlogs());
+  const loadBlogs = async () => {
+    const loadedBlogs = await getBlogs();
+    setBlogs(loadedBlogs);
   };
 
   const handleDelete = (id: string) => {
@@ -50,13 +51,12 @@ export default function BlogAdminDashboard() {
     setShowForm(true);
   };
 
-  const handleFormSubmit = (data: Omit<Blog, "id" | "createdAt" | "updatedAt" | "slug">) => {
+  const handleFormSubmit = (data: Omit<Blog, "id" | "createdAt" | "updatedAt">) => {
     if (editingBlog) {
-      updateBlog(editingBlog.id, data);
+      updateBlog(editingBlog.id, data).then(() => loadBlogs());
     } else {
-      saveBlog(data);
+      saveBlog(data).then(() => loadBlogs());
     }
-    loadBlogs();
     setShowForm(false);
     setEditingBlog(null);
   };

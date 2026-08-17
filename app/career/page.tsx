@@ -34,10 +34,55 @@ export default function Career() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', { ...formData, resume });
-    // Add form submission logic here
+    
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('position', formData.position);
+      formDataToSend.append('yearsOfExperience', formData.yearsOfExperience);
+      formDataToSend.append('currentCompany', formData.currentCompany);
+      formDataToSend.append('expectedSalary', formData.expectedSalary);
+      formDataToSend.append('noticePeriod', formData.noticePeriod);
+      formDataToSend.append('coverLetter', formData.coverLetter);
+      formDataToSend.append('howDidYouHear', formData.howDidYouHear);
+      formDataToSend.append('type', 'career');
+      
+      if (resume) {
+        formDataToSend.append('resume', resume);
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts`, {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
+        alert('Application submitted successfully!');
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          position: '',
+          yearsOfExperience: '',
+          currentCompany: '',
+          expectedSalary: '',
+          noticePeriod: '',
+          howDidYouHear: '',
+          coverLetter: '',
+          dataPermission: false
+        });
+        setResume(null);
+      } else {
+        alert('Failed to submit application. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An error occurred. Please try again.');
+    }
   };
 
   return (
@@ -316,6 +361,18 @@ export default function Career() {
                 </form>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Contact Information */}
+        <section className="py-8 bg-white border-t border-gray-200">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-gray-700">
+              For recruitment inquiries, contact us at: 
+              <a href="mailto:recruitment@pmg-b2b.com" className="text-black font-semibold ml-2 hover:underline">
+                recruitment@pmg-b2b.com
+              </a>
+            </p>
           </div>
         </section>
       </main>

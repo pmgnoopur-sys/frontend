@@ -35,23 +35,23 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-20 bg-gray-100">
+    <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">We Transform Opportunities Into Loyalty</h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#FECB0F]">We Transform Opportunities Into Loyalty</h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Discover excellence in B2B lead generation with us, where every partnership fuels growth and success.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition border-2" style={{borderColor: '#FECB0F'}}>
+            <div key={index} className="bg-gray-900 rounded-lg shadow-lg p-6 hover:shadow-xl transition border-2" style={{borderColor: '#FECB0F'}}>
               <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>{service.title}</h3>
-              <p className="text-gray-700 mb-4">{service.description}</p>
+              <p className="text-gray-300 mb-4">{service.description}</p>
               <ul className="space-y-2 mb-6">
                 {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center text-sm text-gray-800">
+                  <li key={idx} className="flex items-center text-sm text-gray-200">
                     <svg className="w-4 h-4 mr-2" style={{color: '#FECB0F'}} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
