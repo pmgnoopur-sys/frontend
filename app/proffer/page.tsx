@@ -502,22 +502,33 @@ export default function Proffer() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {[
-                { from: 'Reactive reporting', to: 'Real-time accountability' },
-                { from: 'Manual patchwork', to: 'AI-enabled precision' },
-                { from: 'Uncertain outcomes', to: 'Predictable growth' },
-                { from: 'Transactional delivery', to: 'Strategic partnership' }
+                { from: 'Reactive reporting', to: 'Real-time accountability', hasImage: true, imageUrl: 'https://res.cloudinary.com/vobojthd/image/upload/v1786086083/Time_Management_Presentation_pfcpru.jpg' },
+                { from: 'Manual patchwork', to: 'AI-enabled precision', hasImage: true, imageUrl: 'https://res.cloudinary.com/vobojthd/image/upload/v1786086231/Time_Management_Presentation_1_w19vjw.jpg' },
+                { from: 'Uncertain outcomes', to: 'Predictable growth', hasImage: true, imageUrl: 'https://res.cloudinary.com/vobojthd/image/upload/v1786972512/Screenshot_2026-08-17_184440_t27rie.png' },
+                { from: 'Transactional delivery', to: 'Strategic partnership', hasImage: true, imageUrl: 'https://res.cloudinary.com/vobojthd/image/upload/v1786088034/Untitled_design_2_ewnnkz.png' }
               ].map((item, index) => (
-                <div 
+                <div
                   key={index}
-                  className={`flex items-center gap-4 bg-gray-800 p-6 rounded-xl ${isVisible['vision'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                  className={`bg-gray-800 rounded-xl relative overflow-hidden ${isVisible['vision'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex-1">
-                    <p className="text-gray-500 line-through">{item.from}</p>
-                  </div>
-                  <div className="text-[#FECB0F]">→</div>
-                  <div className="flex-1">
-                    <p className="text-white font-semibold">{item.to}</p>
+                  {item.hasImage && (
+                    <div className="w-full h-48">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.to}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center gap-4 p-6">
+                    <div className="flex-1">
+                      <p className="text-gray-500 line-through">{item.from}</p>
+                    </div>
+                    <div className="text-[#FECB0F]">→</div>
+                    <div className="flex-1">
+                      <p className="text-white font-semibold">{item.to}</p>
+                    </div>
                   </div>
                 </div>
               ))}
