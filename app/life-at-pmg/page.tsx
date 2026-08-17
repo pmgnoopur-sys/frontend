@@ -32,10 +32,9 @@ export default function LifeAtPMG() {
       description: 'At PMG B2B, we celebrate the festival of lights with great enthusiasm and joy. Our Diwali celebrations bring the entire team together to share sweets, exchange greetings, and create lasting memories. The office comes alive with decorations, traditional attire, and the spirit of togetherness that defines our PMG family.'
     },
     {
-      image: 'https://res.cloudinary.com/vobojthd/image/upload/v1784198754/WhatsApp_Image_2026-07-16_at_4.05.29_PM_wxf9fb.jpg',
-      videoUrl: '/WhatsApp Video 2026-07-16 at 2.03.20 PM.mp4',
-      title: 'Scavenger Hunt Activity',
-      description: 'Our scavenger hunt activities at PMG B2B bring excitement and team building to the workplace. Teams collaborate to solve puzzles, find hidden clues, and complete challenges throughout the office. These engaging activities foster creativity, communication, and friendly competition while creating memorable experiences that strengthen our team bonds.'
+      image: 'https://res.cloudinary.com/vobojthd/image/upload/v1786965798/WhatsApp_Image_2026-08-17_at_4.51.03_PM_py2crd.jpg',
+      title: 'Independence Day Celebration',
+      description: 'At PMG B2B, we celebrate Independence Day with great pride and patriotism. Our team comes together to honor the spirit of freedom and unity that defines our nation. The celebration includes flag hoisting, patriotic songs, and reflections on the values that make our country great. It is a time when we reaffirm our commitment to building a stronger future while celebrating the diversity and strength of our team.'
     },
     {
       image: 'https://res.cloudinary.com/vobojthd/image/upload/v1784198754/WhatsApp_Image_2026-07-16_at_4.05.29_PM_wxf9fb.jpg',
