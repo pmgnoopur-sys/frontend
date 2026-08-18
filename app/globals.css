@@ -95,6 +95,9 @@ body {
 
 html {
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+  /* Scale down the whole site (Tailwind's font/spacing/radius scale is rem-based,
+     so reducing the root font-size shrinks everything proportionally). */
+  font-size: 87.5%;
 }
 
 .liquid-glass {

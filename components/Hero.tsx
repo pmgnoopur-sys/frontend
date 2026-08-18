@@ -23,7 +23,7 @@ export default function Hero({ title, description }: { title?: string; descripti
           <img
             src="https://res.cloudinary.com/vobojthd/image/upload/v1783428737/PMG_Logo_FInal-02_cbrjos.webp"
             alt="PMG Logo"
-            className="mx-auto mb-8 h-24 md:h-32 w-auto"
+            className="mx-auto mb-8 h-16 md:h-20 w-auto"
           />
           {title && (
             <h1 className="text-2xl md:text-4xl font-bold mb-6">
