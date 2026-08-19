@@ -15,7 +15,7 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,14 +49,74 @@ export default function Contact() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1">
-        <section className="text-black py-20" style={{ backgroundColor: '#FECB0F' }}>
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Connect with a Trusted B2B Lead Generation Agency
-            </h1>
-            <p className="text-xl max-w-3xl mx-auto">
-              No query can be resolved if you never ask! Reach out to us today.
-            </p>
+        <section className="relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black py-20 md:py-28">
+          {/* Dot grid pattern */}
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(254,203,15,0.5) 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+            }}
+          />
+
+          {/* Decorative glows */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#FECB0F]/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FECB0F]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3" />
+
+          {/* Top accent line */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#FECB0F] to-transparent" />
+
+          <div className="relative z-10 container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              {/* Text content */}
+              <div className="text-center lg:text-left lg:pl-16">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 bg-[#FECB0F]/10 border border-[#FECB0F]/30 rounded-full px-9 py-2 mb-6">
+                  <div className="w-2 h-2 bg-[#FECB0F] rounded-full animate-pulse" />
+                  <span className="text-[#FECB0F] text-xs font-semibold tracking-wider uppercase">We're here to help</span>
+                </div>
+
+                <h1 className="text-4xl md:text-6xl font-bold text-white mb-5 leading-tight">
+                  Let's Start a <span className="text-[#FECB0F]">Conversation</span>
+                </h1>
+                <p className="text-gray-300 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 mb-10">
+                  Whether you have a question about our services or you're ready to scale your pipeline, our team is ready to answer.
+                </p>
+
+                {/* Quick contact chips */}
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                  <a
+                    href="tel:+917972722487"
+                    className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FECB0F]/40 rounded-full px-5 py-3 text-white transition-all duration-300"
+                  >
+                    <svg className="w-4 h-4 text-[#FECB0F]" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.774a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                    <span className="text-sm font-medium">+91 79727 22487</span>
+                  </a>
+                  <a
+                    href="mailto:info@pmg-b2b.com"
+                    className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FECB0F]/40 rounded-full px-5 py-3 text-white transition-all duration-300"
+                  >
+                    <svg className="w-4 h-4 text-[#FECB0F]" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2.94 6.94a2 2 0 012-2h10.12a2 2 0 012 2L10 11.06 2.94 6.94z" />
+                      <path d="M18 8.118V13a2 2 0 01-2 2H4a2 2 0 01-2-2V8.118l8 4.706 8-4.706z" />
+                    </svg>
+                    <span className="text-sm font-medium">info@pmg-b2b.com</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Themed illustration */}
+              <div className="relative hidden lg:flex items-center justify-center">
+                <div className="absolute w-72 h-72 bg-[#FECB0F]/15 rounded-full blur-3xl" />
+                <img
+                  src="https://res.cloudinary.com/vobojthd/image/upload/v1787134842/PMG-transformed-our-marketing_kqpcsi.webp"
+                  alt="Get in touch with PMG B2B"
+                  className="relative z-10 w-full max-w-sm object-contain drop-shadow-2xl rounded-2xl"
+                />
+              </div>
+            </div>
           </div>
         </section>
 

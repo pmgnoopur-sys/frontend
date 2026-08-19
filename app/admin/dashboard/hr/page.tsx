@@ -49,7 +49,7 @@ export default function HRDashboard() {
 
   const loadContacts = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`);
       if (response.ok) {
         const data = await response.json();
         setContacts(data.filter((c: Contact) => c.type !== 'career'));
@@ -61,7 +61,7 @@ export default function HRDashboard() {
 
   const loadCareerApplications = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`);
       if (response.ok) {
         const data = await response.json();
         setCareerApplications(data.filter((c: Contact) => c.type === 'career'));
@@ -74,7 +74,7 @@ export default function HRDashboard() {
   const handleDeleteContact = async (id: string) => {
     if (confirm('Are you sure you want to delete this contact?')) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts/${id}`, {
           method: 'DELETE',
         });
         if (response.ok) {
@@ -89,7 +89,7 @@ export default function HRDashboard() {
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -580,7 +580,7 @@ export default function HRDashboard() {
                       <div>
                         <p className="text-sm text-gray-300">Resume</p>
                         <a 
-                          href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/${selectedApplication.resume}`}
+                          href={`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com'}/uploads/${selectedApplication.resume}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[#FECB0F] hover:text-[#FFD54F] flex items-center gap-2 transition-colors"

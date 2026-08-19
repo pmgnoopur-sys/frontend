@@ -55,7 +55,7 @@ export default function Career() {
         formDataToSend.append('resume', resume);
       }
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/contacts`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`, {
         method: 'POST',
         body: formDataToSend,
       });
