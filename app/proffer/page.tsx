@@ -7,6 +7,58 @@ import HologramNetwork from '@/components/HologramNetwork';
 import TypewriterText from '@/components/TypewriterText';
 import { SingleTrendGraph3D } from '@/components/TrendComparison3D';
 import { TrendingDown, RefreshCw, AlertTriangle, BarChart3 } from 'lucide-react';
+import StickyScrollSection from '@/components/StickyScrollSection';
+
+const profferStickyContent = [
+  {
+    title: 'AI-Powered Validation',
+    description:
+      'LeadCert AI runs real-time email and phone verification on every contact, cutting lead rejections by up to 25% before they ever reach your sales team.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"
+        alt="AI-powered data validation"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Compliance Built In',
+    description:
+      'VerifySure AI and TrustCheck AI generate tamper-proof consent and authority records automatically, so every lead ships audit-ready.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80"
+        alt="AI compliance automation"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Live Delivery Visibility',
+    description:
+      'ClearBoard AI replaces static reports with real-time dashboards, giving you full visibility into pacing, quality, and compliance as it happens.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
+        alt="Real-time analytics dashboard"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Predictive Campaign Optimization',
+    description:
+      'PredictWise AI analyzes historical performance to identify top-converting segments and auto-retarget mid-campaign, driving a 10-20% acceptance uplift.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+        alt="Predictive campaign optimization"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+];
 
 export default function Proffer() {
   const [activeTab, setActiveTab] = useState(0);
@@ -822,6 +874,14 @@ export default function Proffer() {
             </div>
           </div>
         </section>
+
+        {/* Sticky Scroll Reveal Section */}
+        <StickyScrollSection
+          eyebrow="Proffer.ai"
+          title="How Our AI Modules Work Together"
+          description="A closer look at the technology powering cleaner leads and transparent delivery."
+          items={profferStickyContent}
+        />
 
         {/* CTA Section */}
         <section 

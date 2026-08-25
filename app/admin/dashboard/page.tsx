@@ -6,7 +6,7 @@ import { useBlogAuth } from "@/lib/blogAuth";
 import { LayoutDashboard, FileText, Users as UsersIcon, UserCog, LogOut } from "lucide-react";
 
 export default function DashboardSelection() {
-  const { isAuthenticated, isLoading, logout } = useBlogAuth();
+  const { isAuthenticated, isLoading, logout, currentUser } = useBlogAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -14,6 +14,23 @@ export default function DashboardSelection() {
       router.push("/blog/adminlogin");
     }
   }, [isAuthenticated, isLoading, router]);
+
+  const role = currentUser?.role;
+  const canViewBlogs = role === "superadmin" || role === "blog";
+  const canViewHr = role === "superadmin" || role === "hr";
+  const canViewUsers = role === "superadmin";
+
+  // Users with a single-purpose role only ever have one dashboard available to
+  // them, so skip the selection screen entirely and take them straight there.
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && role) {
+      if (role === "hr") {
+        router.replace("/admin/dashboard/hr");
+      } else if (role === "blog") {
+        router.replace("/admin/dashboard/blogs");
+      }
+    }
+  }, [isLoading, isAuthenticated, role, router]);
 
   if (isLoading) {
     return (
@@ -24,6 +41,12 @@ export default function DashboardSelection() {
   }
 
   if (!isAuthenticated) {
+    return null;
+  }
+
+  // Prevent a flash of the selection screen for single-role users while the
+  // redirect above is taking effect.
+  if (role === "hr" || role === "blog") {
     return null;
   }
 
@@ -50,52 +73,58 @@ export default function DashboardSelection() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Blogs Dashboard Card */}
-          <button
-            onClick={() => router.push("/admin/dashboard/blogs")}
-            className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] p-8 hover:border-[#FFD54F] hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-left group"
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-[#FECB0F] rounded-lg group-hover:bg-[#FFD54F] transition-colors">
-                <FileText className="w-8 h-8 text-black" />
+          {canViewBlogs && (
+            <button
+              onClick={() => router.push("/admin/dashboard/blogs")}
+              className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] p-8 hover:border-[#FFD54F] hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-left group"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-[#FECB0F] rounded-lg group-hover:bg-[#FFD54F] transition-colors">
+                  <FileText className="w-8 h-8 text-black" />
+                </div>
+                <h3 className="text-xl font-semibold text-white">Blogs Dashboard</h3>
               </div>
-              <h3 className="text-xl font-semibold text-white">Blogs Dashboard</h3>
-            </div>
-            <p className="text-gray-300">
-              Manage blog posts, create new content, edit existing articles, and handle blog-related tasks.
-            </p>
-          </button>
+              <p className="text-gray-300">
+                Manage blog posts, create new content, edit existing articles, and handle blog-related tasks.
+              </p>
+            </button>
+          )}
 
           {/* HR Dashboard Card */}
-          <button
-            onClick={() => router.push("/admin/dashboard/hr")}
-            className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] p-8 hover:border-[#FFD54F] hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-left group"
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-[#FECB0F] rounded-lg group-hover:bg-[#FFD54F] transition-colors">
-                <UsersIcon className="w-8 h-8 text-black" />
+          {canViewHr && (
+            <button
+              onClick={() => router.push("/admin/dashboard/hr")}
+              className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] p-8 hover:border-[#FFD54F] hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-left group"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-[#FECB0F] rounded-lg group-hover:bg-[#FFD54F] transition-colors">
+                  <UsersIcon className="w-8 h-8 text-black" />
+                </div>
+                <h3 className="text-xl font-semibold text-white">HR Dashboard</h3>
               </div>
-              <h3 className="text-xl font-semibold text-white">HR Dashboard</h3>
-            </div>
-            <p className="text-gray-300">
-              Manage HR operations, employee data, recruitment, and other human resources tasks.
-            </p>
-          </button>
+              <p className="text-gray-300">
+                Manage HR operations, employee data, recruitment, and other human resources tasks.
+              </p>
+            </button>
+          )}
 
           {/* User Management Card */}
-          <button
-            onClick={() => router.push("/admin/dashboard/users")}
-            className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] p-8 hover:border-[#FFD54F] hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-left group"
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-[#FECB0F] rounded-lg group-hover:bg-[#FFD54F] transition-colors">
-                <UserCog className="w-8 h-8 text-black" />
+          {canViewUsers && (
+            <button
+              onClick={() => router.push("/admin/dashboard/users")}
+              className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] p-8 hover:border-[#FFD54F] hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-left group"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-[#FECB0F] rounded-lg group-hover:bg-[#FFD54F] transition-colors">
+                  <UserCog className="w-8 h-8 text-black" />
+                </div>
+                <h3 className="text-xl font-semibold text-white">User Management</h3>
               </div>
-              <h3 className="text-xl font-semibold text-white">User Management</h3>
-            </div>
-            <p className="text-gray-300">
-              Manage system users, roles, permissions, and view audit logs for security tracking.
-            </p>
-          </button>
+              <p className="text-gray-300">
+                Manage system users, roles, permissions, and view audit logs for security tracking.
+              </p>
+            </button>
+          )}
         </div>
       </div>
     </div>

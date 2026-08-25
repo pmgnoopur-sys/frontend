@@ -5,6 +5,58 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { getBlogs } from '@/lib/blogStorage';
+import StickyScrollSection from '@/components/StickyScrollSection';
+
+const blogStickyContent = [
+  {
+    title: 'Insights Backed by Experience',
+    description:
+      'Every article is written by practitioners who run real B2B campaigns, sharing tactics and lessons you can apply immediately.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80"
+        alt="Content writing and research"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Trends That Matter',
+    description:
+      'From AI-driven outreach to shifting buyer behavior, we cover the trends shaping B2B marketing so you always stay ahead of the curve.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=800&q=80"
+        alt="Industry trends analysis"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Actionable Playbooks',
+    description:
+      'Beyond theory, our guides give you step-by-step frameworks for lead generation, email marketing, and account-based strategies you can put to work today.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
+        alt="Actionable marketing playbooks"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'A Growing Library',
+    description:
+      'New articles are published regularly, covering fresh case studies, tool reviews, and evolving best practices for B2B marketers and sales teams.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80"
+        alt="Growing content library"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+];
 
 // Add animation keyframes
 const style = `
@@ -41,6 +93,25 @@ const style = `
 
 const categories = ['All', 'AI & Technology', 'Lead Generation', 'Sales & Marketing', 'Data Solutions', 'Email Marketing'];
 
+// Maps legacy/old category values (saved before categories were aligned with the
+// public blog page) to the current category names, so old blogs still show up
+// under the correct tab instead of only appearing under "All".
+const legacyCategoryMap: Record<string, string> = {
+  general: 'AI & Technology',
+  technology: 'AI & Technology',
+  business: 'Sales & Marketing',
+  lifestyle: 'AI & Technology',
+  education: 'AI & Technology',
+  health: 'AI & Technology',
+  entertainment: 'AI & Technology',
+  news: 'AI & Technology',
+};
+
+const normalizeCategory = (category?: string): string | undefined => {
+  if (!category) return undefined;
+  return legacyCategoryMap[category] || category;
+};
+
 interface BlogCardProps {
   post: {
     title: string;
@@ -49,6 +120,7 @@ interface BlogCardProps {
     createdAt: string;
     slug: string;
     tags?: string[];
+    category?: string;
     images?: { url: string; altText: string }[];
     excerpt?: string;
   };
@@ -91,13 +163,13 @@ const BlogCard = ({ post, index, isVisible }: BlogCardProps) => {
 
       <div className="p-6 relative overflow-hidden">
         <div className="relative z-10">
-          {/* Tags and Date */}
+          {/* Category and Date */}
           <div className="flex items-center justify-between mb-4">
-            {post.tags && post.tags.length > 0 && (
+            {(post.category || (post.tags && post.tags.length > 0)) && (
               <span
                 className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#FECB0F]/10 text-[#FECB0F]"
               >
-                {post.tags[0]}
+                {normalizeCategory(post.category) || post.tags?.[0]}
               </span>
             )}
             <span className="text-gray-400 text-xs">{new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
@@ -166,7 +238,10 @@ export default function Blog() {
 
   // Filter posts based on category and search
   const filteredPosts = blogPosts.filter((post) => {
-    const matchesCategory = selectedCategory === 'All' || (post.tags && post.tags.includes(selectedCategory));
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      normalizeCategory(post.category) === selectedCategory ||
+      (post.tags && post.tags.includes(selectedCategory));
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.content.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -539,6 +614,14 @@ export default function Blog() {
             )}
           </div>
         </section>
+
+        {/* Sticky Scroll Reveal Section */}
+        <StickyScrollSection
+          eyebrow="Our Blog"
+          title="Why Read the PMG B2B Blog"
+          description="Practical insights to help you grow your pipeline, written by people who do this every day."
+          items={blogStickyContent}
+        />
       </main>
       <Footer />
     </div>

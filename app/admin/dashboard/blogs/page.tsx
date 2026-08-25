@@ -9,17 +9,25 @@ import BlogForm from "@/components/BlogForm";
 import { Trash2, Edit, Plus, LogOut, ArrowLeft } from "lucide-react";
 
 export default function BlogAdminDashboard() {
-  const { isAuthenticated, isLoading, logout } = useBlogAuth();
+  const { isAuthenticated, isLoading, logout, currentUser, hasRole } = useBlogAuth();
   const router = useRouter();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push("/blog/adminlogin");
     }
   }, [isAuthenticated, isLoading, router]);
+
+  // Only superadmin and blog-role users may access the Blogs dashboard.
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && currentUser && !hasRole("blog")) {
+      router.replace("/admin/dashboard");
+    }
+  }, [isLoading, isAuthenticated, currentUser, hasRole, router]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -28,14 +36,24 @@ export default function BlogAdminDashboard() {
   }, [isAuthenticated]);
 
   const loadBlogs = async () => {
-    const blogs = await getBlogs();
-    setBlogs(blogs);
+    try {
+      const blogs = await getBlogs();
+      setBlogs(blogs);
+    } catch (error) {
+      console.error("Failed to load blogs:", error);
+      // Don't show alert for load errors as they might be temporary
+    }
   };
 
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this blog?")) {
-      await deleteBlog(id);
-      loadBlogs();
+      try {
+        await deleteBlog(id);
+        loadBlogs();
+      } catch (error) {
+        console.error("Failed to delete blog:", error);
+        alert("Failed to delete blog. Please try again.");
+      }
     }
   };
 
@@ -50,14 +68,23 @@ export default function BlogAdminDashboard() {
   };
 
   const handleFormSubmit = async (data: Omit<Blog, "id" | "createdAt" | "updatedAt">) => {
-    if (editingBlog) {
-      await updateBlog(editingBlog.id, data);
-    } else {
-      await saveBlog(data);
+    setIsSaving(true);
+    try {
+      if (editingBlog) {
+        await updateBlog(editingBlog.id, data);
+      } else {
+        await saveBlog(data);
+      }
+      await loadBlogs();
+      setShowForm(false);
+      setEditingBlog(null);
+    } catch (error) {
+      console.error("Failed to save blog:", error);
+      alert("Failed to save blog. Please check your connection and try again.");
+      // Don't close the form on error so user can retry
+    } finally {
+      setIsSaving(false);
     }
-    await loadBlogs();
-    setShowForm(false);
-    setEditingBlog(null);
   };
 
   const handleFormCancel = () => {
@@ -74,6 +101,10 @@ export default function BlogAdminDashboard() {
   }
 
   if (!isAuthenticated) {
+    return null;
+  }
+
+  if (currentUser && !hasRole("blog")) {
     return null;
   }
 
@@ -108,6 +139,8 @@ export default function BlogAdminDashboard() {
             blog={editingBlog || undefined}
             onSubmit={handleFormSubmit}
             onCancel={handleFormCancel}
+            isSaving={isSaving}
+            showAudio={false}
           />
         ) : (
           <>
@@ -137,6 +170,9 @@ export default function BlogAdminDashboard() {
                         Author
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
+                        Category
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
                         Keywords
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-[#FECB0F] uppercase tracking-wider">
@@ -156,6 +192,15 @@ export default function BlogAdminDashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-white">{blog.author}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {blog.category ? (
+                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-[#FECB0F]/10 text-[#FECB0F] border border-[#FECB0F]/30">
+                              {blog.category}
+                            </span>
+                          ) : (
+                            <span className="text-xs text-gray-500">Uncategorized</span>
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex flex-wrap gap-1">

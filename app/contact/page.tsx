@@ -3,6 +3,58 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useState } from 'react';
+import StickyScrollSection from '@/components/StickyScrollSection';
+
+const contactStickyContent = [
+  {
+    title: 'Talk to a Real Strategist',
+    description:
+      "No chatbots, no scripts. When you reach out, you'll speak directly with a member of our team who understands B2B growth and can point you in the right direction.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1553484771-047a44eee27a?auto=format&fit=crop&w=800&q=80"
+        alt="Customer support conversation"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Offices in Mumbai & Pune',
+    description:
+      "With teams based in Navi Mumbai and Pune, we're well positioned to support clients across India and beyond with responsive, local expertise.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
+        alt="Modern office space"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'A Response You Can Count On',
+    description:
+      "Every inquiry is reviewed promptly by our team so you're never left waiting. Reach out today and let's start building your pipeline together.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=800&q=80"
+        alt="Quick and reliable response"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Tell Us About Your Goals',
+    description:
+      "Whether you're exploring lead generation, ABM, or data solutions, share your goals with us and we'll tailor a plan built around your business.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80"
+        alt="Discussing business goals"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+];
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -232,6 +284,14 @@ export default function Contact() {
             
           </div>
         </section>
+
+        {/* Sticky Scroll Reveal Section */}
+        <StickyScrollSection
+          eyebrow="Get In Touch"
+          title="Why Reaching Out Is Worth It"
+          description="Here's what you can expect when you contact PMG B2B."
+          items={contactStickyContent}
+        />
       </main>
       <Footer />
     </div>

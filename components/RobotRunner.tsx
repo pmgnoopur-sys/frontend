@@ -73,6 +73,7 @@ export default function RobotRunner() {
   const [isHovered, setIsHovered] = useState(false);
   const [isBackendConnected, setIsBackendConnected] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
@@ -99,11 +100,18 @@ export default function RobotRunner() {
 
   // Track viewport size so only the robot's face shows on mobile screens
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
-    setIsMobile(mq.matches);
-    const handleChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener('change', handleChange);
-    return () => mq.removeEventListener('change', handleChange);
+    const mobileMq = window.matchMedia('(max-width: 767px)');
+    const tabletMq = window.matchMedia('(min-width: 768px) and (max-width: 1023px)');
+    setIsMobile(mobileMq.matches);
+    setIsTablet(tabletMq.matches);
+    const handleMobileChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    const handleTabletChange = (e: MediaQueryListEvent) => setIsTablet(e.matches);
+    mobileMq.addEventListener('change', handleMobileChange);
+    tabletMq.addEventListener('change', handleTabletChange);
+    return () => {
+      mobileMq.removeEventListener('change', handleMobileChange);
+      tabletMq.removeEventListener('change', handleTabletChange);
+    };
   }, []);
 
   // Keep ref in sync with state
@@ -177,6 +185,12 @@ export default function RobotRunner() {
           0%   { transform: translateX(-220px); }
           100% { transform: translateX(calc(100vw - 210px)); }
         }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          @keyframes robot-run-x {
+            0%   { transform: translateX(-180px); }
+            100% { transform: translateX(calc(100vw - 170px)); }
+          }
+        }
         @media (max-width: 767px) {
           @keyframes robot-run-x {
             0%   { transform: translateX(-140px); }
@@ -245,7 +259,7 @@ export default function RobotRunner() {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="20 80 470 490"
-              width={isMobile ? '100' : '160'}
+              width={isMobile ? '100' : isTablet ? '120' : '140'}
               role="img"
               aria-label="Cute robot waving hi"
               className="robot-svg"

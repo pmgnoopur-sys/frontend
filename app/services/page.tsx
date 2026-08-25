@@ -4,7 +4,59 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BusinessProcess from '@/components/BusinessProcess';
 import Demo from '@/components/Demo';
+import StickyScrollSection from '@/components/StickyScrollSection';
+import ProfileOrbitCard from '@/components/ProfileOrbitCard';
 
+const servicesStickyContent = [
+  {
+    title: 'End-to-End Lead Generation',
+    description:
+      'From prospecting to qualification, we manage the entire lead generation pipeline so your sales team can focus on closing deals instead of chasing cold contacts.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80"
+        alt="End-to-end lead generation"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Account-Based Marketing',
+    description:
+      'We help you focus resources on your highest-value accounts with personalized, coordinated campaigns that engage every stakeholder in the buying committee.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80"
+        alt="Account-based marketing strategy"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Data & Analytics',
+    description:
+      'Every decision is backed by data. Our reporting dashboards give you full visibility into campaign performance, pipeline health, and ROI in real time.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
+        alt="Data and analytics dashboard"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Digital Marketing',
+    description:
+      'From SEO to paid campaigns, we amplify your brand presence across every channel your prospects use, driving consistent, compounding growth.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+        alt="Digital marketing strategy"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+];
 
 export default function Services() {
   return (
@@ -125,8 +177,43 @@ export default function Services() {
           </div>
         </section>
 
+        {/* Integrations / Tools Orbit Section */}
+        <section className="py-20 bg-black">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+              <div className="flex-1 text-center lg:text-left">
+                <span className="inline-block text-[#FECB0F] text-xs font-semibold tracking-widest uppercase mb-3">
+                  Integrations
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                  Works With the Tools You Already Use
+                </h2>
+                <p className="text-gray-300 text-base md:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
+                  Our services fit seamlessly into your existing workflow and tech stack, so your team never has to
+                  start from scratch. Whether you rely on design tools, browsers, cloud infrastructure, or
+                  communication platforms, our campaigns and data plug directly into the systems you already trust,
+                  making adoption fast and disruption-free.
+                </p>
+              </div>
+              <div className="flex-1 flex justify-center lg:justify-end w-full">
+                <div className="h-[420px] md:h-[480px] w-full max-w-[480px]">
+                  <ProfileOrbitCard />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Business Process Section */}
         <BusinessProcess />
+
+        {/* Sticky Scroll Reveal Section */}
+        <StickyScrollSection
+          eyebrow="Why Choose Us"
+          title="Solutions Built Around Your Growth Goals"
+          description="A closer look at how our core service pillars work together to fill your pipeline."
+          items={servicesStickyContent}
+        />
 
         {/* Demo Section */}
         <section className="py-20 bg-white">

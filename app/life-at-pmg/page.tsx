@@ -3,6 +3,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OctagonVideoCollage from '@/components/CircleVideoCollage';
+import StickyScrollSection from '@/components/StickyScrollSection';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faRocket,
@@ -18,6 +19,57 @@ import {
   faBaby,
   faTrophy
 } from '@fortawesome/free-solid-svg-icons';
+
+const lifeAtPmgStickyContent = [
+  {
+    title: 'Celebrating Together',
+    description:
+      'From festival celebrations to milestone parties, we make time to celebrate as a team. These moments build the bonds that make PMG B2B feel like a second home.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80"
+        alt="Team celebration"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Fun Fridays & Team Bonding',
+    description:
+      'Games, activities, and casual conversations help our team unwind and connect outside of daily work, strengthening friendships across every department.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80"
+        alt="Fun Friday team activity"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'A Workplace That Supports You',
+    description:
+      'Flexible time off, an open-door policy, and a genuine focus on wellbeing mean you can bring your best self to work every day.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
+        alt="Supportive workplace culture"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Celebrating Every Milestone',
+    description:
+      'From annual awards to team outings, we make sure every achievement, big or small, gets the recognition it deserves.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80"
+        alt="Team milestone celebration"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+];
 
 export default function LifeAtPMG() {
   const sections = [
@@ -90,7 +142,7 @@ export default function LifeAtPMG() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[
                 { title: 'Internal Growth Opportunities', icon: faRocket },
-                { title: 'Monthly R&R', icon: faCalendarCheck },
+                { title: 'Annual R&R', icon: faCalendarCheck },
                 { title: 'Fun Friday', icon: faGamepad },
                 { title: 'Yearly Parties', icon: faChampagneGlasses },
                 { title: 'Uncapped Incentives', icon: faSackDollar },
@@ -169,6 +221,14 @@ export default function LifeAtPMG() {
             ))}
           </div>
         </section>
+
+        {/* Sticky Scroll Reveal Section */}
+        <StickyScrollSection
+          eyebrow="Culture"
+          title="Moments That Define Life at PMG B2B"
+          description="A closer look at what makes our team culture special."
+          items={lifeAtPmgStickyContent}
+        />
 
         {/* Call to Action */}
         <section className="py-20 bg-gray-50">

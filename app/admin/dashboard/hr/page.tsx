@@ -26,7 +26,7 @@ interface Contact {
 }
 
 export default function HRDashboard() {
-  const { isAuthenticated, isLoading, logout } = useBlogAuth();
+  const { isAuthenticated, isLoading, logout, currentUser, hasRole } = useBlogAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"contact" | "career">("contact");
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -39,6 +39,13 @@ export default function HRDashboard() {
       router.push("/blog/adminlogin");
     }
   }, [isAuthenticated, isLoading, router]);
+
+  // Only superadmin and hr-role users may access the HR dashboard.
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && currentUser && !hasRole("hr")) {
+      router.replace("/admin/dashboard");
+    }
+  }, [isLoading, isAuthenticated, currentUser, hasRole, router]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -126,6 +133,10 @@ export default function HRDashboard() {
   }
 
   if (!isAuthenticated) {
+    return null;
+  }
+
+  if (currentUser && !hasRole("hr")) {
     return null;
   }
 
@@ -298,10 +309,6 @@ export default function HRDashboard() {
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold text-white">Career & Job Applications</h2>
-                <button className="flex items-center gap-2 bg-[#FECB0F] text-black px-4 py-2 rounded-md hover:bg-[#FFD54F] transition-all duration-300 transform hover:scale-105 shadow-lg">
-                  <Plus className="w-4 h-4" />
-                  Post Job
-                </button>
               </div>
 
               {/* Career Summary Cards */}

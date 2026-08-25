@@ -17,7 +17,7 @@ import {
 import { LogOut, ArrowLeft, Plus, Edit, Trash2, Search, Shield, Clock, FileText, RefreshCw } from "lucide-react";
 
 export default function UserManagement() {
-  const { isAuthenticated, isLoading, logout } = useBlogAuth();
+  const { isAuthenticated, isLoading, logout, currentUser, hasRole } = useBlogAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"users" | "audit">("users");
   const [users, setUsers] = useState<User[]>([]);
@@ -38,6 +38,13 @@ export default function UserManagement() {
       router.push("/blog/adminlogin");
     }
   }, [isAuthenticated, isLoading, router]);
+
+  // Only superadmin may access User Management.
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && currentUser && currentUser.role !== "superadmin") {
+      router.replace("/admin/dashboard");
+    }
+  }, [isLoading, isAuthenticated, currentUser, router]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -129,6 +136,10 @@ export default function UserManagement() {
   }
 
   if (!isAuthenticated) {
+    return null;
+  }
+
+  if (currentUser && currentUser.role !== "superadmin") {
     return null;
   }
 

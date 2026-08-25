@@ -184,6 +184,16 @@ html {
   }
 }
 
+/* Orbit moving light */
+@keyframes orbit-light {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);

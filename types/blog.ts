@@ -23,4 +23,8 @@ export interface Blog {
   readingTime?: number;
   scheduledDate?: string;
   status?: 'draft' | 'published' | 'scheduled';
+  // Note: audioUrl and speakerName are frontend-only features
+  // They are stored in localStorage, not in the backend database
+  audioUrl?: string;
+  speakerName?: string;
 }

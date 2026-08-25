@@ -4,6 +4,58 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { Award, Target, Users, TrendingUp, Lightbulb, Heart } from "lucide-react";
+import StickyScrollSection from "@/components/StickyScrollSection";
+
+const foundersWordStickyContent = [
+  {
+    title: 'Leading From Experience',
+    description:
+      "Every strategy at PMG B2B is shaped by years spent in the trenches of cold calls, targets, and rejections. That grind built a leadership style rooted in empathy and results.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80"
+        alt="Leadership experience"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Building a People-First Company',
+    description:
+      "Leading a team of more than 120 people, Shrish continues to prioritize mentorship and growth, ensuring every team member has the support to succeed.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80"
+        alt="People-first leadership"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'A Vision for the Future',
+    description:
+      "Combining AI-driven innovation with people-first leadership, the vision for PMG B2B is to set new standards in B2B demand generation for years to come.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+        alt="Vision for the future"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Recognized Leadership',
+    description:
+      "Named Most Influential CEO for AI-driven B2B Innovation & Global Growth at the ETNow Business Conclave & Awards 2026, a recognition shared with the entire PMG B2B team.",
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80"
+        alt="Recognized industry leadership"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+];
 
 export default function FoundersWord() {
   return (
@@ -19,7 +71,7 @@ export default function FoundersWord() {
               <div className="relative flex justify-center lg:justify-end">
                 <div className="relative w-full max-w-sm lg:max-w-md">
                   <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784806502/1000938160-removebg-preview_ladj4x.png"
+                    src="https://res.cloudinary.com/vobojthd/image/upload/v1787656249/FMW07242_BW_1_toqctn.jpg"
                     alt="Shrish Chandra Mishra - Founder & CEO"
                     className="w-full h-[420px] md:h-[480px] object-cover"
                   />
@@ -438,6 +490,14 @@ export default function FoundersWord() {
             </div>
           </div>
         </section>
+
+        {/* Sticky Scroll Reveal Section */}
+        <StickyScrollSection
+          eyebrow="Leadership"
+          title="The Philosophy Behind the Leadership"
+          description="A closer look at the principles guiding PMG B2B's growth."
+          items={foundersWordStickyContent}
+        />
 
         {/* Glowing Grid Section */}
         <section id="values" className="py-20 bg-black">

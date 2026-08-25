@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -54,11 +54,75 @@ export default function Home() {
 
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
+  const [circlesVisible, setCirclesVisible] = useState(false);
+  const orbitSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const target = orbitSectionRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setCirclesVisible(true);
+          observer.unobserve(target);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  const orbitLogos = [
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784890111/kisspng-microsoft-office-365-business-company-computer-sof-microsoft-5ab6ffad7ea365.7460510615219424455187-removebg-preview_1_tnxzfn.png",
+      alt: "Microsoft",
+      style: { top: '2%', left: '8%' },
+    },
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784890244/IBM_logo_in-removebg-preview_flydwu.png",
+      alt: "IBM",
+      style: { top: '10%', left: '85%' },
+    },
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784891168/images-removebg-preview_xdoyyv.png",
+      alt: "Zendesk",
+      style: { top: '50%', left: '2%' },
+    },
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784891257/images-removebg-preview_1_h8jxze.png",
+      alt: "HP",
+      style: { top: '48%', left: '92%' },
+    },
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784904422/zscaler-logo-24_i2f7pu.jpg",
+      alt: "Zscaler",
+      style: { top: '90%', left: '10%' },
+    },
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784889908/redhat-logo-png_seeklogo-300344_elfch5.png",
+      alt: "Redhat",
+      style: { top: '92%', left: '85%' },
+    },
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784904516/LogoLockup-RGB-PurpleBlack_kunr2l.png",
+      alt: "Lenovo",
+      style: { top: '-4%', left: '48%' },
+    },
+    {
+      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784905234/images_lsbbrd.png",
+      alt: "Intel",
+      style: { top: '98%', left: '48%' },
+    },
+  ];
+
   const teamMembers: TeamMember[] = [
     {
       name: "Shrish C Mishra",
       role: "CEO & Founder",
-      imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1786092004/1000938175_t1uvj1.jpg",
+      imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1787653060/FMW07278_BW_snlvvd.jpg",
       description: "Visionary leader with 15+ years in B2B lead generation. Passionate about helping businesses scale through data-driven strategies.",
     },
     {
@@ -296,22 +360,24 @@ export default function Home() {
           />
         </section>
 
+
+
         {/* Contact Form Section */}
-        <section className="py-20 bg-gray-50">
+        <section className="py-20 bg-black">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4 text-gray-900">Send Us a Message</h2>
-                <p className="text-gray-600 max-w-2xl mx-auto">
+                <h2 className="text-4xl font-bold mb-4 text-white">Send Us a Message</h2>
+                <p className="text-gray-300 max-w-2xl mx-auto">
                   Have questions about our B2B lead generation services? We'd love to hear from you. Fill out the form below and we'll get back to you shortly.
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg">
+              <div className="bg-black rounded-2xl p-8 md:p-12 shadow-lg">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name */}
                   <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="name" className="block text-sm font-semibold text-gray-200 mb-2">
                       Name *
                     </label>
                     <input
@@ -321,14 +387,14 @@ export default function Home() {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
+                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
                       placeholder="Enter your name"
                     />
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-200 mb-2">
                       Email *
                     </label>
                     <input
@@ -338,14 +404,14 @@ export default function Home() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
+                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
                       placeholder="Enter your email"
                     />
                   </div>
 
                   {/* Phone Number */}
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-200 mb-2">
                       Phone Number *
                     </label>
                     <input
@@ -355,14 +421,14 @@ export default function Home() {
                       required
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
+                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
                       placeholder="Enter your phone number"
                     />
                   </div>
 
                   {/* Message */}
                   <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="message" className="block text-sm font-semibold text-gray-200 mb-2">
                       Your Message *
                     </label>
                     <textarea
@@ -372,7 +438,7 @@ export default function Home() {
                       value={formData.message}
                       onChange={handleChange}
                       rows={5}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors resize-none"
+                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors resize-none"
                       placeholder="Tell us about your requirements..."
                     />
                   </div>

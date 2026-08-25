@@ -3,6 +3,58 @@
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import StickyScrollSection from '@/components/StickyScrollSection';
+
+const careerStickyContent = [
+  {
+    title: 'Grow Beyond Your Role',
+    description:
+      'We invest in internal mobility and mentorship, giving every team member a clear path to grow their skills and take on bigger responsibilities.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=800&q=80"
+        alt="Career growth mentorship"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Work That Rewards Ambition',
+    description:
+      'Uncapped incentives, performance recognition, and a culture that celebrates wins mean your effort is always reflected in your career and paycheck.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80"
+        alt="Team celebrating success"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'A Team That Has Your Back',
+    description:
+      'From flexible time-off to an open-door policy, we build a workplace where people feel supported, heard, and set up to do their best work.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80"
+        alt="Supportive team culture"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+  {
+    title: 'Diverse Career Paths',
+    description:
+      'From sales development to data analysis and content strategy, we offer a range of roles so you can find the path that best matches your strengths.',
+    content: (
+      <img
+        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+        alt="Diverse career paths at PMG B2B"
+        className="h-full w-full object-cover"
+      />
+    ),
+  },
+];
 
 export default function Career() {
   const [formData, setFormData] = useState({
@@ -119,7 +171,7 @@ export default function Career() {
             <div className="max-w-4xl mx-auto">
               <div className="bg-gray-50 rounded-2xl p-8 md:p-12 shadow-lg">
                 <h2 className="text-3xl font-bold mb-8 text-gray-900">Apply for a Position</h2>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name */}
                   <div>
@@ -375,6 +427,14 @@ export default function Career() {
             </p>
           </div>
         </section>
+
+        {/* Sticky Scroll Reveal Section */}
+        <StickyScrollSection
+          eyebrow="Why PMG B2B"
+          title="A Career That Grows With You"
+          description="Here's what makes working at PMG B2B different."
+          items={careerStickyContent}
+        />
       </main>
       <Footer />
     </div>

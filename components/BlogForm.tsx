@@ -20,11 +20,59 @@ interface BlogFormProps {
   blog?: Blog;
   onSubmit: (data: Omit<Blog, "id" | "createdAt" | "updatedAt">) => void;
   onCancel: () => void;
+  isSaving?: boolean;
+  showAudio?: boolean;
 }
+
+// Keywords used to detect the most relevant category from a blog's title.
+// Listed roughly in priority order for tie-breaking (earlier category wins ties).
+const CATEGORY_KEYWORDS: { category: string; keywords: string[] }[] = [
+  {
+    category: "Email Marketing",
+    keywords: ["email", "emails", "newsletter", "inbox", "drip campaign", "cold email"],
+  },
+  {
+    category: "Lead Generation",
+    keywords: ["lead", "leads", "prospecting", "prospect", "funnel", "conversion", "outreach"],
+  },
+  {
+    category: "Data Solutions",
+    keywords: ["data", "database", "analytics", "big data", "insight", "insights", "dashboard"],
+  },
+  {
+    category: "Sales & Marketing",
+    keywords: ["sales", "marketing", "brand", "branding", "advertising", "campaign", "growth", "customer"],
+  },
+  {
+    category: "AI & Technology",
+    keywords: ["ai", "artificial intelligence", "technology", "tech", "software", "automation", "machine learning", "chatbot", "algorithm", "digital"],
+  },
+];
+
+// Scans the title for category keywords and returns the best-matching category,
+// or null if no keywords match.
+const detectCategoryFromTitle = (title: string): string | null => {
+  const lowerTitle = ` ${title.toLowerCase()} `;
+  let bestMatch: { category: string; score: number } | null = null;
+
+  for (const { category, keywords } of CATEGORY_KEYWORDS) {
+    const score = keywords.reduce((count, keyword) => {
+      // Word-boundary-ish match so "ai" doesn't match inside "email" etc.
+      const pattern = new RegExp(`\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
+      return pattern.test(lowerTitle) ? count + 1 : count;
+    }, 0);
+
+    if (score > 0 && (!bestMatch || score > bestMatch.score)) {
+      bestMatch = { category, score };
+    }
+  }
+
+  return bestMatch?.category ?? null;
+};
 
 type TabType = "content" | "seo" | "preview";
 
-export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps) {
+export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false, showAudio = true }: BlogFormProps) {
   // Main content fields
   const [title, setTitle] = useState(blog?.title || "");
   const [content, setContent] = useState(blog?.content || "");
@@ -40,10 +88,20 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
   const [canonicalUrl, setCanonicalUrl] = useState(blog?.canonicalUrl || "");
 
   // New content options
-  const [category, setCategory] = useState(blog?.category || "general");
+  const [category, setCategory] = useState(blog?.category || "AI & Technology");
+  // Tracks whether the user has manually picked a category, so auto-detection
+  // from the title doesn't override an intentional choice.
+  const [categoryManuallySet, setCategoryManuallySet] = useState(!!blog?.category);
   const [excerpt, setExcerpt] = useState(blog?.excerpt || "");
   const [readingTime, setReadingTime] = useState(blog?.readingTime || 0);
-  const [scheduledDate, setScheduledDate] = useState(blog?.scheduledDate || "");
+  const [scheduledDate, setScheduledDate] = useState(() => {
+    if (blog?.scheduledDate) {
+      // Convert Date object to string format for datetime-local input
+      const date = new Date(blog.scheduledDate);
+      return date.toISOString().slice(0, 16);
+    }
+    return "";
+  });
   const [status, setStatus] = useState(blog?.status || "draft");
 
   // Images state
@@ -52,6 +110,13 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
   const [newImageAlt, setNewImageAlt] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [imageInputMode, setImageInputMode] = useState<'url' | 'upload'>('url');
+
+  // Audio state
+  const [speakerName, setSpeakerName] = useState(blog?.speakerName || "");
+  const [audioUrl, setAudioUrl] = useState(blog?.audioUrl || "");
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [isUploadingAudio, setIsUploadingAudio] = useState(false);
 
   const [activeTab, setActiveTab] = useState<TabType>("content");
   const [shareLink, setShareLink] = useState("");
@@ -69,6 +134,16 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
     }
   }, [title, blog, slug]);
 
+  // Auto-detect category from the title's keywords
+  useEffect(() => {
+    if (categoryManuallySet || !title) return;
+
+    const detected = detectCategoryFromTitle(title);
+    if (detected) {
+      setCategory(detected);
+    }
+  }, [title, categoryManuallySet]);
+
   // Auto-calculate reading time (average 200 words per minute)
   useEffect(() => {
     const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
@@ -82,6 +157,44 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
       setShareLink(`${window.location.origin}/blog/${slug}`);
     }
   }, [slug]);
+
+  // Load audio data from localStorage for frontend-only audio feature
+  useEffect(() => {
+    if (slug) {
+      try {
+        const savedAudioData = localStorage.getItem(`blog_audio_${slug}`);
+        if (savedAudioData) {
+          const audioData = JSON.parse(savedAudioData);
+          setSpeakerName(audioData.speakerName || "");
+          setAudioUrl(audioData.audioUrl || "");
+        }
+      } catch (error) {
+        console.error('Error loading audio data from localStorage:', error);
+      }
+    }
+  }, [slug]);
+
+  // Save audio data to localStorage
+  useEffect(() => {
+    if (slug && (audioUrl || speakerName)) {
+      try {
+        const audioData = { speakerName, audioUrl };
+        localStorage.setItem(`blog_audio_${slug}`, JSON.stringify(audioData));
+      } catch (error) {
+        console.error('Error saving audio data to localStorage:', error);
+      }
+    }
+  }, [slug, speakerName, audioUrl]);
+
+  // Cleanup audio data when component unmounts if it was a new blog
+  useEffect(() => {
+    return () => {
+      // Only cleanup if this was a new blog (no existing blog prop)
+      if (!blog && slug && !audioUrl && !speakerName) {
+        localStorage.removeItem(`blog_audio_${slug}`);
+      }
+    };
+  }, [blog, slug, audioUrl, speakerName]);
 
   // SEO Validation
   const getSEOScore = () => {
@@ -120,28 +233,68 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
   };
 
   const handleAddImage = () => {
-    if (newImageUrl && newImageAlt) {
-      setImages([...images, { url: newImageUrl, altText: newImageAlt }]);
-      setNewImageUrl("");
-      setNewImageAlt("");
+    if (!newImageUrl || newImageUrl.trim() === "") {
+      alert('Please provide an image URL or upload an image first');
+      return;
     }
+    if (!newImageAlt || newImageAlt.trim() === "") {
+      alert('Please provide alt text for the image');
+      return;
+    }
+    
+    // Validate image URL if it's not base64
+    if (!newImageUrl.startsWith('data:')) {
+      try {
+        new URL(newImageUrl);
+      } catch (error) {
+        alert('Please provide a valid image URL');
+        return;
+      }
+    }
+    
+    setImages([...images, { url: newImageUrl, altText: newImageAlt }]);
+    setNewImageUrl("");
+    setNewImageAlt("");
+    setUploadedFile(null);
+    
+    // Show success feedback
+    alert('Image added successfully!');
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+      
+      // Validate file size (max 2MB for better performance)
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image size must be less than 2MB for optimal performance');
+        return;
+      }
+
       setUploadedFile(file);
       setIsUploading(true);
 
       // Convert file to base64
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result as string;
-        setNewImageUrl(base64String);
-        setIsUploading(false);
+        try {
+          const base64String = reader.result as string;
+          setNewImageUrl(base64String);
+          setIsUploading(false);
+        } catch (error) {
+          console.error('Error processing image:', error);
+          alert('Failed to process the image file');
+          setIsUploading(false);
+        }
       };
       reader.onerror = () => {
         console.error('Error reading file');
+        alert('Failed to read the image file');
         setIsUploading(false);
       };
       reader.readAsDataURL(file);
@@ -152,8 +305,63 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
     setImages(images.filter((_, i) => i !== index));
   };
 
+  const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type (audio files)
+      if (!file.type.startsWith('audio/')) {
+        alert('Please select an audio file');
+        return;
+      }
+      
+      // Validate file size (max 20MB for audio)
+      if (file.size > 20 * 1024 * 1024) {
+        alert('Audio size must be less than 20MB');
+        return;
+      }
+
+      setAudioFile(file);
+      setIsUploadingAudio(true);
+
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setAudioUrl(base64String);
+        setIsUploadingAudio(false);
+      };
+      reader.onerror = () => {
+        console.error('Error reading audio file');
+        alert('Failed to read the audio file');
+        setIsUploadingAudio(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveAudio = () => {
+    setAudioUrl("");
+    setSpeakerName("");
+    setAudioFile(null);
+    // Clean up localStorage
+    if (slug) {
+      localStorage.removeItem(`blog_audio_${slug}`);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Save audio data to localStorage before submission
+    if (slug && (audioUrl || speakerName)) {
+      try {
+        const audioData = { speakerName, audioUrl };
+        localStorage.setItem(`blog_audio_${slug}`, JSON.stringify(audioData));
+      } catch (error) {
+        console.error('Error saving audio data to localStorage:', error);
+      }
+    }
+    
     onSubmit({
       title,
       content,
@@ -171,6 +379,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
       readingTime,
       scheduledDate,
       status,
+      // Note: audioUrl and speakerName are frontend-only features
+      // They are not sent to the backend
     });
   };
 
@@ -219,6 +429,82 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
 
   const handleParagraph = () => {
     insertTag('<p>', '</p>');
+  };
+
+  // Helper function to apply formatting rules to a paragraph
+  const applyFormattingRules = (paragraph: string): string => {
+    let processedParagraph = paragraph.replace(/\n/g, '<br>');
+    
+    // Bold text that's in ALL CAPS (likely headings)
+    processedParagraph = processedParagraph.replace(/\b([A-Z]{2,})\b/g, '<strong>$1</strong>');
+    
+    // Bold text between asterisks (*text*)
+    processedParagraph = processedParagraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+    
+    // Bold the first sentence of each paragraph (up to first period)
+    const firstSentenceEnd = processedParagraph.indexOf('.');
+    if (firstSentenceEnd > 10 && firstSentenceEnd < 200) { // Reasonable sentence length
+      const firstSentence = processedParagraph.substring(0, firstSentenceEnd + 1);
+      const restOfParagraph = processedParagraph.substring(firstSentenceEnd + 1);
+      processedParagraph = `<strong>${firstSentence}</strong>${restOfParagraph}`;
+    }
+    
+    // Bold short emphasized phrases in quotes
+    processedParagraph = processedParagraph.replace(/"([^"]{3,30})"/g, '<strong>"$1"</strong>');
+    
+    return `<p>${processedParagraph}</p>`;
+  };
+
+  // Auto-format plain text to HTML with proper paragraphs and line breaks
+  const autoFormatContent = () => {
+    // If content already has HTML tags, don't reformat
+    if (/<[a-z][\s\S]*>/i.test(content)) {
+      alert('Content already contains HTML tags. Auto-format is skipped to preserve existing formatting.');
+      return;
+    }
+
+    // Convert plain text to HTML with proper paragraphs
+    const formatted = content
+      .split(/\n\s*\n/) // Split by double newlines to identify paragraphs
+      .map(paragraph => paragraph.trim())
+      .filter(paragraph => paragraph.length > 0)
+      .map(paragraph => applyFormattingRules(paragraph))
+      .join('\n\n');
+
+    setContent(formatted);
+  };
+
+  // Handle paste event to auto-format
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    // Get pasted content
+    const pastedText = e.clipboardData.getData('text');
+    
+    // Check if it's plain text (no HTML tags)
+    if (!/<[a-z][\s\S]*>/i.test(pastedText)) {
+      // Convert plain text to HTML using the same formatting rules
+      const formatted = pastedText
+        .split(/\n\s*\n/) // Split by double newlines to identify paragraphs
+        .map(paragraph => paragraph.trim())
+        .filter(paragraph => paragraph.length > 0)
+        .map(paragraph => applyFormattingRules(paragraph))
+        .join('\n\n');
+      
+      // Prevent default paste and insert formatted content
+      e.preventDefault();
+      const textarea = e.target as HTMLTextAreaElement;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      
+      const newContent = content.substring(0, start) + formatted + content.substring(end);
+      setContent(newContent);
+      
+      // Restore cursor position
+      setTimeout(() => {
+        textarea.focus();
+        const newCursorPos = start + formatted.length;
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+      }, 0);
+    }
   };
 
   return (
@@ -281,8 +567,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                   <input
                     type="text"
                     id="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={title || ""}
+                    onChange={(e) => setTitle(e.target.value || "")}
                     placeholder="Enter blog post title..."
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
@@ -300,8 +586,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                     <input
                       type="text"
                       id="author"
-                      value={author}
-                      onChange={(e) => setAuthor(e.target.value)}
+                      value={author || ""}
+                      onChange={(e) => setAuthor(e.target.value || "")}
                       placeholder="Your name"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
@@ -315,8 +601,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                     <input
                       type="text"
                       id="slug"
-                      value={slug}
-                      onChange={(e) => setSlug(e.target.value)}
+                      value={slug || ""}
+                      onChange={(e) => setSlug(e.target.value || "")}
                       placeholder="auto-generated-from-title"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -336,18 +622,23 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                       <select
                         id="category"
                         value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        onChange={(e) => {
+                          setCategory(e.target.value);
+                          setCategoryManuallySet(true);
+                        }}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                       >
-                        <option value="general">General</option>
-                        <option value="technology">Technology</option>
-                        <option value="business">Business</option>
-                        <option value="lifestyle">Lifestyle</option>
-                        <option value="education">Education</option>
-                        <option value="health">Health</option>
-                        <option value="entertainment">Entertainment</option>
-                        <option value="news">News</option>
+                        <option value="AI & Technology">AI & Technology</option>
+                        <option value="Lead Generation">Lead Generation</option>
+                        <option value="Sales & Marketing">Sales & Marketing</option>
+                        <option value="Data Solutions">Data Solutions</option>
+                        <option value="Email Marketing">Email Marketing</option>
                       </select>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {categoryManuallySet
+                          ? "This determines which category tab the blog appears under on the public blog page"
+                          : "Auto-detected from title — pick a category to lock it in"}
+                      </p>
                     </div>
 
                     <div>
@@ -373,8 +664,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                       <input
                         type="datetime-local"
                         id="scheduled-date"
-                        value={scheduledDate}
-                        onChange={(e) => setScheduledDate(e.target.value)}
+                        value={scheduledDate || ""}
+                        onChange={(e) => setScheduledDate(e.target.value || "")}
                         disabled={status !== 'scheduled'}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                       />
@@ -397,8 +688,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                     </label>
                     <textarea
                       id="excerpt"
-                      value={excerpt}
-                      onChange={(e) => setExcerpt(e.target.value)}
+                      value={excerpt || ""}
+                      onChange={(e) => setExcerpt(e.target.value || "")}
                       rows={3}
                       placeholder="Brief summary for blog listing pages (150-200 characters recommended)..."
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
@@ -461,14 +752,24 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                       <span className="w-4 h-4 font-bold text-gray-600">¶</span>
                       Paragraph
                     </button>
+                    <button
+                      type="button"
+                      onClick={autoFormatContent}
+                      className="px-3 py-2 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+                      title="Auto Format Content (includes paragraphs, line breaks, and smart bold formatting)"
+                    >
+                      <span className="w-4 h-4 font-bold text-blue-600">✨</span>
+                      Auto Format
+                    </button>
                   </div>
 
                   <textarea
                     id="content"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    value={content || ""}
+                    onChange={(e) => setContent(e.target.value || "")}
+                    onPaste={handlePaste}
                     rows={20}
-                    placeholder="Write your blog content here... (HTML tags supported)"
+                    placeholder="Write your blog content here... (HTML tags supported, paste text for auto-formatting)"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
                     required
                   />
@@ -491,53 +792,42 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                       <button
                         type="button"
                         onClick={() => {
+                          setImageInputMode('url');
                           setUploadedFile(null);
                           setNewImageUrl('');
+                          setNewImageAlt('');
                         }}
-                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${!uploadedFile ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${imageInputMode === 'url' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                       >
                         URL
                       </button>
                       <button
                         type="button"
                         onClick={() => {
-                          setUploadedFile({} as File);
+                          setImageInputMode('upload');
+                          setUploadedFile(null);
                           setNewImageUrl('');
+                          setNewImageAlt('');
                         }}
-                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${uploadedFile ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${imageInputMode === 'upload' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                       >
                         Upload
                       </button>
                     </div>
 
-                    {!uploadedFile ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                        <div>
-                          <label htmlFor="image-url" className="block text-sm font-medium text-gray-700 mb-1">
-                            Image URL
-                          </label>
-                          <input
-                            type="url"
-                            id="image-url"
-                            value={newImageUrl}
-                            onChange={(e) => setNewImageUrl(e.target.value)}
-                            placeholder="https://example.com/image.jpg"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="image-alt" className="block text-sm font-medium text-gray-700 mb-1">
-                            Alt Text
-                          </label>
-                          <input
-                            type="text"
-                            id="image-alt"
-                            value={newImageAlt}
-                            onChange={(e) => setNewImageAlt(e.target.value)}
-                            placeholder="Describe the image for accessibility"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                          />
-                        </div>
+                    {imageInputMode === 'url' ? (
+                      <div className="mb-3">
+                        <label htmlFor="image-url" className="block text-sm font-medium text-gray-700 mb-1">
+                          Image URL
+                        </label>
+                        <input
+                          type="url"
+                          id="image-url"
+                          value={newImageUrl || ""}
+                          onChange={(e) => setNewImageUrl(e.target.value || "")}
+                          placeholder="https://example.com/image.jpg"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        />
                       </div>
                     ) : (
                       <div className="mb-3">
@@ -554,21 +844,50 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                         {isUploading && (
                           <p className="text-xs text-blue-600 mt-1">Uploading...</p>
                         )}
-                        <div className="mt-3">
-                          <label htmlFor="image-alt-upload" className="block text-sm font-medium text-gray-700 mb-1">
-                            Alt Text
-                          </label>
-                          <input
-                            type="text"
-                            id="image-alt-upload"
-                            value={newImageAlt}
-                            onChange={(e) => setNewImageAlt(e.target.value)}
-                            placeholder="Describe the image for accessibility"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      </div>
+                    )}
+                    
+                    {/* Alt Text - shared between both modes */}
+                    <div className="mb-3">
+                      <label htmlFor="image-alt" className="block text-sm font-medium text-gray-700 mb-1">
+                        Alt Text
+                      </label>
+                      <input
+                        type="text"
+                        id="image-alt"
+                        value={newImageAlt || ""}
+                        onChange={(e) => setNewImageAlt(e.target.value || "")}
+                        placeholder="Describe the image for accessibility"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      />
+                    </div>
+                    
+                    {/* Image Preview */}
+                    {newImageUrl && (
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Image Preview
+                        </label>
+                        <div className="border border-gray-300 rounded-lg overflow-hidden">
+                          {newImageUrl.startsWith('data:') && (
+                            <div className="text-xs text-blue-600 bg-blue-50 px-2 py-1">
+                              Base64 image ({(newImageUrl.length / 1024).toFixed(1)} KB)
+                            </div>
+                          )}
+                          <img
+                            src={newImageUrl}
+                            alt="Preview"
+                            className="w-full h-48 object-cover"
+                            onError={(e) => {
+                              console.error('Image preview failed to load');
+                              e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23e5e7eb' width='400' height='200'/%3E%3Ctext fill='%236b7280' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EInvalid Image URL%3C/text%3E%3C/svg%3E";
+                            }}
+                            onLoad={() => console.log('Image preview loaded successfully')}
                           />
                         </div>
                       </div>
                     )}
+                    
                     <button
                       type="button"
                       onClick={handleAddImage}
@@ -591,13 +910,22 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                               alt={image.altText}
                               className="w-full h-full object-cover"
                               onError={(e) => {
+                                console.error(`Failed to load image at index ${index}`);
                                 e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23e5e7eb' width='80' height='80'/%3E%3Ctext fill='%236b7280' font-size='12' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E";
                               }}
+                              onLoad={() => console.log(`Image at index ${index} loaded successfully`)}
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">{image.url}</p>
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {image.url.startsWith('data:') ? 'Base64 Image' : image.url}
+                            </p>
                             <p className="text-xs text-gray-500 mt-1">Alt: {image.altText}</p>
+                            {image.url.startsWith('data:') && (
+                              <p className="text-xs text-blue-600 mt-1">
+                                {(image.url.length / 1024).toFixed(1)} KB
+                              </p>
+                            )}
                           </div>
                           <button
                             type="button"
@@ -611,6 +939,71 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                     </div>
                   )}
                 </div>
+
+                {/* Audio Section */}
+                {showAudio && (
+                  <div className="border-t pt-6">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <span className="text-lg">🎙️</span>
+                      Audio Version
+                      <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Frontend Only</span>
+                    </h3>
+                    <p className="text-xs text-gray-500 mb-4">Audio files are stored locally in your browser and not sent to the server.</p>
+
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="mb-4">
+                      <label htmlFor="speaker-name" className="block text-sm font-medium text-gray-700 mb-1">
+                        Speaker Name
+                      </label>
+                      <input
+                        type="text"
+                        id="speaker-name"
+                        value={speakerName}
+                        onChange={(e) => setSpeakerName(e.target.value)}
+                        placeholder="Name of the speaker/narrator"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="audio-upload" className="block text-sm font-medium text-gray-700 mb-1">
+                        Upload Audio File
+                      </label>
+                      <input
+                        type="file"
+                        id="audio-upload"
+                        accept="audio/*"
+                        onChange={handleAudioUpload}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      />
+                      {isUploadingAudio && (
+                        <p className="text-xs text-blue-600 mt-1">Uploading audio...</p>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1">Supported formats: MP3, WAV, M4A (Max 20MB)</p>
+                    </div>
+
+                    {/* Audio Preview */}
+                    {audioUrl && (
+                      <div className="mt-4 p-3 bg-white border border-gray-200 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-sm font-medium text-gray-700">Audio Preview</p>
+                          <button
+                            type="button"
+                            onClick={handleRemoveAudio}
+                            className="text-red-600 hover:text-red-800 text-sm font-medium"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <audio controls className="w-full">
+                          <source src={audioUrl} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                )}
               </div>
             )}
 
@@ -656,8 +1049,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                   </label>
                   <textarea
                     id="meta-description"
-                    value={metaDescription}
-                    onChange={(e) => setMetaDescription(e.target.value)}
+                    value={metaDescription || ""}
+                    onChange={(e) => setMetaDescription(e.target.value || "")}
                     rows={3}
                     placeholder="Write a compelling description that will appear in search results (120-160 characters)..."
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -688,8 +1081,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                   <input
                     type="text"
                     id="focus-keyword"
-                    value={focusKeyword}
-                    onChange={(e) => setFocusKeyword(e.target.value)}
+                    value={focusKeyword || ""}
+                    onChange={(e) => setFocusKeyword(e.target.value || "")}
                     placeholder="e.g., web development tips"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
@@ -707,8 +1100,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                     <input
                       type="text"
                       id="tags"
-                      value={tags}
-                      onChange={(e) => setTags(e.target.value)}
+                      value={tags || ""}
+                      onChange={(e) => setTags(e.target.value || "")}
                       placeholder="e.g., web, development, tutorial"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -722,8 +1115,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                     <input
                       type="text"
                       id="keywords"
-                      value={keywords}
-                      onChange={(e) => setKeywords(e.target.value)}
+                      value={keywords || ""}
+                      onChange={(e) => setKeywords(e.target.value || "")}
                       placeholder="e.g., technology, ai, web development"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -743,8 +1136,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                       <input
                         type="url"
                         id="og-image"
-                        value={ogImage}
-                        onChange={(e) => setOgImage(e.target.value)}
+                        value={ogImage || ""}
+                        onChange={(e) => setOgImage(e.target.value || "")}
                         placeholder="https://example.com/image.jpg"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
@@ -760,8 +1153,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
                       <input
                         type="url"
                         id="canonical-url"
-                        value={canonicalUrl}
-                        onChange={(e) => setCanonicalUrl(e.target.value)}
+                        value={canonicalUrl || ""}
+                        onChange={(e) => setCanonicalUrl(e.target.value || "")}
                         placeholder="https://example.com/original-post"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
@@ -884,10 +1277,20 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel }: BlogFormProps)
             <div className="flex gap-3 mt-8 pt-6 border-t">
               <button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all font-semibold flex items-center justify-center gap-2"
+                disabled={isSaving}
+                className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <CheckCircle className="w-5 h-5" />
-                {blog ? "Update Blog Post" : "Publish Blog Post"}
+                {isSaving ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    {blog ? "Updating..." : "Publishing..."}
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    {blog ? "Update Blog Post" : "Publish Blog Post"}
+                  </>
+                )}
               </button>
               <button
                 type="button"
