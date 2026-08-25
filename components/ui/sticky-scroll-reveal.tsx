@@ -52,7 +52,6 @@ const supportingCopy: Record<string, string> = {
   'Leading From Experience': 'Leadership is shaped by firsthand experience in sales and delivery, which keeps decisions practical, grounded, and focused on results.',
   'Building a People-First Company': 'Growth is designed to happen through mentorship, accountability, and a culture that helps people succeed together.',
   'A Vision for the Future': 'The company vision combines AI-driven innovation with a long-term commitment to scalable, people-centered growth.',
-  'Recognized Leadership': 'Recognition at the industry level reinforces a leadership style built on persistence, clarity, and measurable outcomes.',
 
   'Talk to a Real Strategist': 'Every inquiry is handled by a team member who understands B2B growth, so your first conversation is already moving toward a useful solution.',
   'Offices in Mumbai & Pune': 'With teams in both cities, support is grounded in local presence, faster coordination, and direct access to the right people.',
