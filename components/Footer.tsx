@@ -56,6 +56,10 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4" style={{color: '#FECB0F'}}>Contact Us</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
+                <strong>Headquarters:</strong><br />
+                Boston, Massachusetts
+              </li>
+              <li>
                 <strong>Mumbai:</strong><br />
                 Block A, Millennium Business Park,<br />
                 TTC Industrial Area Sector 3 Mahape,<br />

@@ -166,6 +166,7 @@ export default function CCPA() {
             </p>
             <div className="mb-4">
               <p className="mb-2"><strong>Phone:</strong> +91 7972722487</p>
+              <p className="mb-2"><strong>Headquarters:</strong> Boston, Massachusetts</p>
               <p className="mb-2"><strong>Address:</strong> City Vista, Kharadi, Pune</p>
               <p className="mb-2"><strong>Website:</strong> https://pmg-b2b.com/</p>
               <p className="mb-2"><strong>Email:</strong> info@pmg-b2b.com</p>

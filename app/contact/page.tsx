@@ -254,7 +254,7 @@ export default function Contact() {
             </div>
 
             {/* Contact Information */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-8">
               <div className="bg-gray-50 rounded-lg p-6">
                 <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Call us</h3>
                 <p className="text-gray-700 text-lg">+91 7972722487</p>
@@ -263,6 +263,13 @@ export default function Contact() {
               <div className="bg-gray-50 rounded-lg p-6">
                 <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Email US</h3>
                 <p className="text-gray-700 text-lg">info@pmg-b2b.com</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4" style={{color: '#FECB0F'}}>Headquarters</h3>
+                <p className="text-gray-700">
+                  Boston, Massachusetts
+                </p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-6">

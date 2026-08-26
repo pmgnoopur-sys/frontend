@@ -508,35 +508,35 @@ export default function FoundersWord() {
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
               <GridItem
                 area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
-                icon={<Award className="h-4 w-4 text-black dark:text-neutral-400" />}
+                icon={<Award className="h-4 w-4 text-[#FECB0F]" />}
                 title="Excellence in Service"
                 description="Delivering exceptional B2B lead generation services that drive real results for our clients."
               />
 
               <GridItem
                 area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
-                icon={<Target className="h-4 w-4 text-black dark:text-neutral-400" />}
+                icon={<Target className="h-4 w-4 text-[#FECB0F]" />}
                 title="Data-Driven Approach"
                 description="Using advanced analytics and insights to create targeted campaigns that convert."
               />
 
               <GridItem
                 area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
-                icon={<Users className="h-4 w-4 text-black dark:text-neutral-400" />}
+                icon={<Users className="h-4 w-4 text-[#FECB0F]" />}
                 title="Team Collaboration"
                 description="Building a culture of teamwork and mutual growth across our 120+ member team."
               />
 
               <GridItem
                 area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
-                icon={<TrendingUp className="h-4 w-4 text-black dark:text-neutral-400" />}
+                icon={<TrendingUp className="h-4 w-4 text-[#FECB0F]" />}
                 title="Continuous Growth"
                 description="Always pushing boundaries and innovating to stay ahead in the B2B marketing landscape."
               />
 
               <GridItem
                 area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
-                icon={<Lightbulb className="h-4 w-4 text-black dark:text-neutral-400" />}
+                icon={<Lightbulb className="h-4 w-4 text-[#FECB0F]" />}
                 title="Innovation First"
                 description="Embracing new technologies and creative solutions to solve complex business challenges."
               />
