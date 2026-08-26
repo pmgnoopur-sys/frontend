@@ -78,7 +78,6 @@ export default function Footer() {
         <div className="border-t mt-8 pt-8 text-center text-gray-400" style={{borderTopColor: '#FECB0F'}}>
           <div className="flex flex-wrap justify-center gap-4 mb-4">
             <Link href="/privacy" className="hover:text-[#FECB0F] transition">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#FECB0F] transition">Terms of Service</Link>
             <Link href="/ccpa" className="hover:text-[#FECB0F] transition">CCPA</Link>
           </div>
           <p>&copy; {new Date().getFullYear()} PMG B2B. All rights reserved.</p>

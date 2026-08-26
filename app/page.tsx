@@ -146,7 +146,7 @@ export default function Home() {
 
     {
       name: "Subodh kadam",
-      role: "Quality Manager",
+      role: " Sr. Quality Manager",
       imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/c_fill,w_400,h_500,g_face,q_auto/v1786098493/file_000000003ae481fb88d5948a94273607_firlm1.png",
       description: "Quality manager ensuring high standards across all deliverables. Implements quality control processes to maintain excellence in client services.",
     },
@@ -158,7 +158,7 @@ export default function Home() {
     },
     {
       name: "Amol Bade",
-      role: "IT TEAM HEAD",
+      role: "IT Manager",
       imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1786090999/1785421776242_t1jn4m.png",
       description: "IT Team Head leading technology initiatives and infrastructure development. Ensures robust technical solutions and system reliability for PMG B2B's operations.",
     },

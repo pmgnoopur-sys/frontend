@@ -238,7 +238,7 @@ export default function Privacy() {
 
             <h2 className="text-2xl font-bold mt-8 mb-4">California Consumer Privacy Act (CCPA) Compliance</h2>
             <p className="mb-4">
-              Personal information does not include:
+              Personal information does not include
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li>Publicly available information from government records</li>
@@ -253,11 +253,11 @@ export default function Privacy() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Sources of Personal Information</h3>
             <p className="mb-4">
-              PMG B2B obtains the categories of information listed above from the following categories of sources:
+              PMG B2B obtains the categories of information listed above from the following categories of sources
             </p>
             <ul className="list-disc pl-6 mb-4">
-              <li><strong>Directly:</strong> for example, when you send us an email via the email addresses listed on our website.</li>
-              <li><strong>Indirectly:</strong> for example, by observing your actions on our Website; by placing online identifiers as defined below.</li>
+              <li>Directly: for example, when you send us an email via the email addresses listed on our website.</li>
+              <li>Indirectly: for example, by observing your actions on our Website; by placing online identifiers as defined below.</li>
             </ul>
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Purposes for Using Personal Information</h3>
@@ -343,7 +343,7 @@ export default function Privacy() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Exercising Access, Data Portability, and Deletion Rights</h3>
             <p className="mb-4">
-              To exercise the access, data portability, and deletion rights described above, please submit a verifiable consumer request to us by either:
+              To exercise the access, data portability, and deletion rights described above, please submit a verifiable consumer request to us by either
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li>Calling us at 408-763-5612</li>
@@ -352,7 +352,7 @@ export default function Privacy() {
               Only you, or someone legally authorized to act on your behalf, may make a verifiable consumer request related to your personal information. You may also make a verifiable consumer request on behalf of your minor child.
             </p>
             <p className="mb-4">
-              You may only make a verifiable consumer request for access or data portability twice within a 12-month period. The verifiable consumer request must provide sufficient information that allows us to reasonably verify you are the person about whom we collected personal information or an authorized representative.
+              You may only make a verifiable consumer request for access or data portability twice within a 12-month period. The verifiable consumer request must provide sufficient information that allows us to reasonably verify you are the person about whom we collected personal information or an authorized representative
             </p>
             <p className="mb-4">
               Describe your request with sufficient detail that allows us to properly understand, evaluate, and respond to it. We cannot respond to your request or provide you with personal information if we cannot verify your identity or authority to make the request and confirm the personal information relates to you. Making a verifiable consumer request does not require you to create an account with us. We will only use personal information provided in a verifiable consumer request to verify the requestor's identity or authority to make the request.
@@ -388,7 +388,7 @@ export default function Privacy() {
               PMG B2B reserves the right to amend this privacy notice at our discretion and at any time. When we make changes to this privacy notice, we will post the updated notice on the Website and update the notice's effective date. Your continued use of our Website following the posting of changes constitutes your acceptance of such changes.
             </p>
 
-            <h3 className="text-xl font-semibold mt-6 mb-3">CCPA Contact Information</h3>
+            <h3 className="text-xl font-semibold mt-6 mb-3">Contact Information</h3>
             <p className="mb-4">
               If you have any questions or comments about this notice, the ways in which PMG B2B collects and uses your information described below and in the Privacy Policy, your choices and rights regarding such use, or wish to exercise your rights under California law, please do not hesitate to contact us at:
             </p>

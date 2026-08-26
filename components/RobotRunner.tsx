@@ -122,7 +122,7 @@ export default function RobotRunner() {
   useEffect(() => {
     const checkBackendConnection = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/health');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/health`);
         if (response.ok) {
           setIsBackendConnected(true);
         }
