@@ -189,14 +189,8 @@ const BlogCard = ({ post, index, isVisible }: BlogCardProps) => {
             {post.excerpt || post.content.substring(0, 150)}...
           </p>
 
-          {/* Author and Read More */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#FECB0F] to-[#F5A623] rounded-full flex items-center justify-center text-white font-bold text-xs">
-                {post.author.charAt(0)}
-              </div>
-              <span className="text-sm text-gray-600 font-medium">{post.author}</span>
-            </div>
+          {/* Read More */}
+          <div className="flex items-center justify-end pt-4 border-t border-gray-100">
             <Link
               href={`/blog/${post.slug}`}
               className="inline-flex items-center gap-1 text-sm font-semibold text-[#FECB0F] hover:text-[#F5A623] transition-colors"

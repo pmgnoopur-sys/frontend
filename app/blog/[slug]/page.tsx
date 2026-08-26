@@ -209,13 +209,6 @@ export default function BlogPost() {
             </Link>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">{blog.title}</h1>
             <div className="flex flex-wrap items-center gap-4 text-gray-600 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-[#FECB0F] rounded-full flex items-center justify-center text-white font-bold text-xs">
-                  {blog.author.charAt(0)}
-                </div>
-                <span className="font-medium text-gray-900">{blog.author}</span>
-              </div>
-              <span className="text-gray-300">•</span>
               <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
               {blog.readingTime && (
                 <>
