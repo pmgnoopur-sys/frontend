@@ -1,6 +1,5 @@
 import { Blog } from "@/types/blog";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://backend-2-81do.onrender.com/api";
+import { API_BASE_URL } from "@/lib/api";
 
 export async function getBlogs(): Promise<Blog[]> {
   try {

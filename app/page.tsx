@@ -10,6 +10,7 @@ import Stats from '@/components/Stats';
 import PopupForm from '@/components/PopupForm';
 import TeamCarousel, { TeamMember } from '@/components/TeamCarousel';
 import '@/components/TeamCarousel.css';
+import { API_BASE_URL } from '@/lib/api';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`, {
+      const response = await fetch(`${API_BASE_URL}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

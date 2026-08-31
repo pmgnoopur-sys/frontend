@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { X, Minimize2, Maximize2 } from 'lucide-react';
+import { API_BASE_URL } from '@/lib/api';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -122,7 +123,7 @@ export default function RobotRunner() {
   useEffect(() => {
     const checkBackendConnection = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/health`);
+        const response = await fetch(`${API_BASE_URL}/health`);
         if (response.ok) {
           setIsBackendConnected(true);
         }

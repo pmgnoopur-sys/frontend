@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useBlogAuth } from "@/lib/blogAuth";
-import { LogOut, ArrowLeft, Plus, FileText, CheckCircle, Download, Globe, MessageSquare, Trash2, Briefcase, Users, X } from "lucide-react";
+import { LogOut, ArrowLeft, Plus, FileText, CheckCircle, Download, Globe, MessageSquare, Trash2, Briefcase, Users, X } from 'lucide-react';
+import { API_BASE_URL, API_ROOT_URL } from '@/lib/api';
 
 interface Contact {
   _id: string;
@@ -56,7 +57,7 @@ export default function HRDashboard() {
 
   const loadContacts = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`);
+      const response = await fetch(`${API_BASE_URL}/contacts`);
       if (response.ok) {
         const data = await response.json();
         setContacts(data.filter((c: Contact) => c.type !== 'career'));
@@ -68,7 +69,7 @@ export default function HRDashboard() {
 
   const loadCareerApplications = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`);
+      const response = await fetch(`${API_BASE_URL}/contacts`);
       if (response.ok) {
         const data = await response.json();
         setCareerApplications(data.filter((c: Contact) => c.type === 'career'));
@@ -81,7 +82,7 @@ export default function HRDashboard() {
   const handleDeleteContact = async (id: string) => {
     if (confirm('Are you sure you want to delete this contact?')) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/contacts/${id}`, {
           method: 'DELETE',
         });
         if (response.ok) {
@@ -96,7 +97,7 @@ export default function HRDashboard() {
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/contacts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -587,7 +588,7 @@ export default function HRDashboard() {
                       <div>
                         <p className="text-sm text-gray-300">Resume</p>
                         <a 
-                          href={`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com'}/uploads/${selectedApplication.resume}`}
+                          href={`${API_ROOT_URL}/uploads/${selectedApplication.resume}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[#FECB0F] hover:text-[#FFD54F] flex items-center gap-2 transition-colors"

@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useState } from 'react';
 import StickyScrollSection from '@/components/StickyScrollSection';
+import { API_BASE_URL } from '@/lib/api';
 
 const contactStickyContent = [
   {
@@ -67,7 +68,7 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`, {
+      const response = await fetch(`${API_BASE_URL}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
