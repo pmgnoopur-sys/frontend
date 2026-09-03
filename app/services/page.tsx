@@ -77,7 +77,7 @@ export default function Services() {
               </div>
               <div className="flex-1 flex justify-end h-full">
                 <img
-                  src="https://res.cloudinary.com/vobojthd/image/upload/v1784817801/B2B-appointment-setting_ks0wwp.png"
+                  src="https://res.cloudinary.com/vobojthd/image/upload/v1788441562/ChatGPT_Image_Sep_3_2026_06_48_55_PM_k6ty1q.png"
                   alt="Services Illustration"
                   className="w-full h-full object-contain"
                 />

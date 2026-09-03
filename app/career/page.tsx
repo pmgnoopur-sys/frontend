@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import StickyScrollSection from '@/components/StickyScrollSection';
-import { API_BASE_URL } from '@/lib/api';
 
 const careerStickyContent = [
   {
@@ -108,7 +107,7 @@ export default function Career() {
         formDataToSend.append('resume', resume);
       }
 
-      const response = await fetch(`${API_BASE_URL}/contacts`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://backend-2-81do.onrender.com/api'}/contacts`, {
         method: 'POST',
         body: formDataToSend,
       });
@@ -166,13 +165,15 @@ export default function Career() {
           </div>
         </section>
 
+        
+
         {/* Career Form Section */}
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="bg-gray-50 rounded-2xl p-8 md:p-12 shadow-lg">
                 <h2 className="text-3xl font-bold mb-8 text-gray-900">Apply for a Position</h2>
-
+                
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name */}
                   <div>
@@ -428,6 +429,7 @@ export default function Career() {
             </p>
           </div>
         </section>
+
 
         {/* Sticky Scroll Reveal Section */}
         <StickyScrollSection

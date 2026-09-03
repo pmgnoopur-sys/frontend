@@ -37,19 +37,19 @@ const aboutMenu = [
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/></svg>,
     label: 'Our Story',
     description: 'How PMG was founded',
-    href: '/about#story',
+    href: '/about/story',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>,
     label: 'Leadership Team',
     description: 'Meet the people behind PMG',
-    href: '/about#leadership',
+    href: '/about',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.181-.389.907-.673 2.142-.766 3.557h3.936c-.093-1.415-.377-2.65-.766-3.557-.24-.558-.499-.947-.737-1.181C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.415.377 2.65.766 3.557.24.558.499.947.737 1.181.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.181.389-.907.673-2.142.766-3.557zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-8.268 0A6.004 6.004 0 012.083 11h1.946c.089 1.546.383 2.97.837 4.118z" clipRule="evenodd"/></svg>,
     label: 'Culture & Values',
     description: 'What drives us every day',
-    href: '/about#culture',
+    href: '/about/culture',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd"/><path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15a24.98 24.98 0 01-8-1.308z"/></svg>,
@@ -61,13 +61,13 @@ const aboutMenu = [
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"/></svg>,
     label: 'Our Mission',
     description: 'Why PMG exists',
-    href: '/about#mission',
+    href: '/about/mission',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clipRule="evenodd"/></svg>,
     label: 'Global Reach',
     description: 'Serving clients worldwide',
-    href: '/about#global',
+    href: '/about/global',
   },
 ];
 
@@ -343,7 +343,7 @@ export default function Header() {
                       <div className="flex items-center">
                         <div className="relative rounded-xl overflow-hidden w-full h-full min-h-[240px]">
                           <img
-                            src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80"
+                            src="https://res.cloudinary.com/vobojthd/image/upload/v1788441562/ChatGPT_Image_Sep_3_2026_06_48_55_PM_k6ty1q.png"
                             alt="Our Services"
                             className="w-full h-full object-cover absolute inset-0"
                           />
