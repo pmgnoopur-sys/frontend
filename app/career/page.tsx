@@ -240,13 +240,13 @@ export default function Career() {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors bg-white"
                     >
                       <option value="">Select a position</option>
-                      <option value="sales-development-representative">Sales Development Representative</option>
-                      <option value="business-development-executive">Business Development Executive</option>
-                      <option value="marketing-specialist">Marketing Specialist</option>
-                      <option value="data-analyst">Data Analyst</option>
-                      <option value="content-writer">Content Writer</option>
-                      <option value="account-manager">Account Manager</option>
-                      <option value="other">Other</option>
+                      <option value="Sales Development Representative">Sales Development Representative</option>
+                      <option value="Business Development Executive">Business Development Executive</option>
+                      <option value="Marketing Specialist">Marketing Specialist</option>
+                      <option value="Data Analyst">Data Analyst</option>
+                      <option value="Content Writer">Content Writer</option>
+                      <option value="Account Manager">Account Manager</option>
+                      <option value="Other">Other</option>
                     </select>
                   </div>
 
@@ -264,11 +264,11 @@ export default function Career() {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors bg-white"
                     >
                       <option value="">Select experience</option>
-                      <option value="0-1">0-1 years</option>
-                      <option value="1-3">1-3 years</option>
-                      <option value="3-5">3-5 years</option>
-                      <option value="5-10">5-10 years</option>
-                      <option value="10+">10+ years</option>
+                      <option value="0 to 1 years">0 to 1 years</option>
+                      <option value="1 to 3 years">1 to 3 years</option>
+                      <option value="3 to 5 years">3 to 5 years</option>
+                      <option value="5 to 10 years">5 to 10 years</option>
+                      <option value="10+ years">10+ years</option>
                     </select>
                   </div>
 
@@ -319,13 +319,13 @@ export default function Career() {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors bg-white"
                     >
                       <option value="">Select notice period</option>
-                      <option value="immediate">Immediate</option>
-                      <option value="15-days">15 days</option>
-                      <option value="30-days">30 days</option>
-                      <option value="45-days">45 days</option>
-                      <option value="60-days">60 days</option>
-                      <option value="90-days">90 days</option>
-                      <option value="3-months+">3+ months</option>
+                      <option value="Immediate">Immediate</option>
+                      <option value="15 days">15 days</option>
+                      <option value="30 days">30 days</option>
+                      <option value="45 days">45 days</option>
+                      <option value="60 days">60 days</option>
+                      <option value="90 days">90 days</option>
+                      <option value="3+ months">3+ months</option>
                     </select>
                   </div>
 
@@ -379,13 +379,13 @@ export default function Career() {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors bg-white"
                     >
                       <option value="">Select an option</option>
-                      <option value="linkedin">LinkedIn</option>
-                      <option value="indeed">Indeed</option>
-                      <option value="referral">Employee Referral</option>
-                      <option value="company-website">Company Website</option>
-                      <option value="social-media">Social Media</option>
-                      <option value="job-fair">Job Fair/Event</option>
-                      <option value="other">Other</option>
+                      <option value="LinkedIn">LinkedIn</option>
+                      <option value="Indeed">Indeed</option>
+                      <option value="Employee Referral">Employee Referral</option>
+                      <option value="Company Website">Company Website</option>
+                      <option value="Social Media">Social Media</option>
+                      <option value="Job Fair/Event">Job Fair/Event</option>
+                      <option value="Other">Other</option>
                     </select>
                   </div>
 

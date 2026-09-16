@@ -26,6 +26,17 @@ interface Contact {
   status?: string;
 }
 
+// Older submissions stored slug values like "sales-development-representative"
+// or "0-1"; display them as clean readable text instead of raw slugs.
+function formatFieldValue(value?: string): string {
+  if (!value) return 'Not specified';
+  return value
+    .replace(/[-_]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export default function HRDashboard() {
   const { isAuthenticated, isLoading, logout, currentUser, hasRole } = useBlogAuth();
   const router = useRouter();
@@ -370,9 +381,9 @@ export default function HRDashboard() {
                       {careerApplications.map((application) => (
                         <tr key={application._id} className="hover:bg-gray-700 transition-colors">
                           <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-white">{application.name}</td>
-                          <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-300">{application.position || 'Not specified'}</td>
+                          <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-300">{formatFieldValue(application.position)}</td>
                           <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-300">{application.email}</td>
-                          <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-300">{application.yearsOfExperience || 'Not specified'}</td>
+                          <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-300">{formatFieldValue(application.yearsOfExperience)}</td>
                           <td className="px-4 py-4 whitespace-nowrap">
                             <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                               application.status === "Interview" ? "bg-[#FECB0F] text-black" :
@@ -533,7 +544,7 @@ export default function HRDashboard() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-300">Position</p>
-                      <p className="text-lg font-medium text-white">{selectedApplication.position || 'Not specified'}</p>
+                      <p className="text-lg font-medium text-white">{formatFieldValue(selectedApplication.position)}</p>
                     </div>
                   </div>
                 </div>
@@ -543,7 +554,7 @@ export default function HRDashboard() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-gray-300">Years of Experience</p>
-                      <p className="text-lg font-medium text-white">{selectedApplication.yearsOfExperience || 'Not specified'}</p>
+                      <p className="text-lg font-medium text-white">{formatFieldValue(selectedApplication.yearsOfExperience)}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-300">Current Company</p>
@@ -555,7 +566,7 @@ export default function HRDashboard() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-300">Notice Period</p>
-                      <p className="text-lg font-medium text-white">{selectedApplication.noticePeriod || 'Not specified'}</p>
+                      <p className="text-lg font-medium text-white">{formatFieldValue(selectedApplication.noticePeriod)}</p>
                     </div>
                   </div>
                 </div>
@@ -582,7 +593,7 @@ export default function HRDashboard() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-300">How did they hear about us</p>
-                      <p className="text-lg font-medium text-white">{selectedApplication.howDidYouHear || 'Not specified'}</p>
+                      <p className="text-lg font-medium text-white">{formatFieldValue(selectedApplication.howDidYouHear)}</p>
                     </div>
                     {selectedApplication.resume && (
                       <div>
