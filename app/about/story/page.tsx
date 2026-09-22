@@ -188,27 +188,6 @@ export default function OurStory() {
           </div>
         </section>
 
-        {/* Transparency note */}
-        <section className="py-16 bg-black">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto bg-gray-900/60 border border-[#FECB0F]/30 rounded-2xl p-8">
-              <div className="flex items-start gap-4">
-                <svg className="w-6 h-6 text-[#FECB0F] flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div>
-                  <h4 className="text-white font-bold text-lg mb-2">A Note on Transparency</h4>
-                  <p className="text-gray-400 leading-relaxed">
-                    We found conflicting public information about our exact founding date. LinkedIn lists 2019, while
-                    one third-party database lists 2017. We won&apos;t claim a definitive year without confirmation
-                    from company leadership, so consider this our honest, ongoing record rather than a polished
-                    origin story.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
     </div>

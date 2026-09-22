@@ -76,31 +76,31 @@ const profferMenu = [
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.925-3.087 9.123-7.488 10.74L10 18l-.512-.259C5.087 16.123 2 11.925 2 7.001c0-.681.056-1.35.166-2.002zM10 9a1 1 0 100-2 1 1 0 000 2zm-1 2a1 1 0 100 2h2a1 1 0 100-2H9z" clipRule="evenodd"/></svg>,
     label: 'LeadCert AI',
     description: 'Real-time lead validation',
-    href: '/proffer#leadcert',
+    href: '/proffer/leadcert',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>,
     label: 'VerifySure AI',
     description: 'AI-powered consent calls',
-    href: '/proffer#verifysure',
+    href: '/proffer/verifysure',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>,
     label: 'ClearBoard AI',
     description: 'Live delivery visibility',
-    href: '/proffer#clearboard',
+    href: '/proffer/clearboard',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>,
     label: 'TrustCheck AI',
     description: 'Quality you can trust',
-    href: '/proffer#trustcheck',
+    href: '/proffer/trustcheck',
   },
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/></svg>,
     label: 'PredictWise AI',
     description: 'Better campaign results',
-    href: '/proffer#predictwise',
+    href: '/proffer/predictwise',
   },
 ];
 
@@ -162,6 +162,12 @@ const solutionsMenu = {
       label: 'Construction', 
       description: 'For project crews', 
       href: '/solutions/construction' 
+    },
+    { 
+      icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15.98 3.804a1 1 0 00-1.414-.03L10.5 7.793 8.207 5.5a1 1 0 00-1.414 0l-4 4a1 1 0 101.414 1.414L7.5 7.621l2.293 2.293a1 1 0 001.414 0l4.44-4.44a1 1 0 00.03-1.414z"/><path fillRule="evenodd" d="M3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/></svg>,
+      label: 'Marketing & Advertising', 
+      description: 'For agencies & brands', 
+      href: '/solutions/marketing-advertising' 
     },
   ],
   byCompanySize: [
@@ -391,7 +397,7 @@ export default function Header() {
                       <div className="flex items-center">
                         <div className="relative rounded-xl overflow-hidden w-full h-full min-h-[240px]">
                           <img
-                            src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
+                            src="https://res.cloudinary.com/vobojthd/image/upload/v1788503908/ChatGPT_Image_Sep_4_2026_12_04_42_PM_dim8kh.png"
                             alt="Proffer AI"
                             className="w-full h-full object-cover absolute inset-0"
                           />

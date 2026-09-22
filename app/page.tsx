@@ -9,8 +9,15 @@ import Services from '@/components/Services';
 import Stats from '@/components/Stats';
 import TimelineHero from '@/components/TimelineHero';
 import PopupForm from '@/components/PopupForm';
-import { TeamMember } from '@/components/TeamCarousel';
 import { API_BASE_URL } from '@/lib/api';
+
+interface TeamMember {
+  name: string;
+  role: string;
+  imageUrl: string;
+  description?: string;
+  linkedin?: string;
+}
 
 export default function Home() {
   const teamMembers: TeamMember[] = [

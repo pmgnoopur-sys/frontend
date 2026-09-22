@@ -110,6 +110,7 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
   const [newImageAlt, setNewImageAlt] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [imageError, setImageError] = useState("");
   const [imageInputMode, setImageInputMode] = useState<'url' | 'upload'>('url');
 
   // Audio state
@@ -232,33 +233,46 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
     return recommendations;
   };
 
-  const handleAddImage = () => {
-    if (!newImageUrl || newImageUrl.trim() === "") {
-      alert('Please provide an image URL or upload an image first');
-      return;
-    }
-    if (!newImageAlt || newImageAlt.trim() === "") {
-      alert('Please provide alt text for the image');
-      return;
-    }
-    
+  const getPendingImage = () => {
+    if (isUploading) throw new Error('Please wait for the image file to finish loading.');
+    if (imageError) throw new Error(imageError);
+    const url = newImageUrl.trim();
+    if (!url) return null;
+
     // Validate image URL if it's not base64
-    if (!newImageUrl.startsWith('data:')) {
+    if (!/^data:image\/[a-z0-9.+-]+[;,]/i.test(url)) {
+      let parsed: URL;
       try {
-        new URL(newImageUrl);
-      } catch (error) {
-        alert('Please provide a valid image URL');
-        return;
+        parsed = new URL(url);
+      } catch {
+        throw new Error('Please provide a valid image URL.');
+      }
+      if (!['https:', 'http:'].includes(parsed.protocol)) {
+        throw new Error('Please use an HTTP(S) image URL or upload an image file.');
       }
     }
-    
-    setImages([...images, { url: newImageUrl, altText: newImageAlt }]);
-    setNewImageUrl("");
-    setNewImageAlt("");
-    setUploadedFile(null);
-    
-    // Show success feedback
-    alert('Image added successfully!');
+
+    return { url, altText: newImageAlt.trim() || title.trim() || 'Blog image' };
+  };
+
+  const handleAddImage = () => {
+    try {
+      const image = getPendingImage();
+      if (!image) {
+        alert('Please provide an image URL or upload an image first');
+        return;
+      }
+      setImages(prev => [...prev, image]);
+      setNewImageUrl("");
+      setNewImageAlt("");
+      setUploadedFile(null);
+      setImageError("");
+
+      // Show success feedback
+      alert('Image attached. Save the blog to publish it.');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Unable to add the image.');
+    }
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -277,24 +291,23 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
       }
 
       setUploadedFile(file);
+      setNewImageUrl("");
+      setImageError("");
       setIsUploading(true);
 
       // Convert file to base64
       const reader = new FileReader();
-      reader.onloadend = () => {
-        try {
-          const base64String = reader.result as string;
-          setNewImageUrl(base64String);
-          setIsUploading(false);
-        } catch (error) {
-          console.error('Error processing image:', error);
-          alert('Failed to process the image file');
-          setIsUploading(false);
+      reader.onload = () => {
+        if (typeof reader.result === 'string' && reader.result.startsWith('data:image/')) {
+          setNewImageUrl(reader.result);
+        } else {
+          setImageError('Failed to process the image. Please select it again.');
         }
+        setIsUploading(false);
       };
       reader.onerror = () => {
         console.error('Error reading file');
-        alert('Failed to read the image file');
+        setImageError('Failed to read the image. Please select it again.');
         setIsUploading(false);
       };
       reader.readAsDataURL(file);
@@ -351,7 +364,18 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+    if (isSaving) return;
+
+    let submittedImages = images;
+    try {
+      const pendingImage = getPendingImage();
+      if (pendingImage) submittedImages = [...images, pendingImage];
+    } catch (error) {
+      setActiveTab('content');
+      alert(error instanceof Error ? error.message : 'Please check the image before saving.');
+      return;
+    }
+
     // Save audio data to localStorage before submission
     if (slug && (audioUrl || speakerName)) {
       try {
@@ -373,7 +397,7 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
       tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
       ogImage,
       canonicalUrl,
-      images,
+      images: submittedImages,
       category,
       excerpt,
       readingTime,
@@ -796,8 +820,10 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                           setUploadedFile(null);
                           setNewImageUrl('');
                           setNewImageAlt('');
+                          setImageError('');
                         }}
-                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${imageInputMode === 'url' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                        disabled={isUploading || isSaving}
+                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 ${imageInputMode === 'url' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                       >
                         URL
                       </button>
@@ -808,15 +834,21 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                           setUploadedFile(null);
                           setNewImageUrl('');
                           setNewImageAlt('');
+                          setImageError('');
                         }}
-                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${imageInputMode === 'upload' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                        disabled={isUploading || isSaving}
+                        className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 ${imageInputMode === 'upload' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                       >
                         Upload
                       </button>
                     </div>
 
+                    {/* The two branches render the same element shape, so React
+                        would reuse the same input DOM node and flip it between
+                        controlled (url) and uncontrolled (file). Distinct keys
+                        force a remount instead. */}
                     {imageInputMode === 'url' ? (
-                      <div className="mb-3">
+                      <div className="mb-3" key="image-url-mode">
                         <label htmlFor="image-url" className="block text-sm font-medium text-gray-700 mb-1">
                           Image URL
                         </label>
@@ -824,13 +856,16 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                           type="url"
                           id="image-url"
                           value={newImageUrl || ""}
-                          onChange={(e) => setNewImageUrl(e.target.value || "")}
+                          onChange={(e) => {
+                            setNewImageUrl(e.target.value || "");
+                            setImageError("");
+                          }}
                           placeholder="https://example.com/image.jpg"
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         />
                       </div>
                     ) : (
-                      <div className="mb-3">
+                      <div className="mb-3" key="image-upload-mode">
                         <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700 mb-1">
                           Upload Image
                         </label>
@@ -839,10 +874,11 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                           id="file-upload"
                           accept="image/*"
                           onChange={handleFileUpload}
+                          disabled={isUploading || isSaving}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         />
                         {isUploading && (
-                          <p className="text-xs text-blue-600 mt-1">Uploading...</p>
+                          <p className="text-xs text-blue-600 mt-1">Reading image file...</p>
                         )}
                       </div>
                     )}
@@ -850,7 +886,7 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                     {/* Alt Text - shared between both modes */}
                     <div className="mb-3">
                       <label htmlFor="image-alt" className="block text-sm font-medium text-gray-700 mb-1">
-                        Alt Text
+                        Alt Text (optional; defaults to the blog title)
                       </label>
                       <input
                         type="text"
@@ -875,23 +911,24 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                             </div>
                           )}
                           <img
-                            src={newImageUrl}
+                            key={newImageUrl.trim()}
+                            src={newImageUrl.trim()}
                             alt="Preview"
                             className="w-full h-48 object-cover"
-                            onError={(e) => {
-                              console.error('Image preview failed to load');
-                              e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23e5e7eb' width='400' height='200'/%3E%3Ctext fill='%236b7280' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EInvalid Image URL%3C/text%3E%3C/svg%3E";
-                            }}
-                            onLoad={() => console.log('Image preview loaded successfully')}
+                            onError={() => setImageError('This image could not be loaded. Use a direct, publicly accessible image URL or upload a supported image file.')}
                           />
                         </div>
                       </div>
                     )}
                     
+                    {imageError && <p role="alert" className="mb-3 text-sm text-red-600">{imageError}</p>}
+                    <p className="mb-3 text-xs text-gray-600">
+                      The image above is included when you save the blog. Use Add Image to attach it now and select another. The first image is the blog cover.
+                    </p>
                     <button
                       type="button"
                       onClick={handleAddImage}
-                      disabled={!newImageUrl || !newImageAlt || isUploading}
+                      disabled={!newImageUrl.trim() || !!imageError || isUploading || isSaving}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
                       Add Image
@@ -958,8 +995,8 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                       <input
                         type="text"
                         id="speaker-name"
-                        value={speakerName}
-                        onChange={(e) => setSpeakerName(e.target.value)}
+                        value={speakerName || ""}
+                        onChange={(e) => setSpeakerName(e.target.value || "")}
                         placeholder="Name of the speaker/narrator"
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                       />
@@ -1227,7 +1264,7 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      value={shareLink}
+                      value={shareLink || ""}
                       readOnly
                       className="flex-1 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-600"
                     />
@@ -1277,7 +1314,7 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
             <div className="flex gap-3 mt-8 pt-6 border-t">
               <button
                 type="submit"
-                disabled={isSaving}
+                disabled={isSaving || isUploading}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? (

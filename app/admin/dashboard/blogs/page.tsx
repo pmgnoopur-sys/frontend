@@ -136,6 +136,7 @@ export default function BlogAdminDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {showForm ? (
           <BlogForm
+            key={editingBlog?.id || "new"}
             blog={editingBlog || undefined}
             onSubmit={handleFormSubmit}
             onCancel={handleFormCancel}
@@ -160,6 +161,7 @@ export default function BlogAdminDashboard() {
               </div>
             ) : (
               <div className="bg-gray-900 rounded-lg shadow-xl border-2 border-[#FECB0F] overflow-hidden">
+                <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-700">
                   <thead className="bg-gray-800">
                     <tr>
@@ -221,17 +223,19 @@ export default function BlogAdminDashboard() {
                           <div className="flex justify-end gap-2">
                             <button
                               onClick={() => handleEdit(blog)}
-                              className="text-[#FECB0F] hover:text-[#FFD54F] transition-colors"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[#FECB0F]/40 text-[#FECB0F] hover:bg-[#FECB0F]/10 transition-colors"
                               title="Edit"
                             >
-                              <Edit className="w-5 h-5" />
+                              <Edit className="w-4 h-4" />
+                              Edit
                             </button>
                             <button
                               onClick={() => handleDelete(blog.id)}
-                              className="text-red-500 hover:text-red-400 transition-colors"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-red-500/40 text-red-500 hover:bg-red-500/10 transition-colors"
                               title="Delete"
                             >
-                              <Trash2 className="w-5 h-5" />
+                              <Trash2 className="w-4 h-4" />
+                              Delete
                             </button>
                           </div>
                         </td>
@@ -239,6 +243,7 @@ export default function BlogAdminDashboard() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             )}
           </>

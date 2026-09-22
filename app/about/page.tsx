@@ -5,8 +5,13 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import RobotRunner from "@/components/RobotRunner";
 import HeroAutomation from "@/components/AutomationHero";
-import TeamCarousel, { TeamMember } from '@/components/TeamCarousel';
-import '@/components/TeamCarousel.css';
+interface TeamMember {
+  name: string;
+  role: string;
+  imageUrl: string;
+  description?: string;
+  linkedin?: string;
+}
 
 const teamMembers: TeamMember[] = [
   {
@@ -14,43 +19,49 @@ const teamMembers: TeamMember[] = [
     role: "CEO & Founder",
     imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1788435823/FMW07251_BW_4_nep19y.jpg",
     description: "Visionary leader with 15+ years in B2B lead generation. Passionate about helping businesses scale through data-driven strategies.",
+    linkedin: "https://www.linkedin.com/in/shrishofficial/",
   },
   {
     name: "Jay shinde",
     role: "Sr. Client Success manager",
     imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1784561719/copy_of_jjk_5116_1_lb2wmz1.jpg",
     description: "Senior client success manager ensuring exceptional client relationships and driving satisfaction through strategic account management.",
+    linkedin: "https://www.linkedin.com/in/jay-s-94519123a/",
   },
   {
     name: "Vikas Thakur",
     role: "Client Success manager",
-    imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1784207767/user-original_tppgrb.jpg",
+    imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1789041493/5._Vikas_Singh_Thakur_ig0gzk.jpg",
     description: "Client success manager dedicated to understanding client needs and delivering solutions that drive business growth and retention.",
+    linkedin: "https://www.linkedin.com/in/vikas-singh-thakur/",
   },
   {
     name: "Pranav Kumar",
     role: "Client Success manager",
     imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1784211329/1781807276051_pcpbcz.png",
     description: "Client success manager focused on building strong client partnerships and ensuring seamless service delivery for optimal results.",
+    linkedin: "https://www.linkedin.com/in/pranav-kumaar-258a68209/",
   },
-
   {
     name: "Subodh kadam",
     role: " Sr. Quality Manager",
-    imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/c_fill,w_400,h_500,g_face,q_auto/v1786098493/file_000000003ae481fb88d5948a94273607_firlm1.png",
+    imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1789041492/43._Subodh_Kadam_ryzzgi.jpg",
     description: "Quality manager ensuring high standards across all deliverables. Implements quality control processes to maintain excellence in client services.",
+    linkedin: "https://www.linkedin.com/in/subodh-kadam-07942b7/",
   },
   {
     name: "Sushant Bangad",
     role: "Operations Manager",
     imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/c_fill,w_400,h_500,g_face,q_auto/v1784796324/sushant.jpg",
     description: "Operations manager optimizing workflows and processes. Ensures efficient team coordination and smooth operational execution.",
+    linkedin: "https://www.linkedin.com/in/sushant-bangad-8752b7b3/",
   },
   {
     name: "Amol Bade",
     role: "IT Manager",
     imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1786090999/1785421776242_t1jn4m.png",
     description: "IT Team Head leading technology initiatives and infrastructure development. Ensures robust technical solutions and system reliability for PMG B2B's operations.",
+    linkedin: "https://www.linkedin.com/in/amol-bade-73412b179/",
   },
 ];
 
@@ -108,6 +119,15 @@ export default function About() {
                     <h3 className="text-white text-2xl font-bold">{teamMembers[0].name}</h3>
                     <p className="text-[#FECB0F] text-sm font-semibold uppercase tracking-wide mt-1">{teamMembers[0].role}</p>
                     <p className="text-gray-400 text-sm leading-relaxed mt-4">{teamMembers[0].description}</p>
+                    {teamMembers[0].linkedin && (
+                      <div className="flex justify-center gap-4 mt-4">
+                        <a href={teamMembers[0].linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-[#FECB0F] transition-colors">
+                          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
+                          </svg>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -234,16 +254,6 @@ export default function About() {
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Team Carousel for remaining members */}
-        <section className="relative pb-24 bg-black">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(254,203,15,0.03)_0%,transparent_70%)] pointer-events-none"></div>
-          <TeamCarousel
-            members={teamMembers.slice(1)}
-            eyebrow={`The collective — ${teamMembers.slice(1).length.toString().padStart(2, '0')} Strategic Leads`}
-            title="Team Excellence"
-          />
         </section>
 
         <HeroAutomation />
