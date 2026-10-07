@@ -9,20 +9,45 @@ import { getBlogBySlug } from '@/lib/blogStorage';
 import AudioPlayer from '@/components/AudioPlayer';
 import { Mic, Play, Square, Upload } from 'lucide-react';
 
-// Function to format plain text content to HTML if needed
+// True when the content already has real block structure, in which case it is
+// rendered untouched.
+const hasBlockStructure = (content: string) =>
+  /<(h[1-6]|ul|ol|blockquote|figure|table)\b/i.test(content) ||
+  (content.match(/<p[\s>]/gi) || []).length > 2;
+
+// Content pasted from Word/Docs arrives as one giant paragraph with <br> line
+// breaks, so section titles end up as plain inline text. A short line that
+// isn't a full sentence is treated as a heading.
+const looksLikeHeading = (text: string) =>
+  text.length <= 100 && text.split(/\s+/).length <= 14 && !/[.,;:]$/.test(text);
+
+// The editor used to bold every all-caps word, so acronyms such as "AI" ended up
+// emphasised dozens of times in a single article. Strip that emphasis while
+// leaving deliberate bold phrases alone.
+const unboldAcronyms = (content: string) =>
+  content.replace(/<strong>(\s*[A-Z]{2,6}\s*)<\/strong>/g, '$1');
+
+// Normalises flat, <br>-separated content into real paragraphs and headings so
+// the typography styles have something to work with.
 const formatContent = (content: string) => {
-  // If content already has HTML tags, return as is
-  if (/<[a-z][\s\S]*>/i.test(content)) {
-    return content;
-  }
-  
-  // Convert plain text to HTML with proper paragraphs
-  return content
-    .split(/\n\s*\n/) // Split by double newlines to identify paragraphs
-    .map(paragraph => paragraph.trim())
-    .filter(paragraph => paragraph.length > 0)
-    .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
-    .join('\n\n');
+  if (!content) return '';
+
+  const cleaned = unboldAcronyms(content);
+  if (hasBlockStructure(cleaned)) return cleaned;
+
+  return cleaned
+    .replace(/<\/?p[^>]*>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .split(/\n+/)
+    .map(block => block.replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+    .map(block => {
+      const text = block.replace(/<[^>]+>/g, '').trim();
+      if (!text) return '';
+      return looksLikeHeading(text) ? `<h2>${block}</h2>` : `<p>${block}</p>`;
+    })
+    .filter(Boolean)
+    .join('\n');
 };
 
 export default function BlogPost() {
@@ -254,7 +279,7 @@ export default function BlogPost() {
           {/* Content */}
           <div className="bg-white rounded-2xl shadow-sm p-8 md:p-12 mb-10">
             <div 
-              className="prose prose-lg prose-headings:font-bold prose-headings:text-gray-900 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-700 prose-p:leading-relaxed prose-p:my-4 prose-a:text-[#FECB0F] prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-[#FECB0F] prose-pre:bg-gray-100 prose-ul:my-4 prose-ol:my-4 prose-li:my-2 prose-blockquote:my-4 prose-blockquote:border-l-4 prose-blockquote:border-[#FECB0F] prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 max-w-none"
+              className="prose prose-lg prose-headings:font-bold prose-headings:text-gray-900 prose-h1:text-3xl prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pt-6 prose-h2:border-t prose-h2:border-gray-100 [&_h2:first-child]:mt-0 [&_h2:first-child]:border-t-0 [&_h2:first-child]:pt-0 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:text-gray-700 prose-p:leading-[1.8] prose-p:my-5 prose-a:text-[#FECB0F] prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-strong:font-semibold prose-code:text-[#FECB0F] prose-pre:bg-gray-100 prose-ul:my-4 prose-ol:my-4 prose-li:my-2 prose-blockquote:my-6 prose-blockquote:border-l-4 prose-blockquote:border-[#FECB0F] prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 max-w-[72ch] mx-auto"
               dangerouslySetInnerHTML={{ __html: formatContent(blog.content) }} 
             />
           </div>

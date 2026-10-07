@@ -40,7 +40,7 @@ export default function OctagonVideoCollage({
     `We believe in an employee-centric environment as we treat our employees as a whole PMG family. We believe in the saying that "Employees are the mouthpiece of every organization".`,
     `At PMG B2B, we believe in going above and beyond in whatever we do, whether we're having fun or working. We PMGians don't put any restrictions on ourselves and are always looking for new ways to broaden our horizons.`,
   ],
-  videoSrc = "/WhatsApp Video 2026-07-31 at 5.35.53 PM.mp4",
+  videoSrc = "/life-at-pmg-collage.mp4",
   poster,
 }: CircleVideoCollageProps) {
   const videoRef = useRef<HTMLVideoElement>(null);

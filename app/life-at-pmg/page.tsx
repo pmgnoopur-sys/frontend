@@ -34,18 +34,6 @@ const lifeAtPmgStickyContent = [
     ),
   },
   {
-    title: 'Fun Fridays & Team Bonding',
-    description:
-      'Games, activities, and casual conversations help our team unwind and connect outside of daily work, strengthening friendships across every department.',
-    content: (
-      <img
-        src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80"
-        alt="Fun Friday team activity"
-        className="h-full w-full object-cover"
-      />
-    ),
-  },
-  {
     title: 'A Workplace That Supports You',
     description:
       'Flexible time off, an open-door policy, and a genuine focus on wellbeing mean you can bring your best self to work every day.',
@@ -88,11 +76,43 @@ export default function LifeAtPMG() {
       title: 'Independence Day Celebration',
       description: 'At PMG B2B, we celebrate Independence Day with great pride and patriotism. Our team comes together to honor the spirit of freedom and unity that defines our nation. The celebration includes flag hoisting, patriotic songs, and reflections on the values that make our country great. It is a time when we reaffirm our commitment to building a stronger future while celebrating the diversity and strength of our team.'
     },
+  ];
+
+  const teams = [
     {
-      image: 'https://res.cloudinary.com/vobojthd/image/upload/v1784198754/WhatsApp_Image_2026-07-16_at_4.05.29_PM_wxf9fb.jpg',
-      videoUrl: '/WhatsApp Video 2026-07-28 at 7.37.41 PM.mp4',
-      title: 'Fun Friday',
-      description: 'Fun Fridays at PMG B2B are all about unwinding, bonding, and celebrating our team spirit. From games and activities to casual conversations and team lunches, these Fridays provide a perfect break from the work routine. It is a time when we let loose, share laughs, and strengthen the friendships that make our workplace enjoyable and supportive.'
+      image: '/teams/team-1.jpg',
+      name: 'Management Team',
+      description: 'The leaders setting the direction and backing the team at every step.',
+      span: true,
+      portrait: false
+    },
+    {
+      image: '/teams/team-2.jpg',
+      name: 'Development Team',
+      description: 'Engineers and builders turning ideas into products that scale.',
+      span: false,
+      portrait: false
+    },
+    {
+      image: '/teams/team-3.jpg',
+      name: 'HR Team',
+      description: 'Hiring great people and keeping our culture strong every day.',
+      span: false,
+      portrait: false
+    },
+    {
+      image: '/teams/team-4.jpg',
+      name: 'Delivery Team',
+      description: 'Making sure every project reaches our clients on time, every time.',
+      span: false,
+      portrait: true
+    },
+    {
+      image: '/teams/team-5.jpg',
+      name: 'Marketing Team',
+      description: 'The creative minds behind every campaign, brand story, and launch.',
+      span: false,
+      portrait: true
     }
   ];
 
@@ -186,26 +206,13 @@ export default function LifeAtPMG() {
                   index % 2 === 1 ? 'md:flex-row-reverse' : ''
                 }`}
               >
-                {/* Image/Video */}
+                {/* Image */}
                 <div className={index % 2 === 1 ? 'md:order-2' : ''}>
-                  {section.videoUrl ? (
-                    <video
-                      src={section.videoUrl}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      controls
-                      className="w-full h-[700px] rounded-2xl shadow-lg object-cover p-4"
-                      onError={(e) => console.error('Video error:', e)}
-                    />
-                  ) : (
-                    <img
-                      src={section.image}
-                      alt={section.title}
-                      className="w-full h-[400px] rounded-2xl shadow-lg object-cover"
-                    />
-                  )}
+                  <img
+                    src={section.image}
+                    alt={section.title}
+                    className="w-full h-[400px] rounded-2xl shadow-lg object-cover p-2 bg-white"
+                  />
                 </div>
 
                 {/* Text Content */}
@@ -219,6 +226,54 @@ export default function LifeAtPMG() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Meet Our Teams */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+                Meet Our Teams
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                The people behind PMG B2B, together at our annual celebration.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {teams.map((team, index) => (
+                <div
+                  key={index}
+                  className={`group p-2 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 ${
+                    team.span ? 'md:col-span-2' : ''
+                  }`}
+                >
+                  <div className="relative overflow-hidden rounded-xl">
+                    <img
+                      src={team.image}
+                      alt={team.name}
+                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                        team.span ? 'h-[400px] md:h-[600px]' : team.portrait ? 'h-[600px] md:h-[700px]' : 'h-[300px] md:h-[380px]'
+                      }`}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                      <span
+                        className="inline-block w-12 h-1 mb-4 rounded-full"
+                        style={{ backgroundColor: '#FECB0F' }}
+                      ></span>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                        {team.name}
+                      </h3>
+                      <p className="text-white/85 text-sm md:text-base max-w-xl">
+                        {team.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

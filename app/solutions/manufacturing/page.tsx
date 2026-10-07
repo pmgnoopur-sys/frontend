@@ -11,7 +11,7 @@ const manufacturingStickyContent = [
       'We identify the plant managers, operations leaders, and procurement teams who control purchasing decisions on the shop floor.',
     content: (
       <img
-        src="https://images.unsplash.com/photo-1565793298595-6a879b1d3959?auto=format&fit=crop&w=800&q=80"
+        src="https://res.cloudinary.com/vobojthd/image/upload/v1791380291/ChatGPT_Image_Oct_7_2026_06_22_59_PM_uvm1vi.png"
         alt="Manufacturing plant floor manager"
         className="h-full w-full object-cover"
       />

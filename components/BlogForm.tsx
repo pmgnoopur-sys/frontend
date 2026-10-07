@@ -327,9 +327,10 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
         return;
       }
       
-      // Validate file size (max 20MB for audio)
-      if (file.size > 20 * 1024 * 1024) {
-        alert('Audio size must be less than 20MB');
+      // Audio is stored inline as base64, which inflates it by ~33%, so cap it
+      // well under the 16MB document limit.
+      if (file.size > 8 * 1024 * 1024) {
+        alert('Audio size must be less than 8MB');
         return;
       }
 
@@ -456,26 +457,23 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
   };
 
   // Helper function to apply formatting rules to a paragraph
-  const applyFormattingRules = (paragraph: string): string => {
+  const applyFormattingRules = (paragraph: string, isFirstParagraph: boolean): string => {
     let processedParagraph = paragraph.replace(/\n/g, '<br>');
-    
-    // Bold text that's in ALL CAPS (likely headings)
-    processedParagraph = processedParagraph.replace(/\b([A-Z]{2,})\b/g, '<strong>$1</strong>');
-    
+
     // Bold text between asterisks (*text*)
     processedParagraph = processedParagraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
-    
-    // Bold the first sentence of each paragraph (up to first period)
-    const firstSentenceEnd = processedParagraph.indexOf('.');
-    if (firstSentenceEnd > 10 && firstSentenceEnd < 200) { // Reasonable sentence length
-      const firstSentence = processedParagraph.substring(0, firstSentenceEnd + 1);
-      const restOfParagraph = processedParagraph.substring(firstSentenceEnd + 1);
-      processedParagraph = `<strong>${firstSentence}</strong>${restOfParagraph}`;
+
+    // Bold the opening sentence as a lede. Only the first paragraph, otherwise
+    // every paragraph in the article starts with bold text.
+    if (isFirstParagraph) {
+      const firstSentenceEnd = processedParagraph.indexOf('.');
+      if (firstSentenceEnd > 10 && firstSentenceEnd < 200) { // Reasonable sentence length
+        const firstSentence = processedParagraph.substring(0, firstSentenceEnd + 1);
+        const restOfParagraph = processedParagraph.substring(firstSentenceEnd + 1);
+        processedParagraph = `<strong>${firstSentence}</strong>${restOfParagraph}`;
+      }
     }
-    
-    // Bold short emphasized phrases in quotes
-    processedParagraph = processedParagraph.replace(/"([^"]{3,30})"/g, '<strong>"$1"</strong>');
-    
+
     return `<p>${processedParagraph}</p>`;
   };
 
@@ -492,7 +490,7 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
       .split(/\n\s*\n/) // Split by double newlines to identify paragraphs
       .map(paragraph => paragraph.trim())
       .filter(paragraph => paragraph.length > 0)
-      .map(paragraph => applyFormattingRules(paragraph))
+      .map((paragraph, index) => applyFormattingRules(paragraph, index === 0))
       .join('\n\n');
 
     setContent(formatted);
@@ -510,7 +508,7 @@ export default function BlogFormSEO({ blog, onSubmit, onCancel, isSaving = false
         .split(/\n\s*\n/) // Split by double newlines to identify paragraphs
         .map(paragraph => paragraph.trim())
         .filter(paragraph => paragraph.length > 0)
-        .map(paragraph => applyFormattingRules(paragraph))
+        .map((paragraph, index) => applyFormattingRules(paragraph, index === 0))
         .join('\n\n');
       
       // Prevent default paste and insert formatted content

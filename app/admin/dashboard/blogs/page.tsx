@@ -80,7 +80,11 @@ export default function BlogAdminDashboard() {
       setEditingBlog(null);
     } catch (error) {
       console.error("Failed to save blog:", error);
-      alert("Failed to save blog. Please check your connection and try again.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Failed to save blog. Please check your connection and try again."
+      );
       // Don't close the form on error so user can retry
     } finally {
       setIsSaving(false);
