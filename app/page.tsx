@@ -1,399 +1,537 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Hero from '@/components/Hero';
-import Services from '@/components/Services';
-import Stats from '@/components/Stats';
-import TimelineHero from '@/components/TimelineHero';
-import PopupForm from '@/components/PopupForm';
-import { API_BASE_URL } from '@/lib/api';
-
-interface TeamMember {
-  name: string;
-  role: string;
-  imageUrl: string;
-  description?: string;
-  linkedin?: string;
-}
+import Head from 'next/head';
 
 export default function Home() {
-  const teamMembers: TeamMember[] = [
-    {
-      name: "Shrish C Mishra",
-      role: "CEO & Founder",
-      imageUrl: "https://res.cloudinary.com/vobojthd/image/upload/v1787653060/FMW07278_BW_snlvvd.jpg",
-      description: "Visionary leader with 15+ years in B2B lead generation. Passionate about helping businesses scale through data-driven strategies.",
-    },
-  ];
-
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${API_BASE_URL}/contacts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          type: 'contact'
-        }),
-      });
-      
-      if (response.ok) {
-        alert('Form submitted successfully!');
-        setFormData({ name: '', email: '', phone: '', message: '' });
-      } else {
-        alert('Failed to submit form');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Error submitting form');
-    }
-  };
-
-  const [selectedCard, setSelectedCard] = useState<string | null>(null);
-
-  const [circlesVisible, setCirclesVisible] = useState(false);
-  const orbitSectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const target = orbitSectionRef.current;
-    if (!target) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setCirclesVisible(true);
-          observer.unobserve(target);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, []);
-
-  const orbitLogos = [
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784890111/kisspng-microsoft-office-365-business-company-computer-sof-microsoft-5ab6ffad7ea365.7460510615219424455187-removebg-preview_1_tnxzfn.png",
-      alt: "Microsoft",
-      style: { top: '2%', left: '8%' },
-    },
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784890244/IBM_logo_in-removebg-preview_flydwu.png",
-      alt: "IBM",
-      style: { top: '10%', left: '85%' },
-    },
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784891168/images-removebg-preview_xdoyyv.png",
-      alt: "Zendesk",
-      style: { top: '50%', left: '2%' },
-    },
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784891257/images-removebg-preview_1_h8jxze.png",
-      alt: "HP",
-      style: { top: '48%', left: '92%' },
-    },
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784904422/zscaler-logo-24_i2f7pu.jpg",
-      alt: "Zscaler",
-      style: { top: '90%', left: '10%' },
-    },
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784889908/redhat-logo-png_seeklogo-300344_elfch5.png",
-      alt: "Redhat",
-      style: { top: '92%', left: '85%' },
-    },
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784904516/LogoLockup-RGB-PurpleBlack_kunr2l.png",
-      alt: "Lenovo",
-      style: { top: '-4%', left: '48%' },
-    },
-    {
-      src: "https://res.cloudinary.com/vobojthd/image/upload/v1784905234/images_lsbbrd.png",
-      alt: "Intel",
-      style: { top: '98%', left: '48%' },
-    },
-  ];
-
   return (
-    <div className="flex flex-col min-h-screen font-poppins">
-      <Header />
-      <main className="flex-1">
-        <Hero
-          title="Fuel Your Growth with B2B Lead Generation Services"
-          description="Comprehensive solutions designed to drive results"
-        />
+    <>
+      <Head>
+        <title>B2B Lead Generation Company | Verified Leads | PMG B2B</title>
+        <meta name="description" content="PMG B2B delivers verified, compliant B2B leads for media agencies and enterprise tech teams. AI validation and two human audits on every lead." />
+        <meta name="keywords" content="B2B lead generation company, B2B lead generation services, B2B lead generation solutions, AI lead generation, lead generation partner for agencies" />
+      </Head>
+      <div className="flex flex-col min-h-screen font-poppins">
+        <Header />
+        <main className="flex-1">
+          {/* Hero Section */}
+          <section className="relative h-[90vh] flex items-center bg-black overflow-hidden">
+            {/* Video Background */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src="/hero-video.mp4" type="video/mp4" />
+            </video>
 
-        <Services />
-        <Stats />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/80 to-black/80" />
 
-        {/* Our Clients Marquee Section */}
-        <section className="py-0 bg-black overflow-hidden">
-          <div className="relative">
-            <div className="flex animate-marquee whitespace-nowrap">
-              {[...Array(1)].map((_, i) => (
-                <div key={i} className="flex items-center gap-24 px-8">
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784891881/download-removebg-preview_cvolk3.png"
-                    alt="AWS"
-                    className="h-12 md:h-16 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784890449/255-2554398_insight-logo-png-insight-technology-solutions-gmbh-removebg-preview_ebzgqe.png"
-                    alt="Insight"
-                    className="h-12 md:h-16 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784890111/kisspng-microsoft-office-365-business-company-computer-sof-microsoft-5ab6ffad7ea365.7460510615219424455187-removebg-preview_1_tnxzfn.png"
-                    alt="Microsoft"
-                    className="h-24 md:h-32 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784890244/IBM_logo_in-removebg-preview_flydwu.png"
-                    alt="IBM"
-                    className="h-12 md:h-16 w-auto"
-                  />
-
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784891168/images-removebg-preview_xdoyyv.png"
-                    alt="Zendesk"
-                    className="h-24 md:h-32 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784891257/images-removebg-preview_1_h8jxze.png"
-                    alt="HP"
-                    className="h-12 md:h-16 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784891341/kisspng-bmc-software-remedy-corporation-it-service-managem-cygilant-5b27487f018a35.1364200615293011190063-removebg-preview_bipdbx.png"
-                    alt="BMC"
-                    className="h-14 md:h-20 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784904422/zscaler-logo-24_i2f7pu.jpg"
-                    alt="Zscaler"
-                    className="h-14 md:h-16 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784889908/redhat-logo-png_seeklogo-300344_elfch5.png"
-                    alt="Redhat"
-                    className="h-24 md:h-32 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784904516/LogoLockup-RGB-PurpleBlack_kunr2l.png"
-                    alt="Lenovo"
-                    className="h-12 md:h-15 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784904844/images_kbphoe.png"
-                    alt="Nvidia"
-                    className="h-12 md:h-16 w-auto"
-                  />
-                  <img
-                    src="https://res.cloudinary.com/vobojthd/image/upload/v1784905234/images_lsbbrd.png"
-                    alt="Intel"
-                    className="h-12 md:h-16 w-auto"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-       
-
-        {/* CEO Leadership Section */}
-        <section className="py-20 bg-black overflow-hidden">
-          <div className="container mx-auto px-4 mb-12">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-[#FECB0F] text-sm font-bold tracking-[0.3em] uppercase mb-4">Leadership</h2>
-              <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">Our Visionary Leader</h3>
-            </div>
-          </div>
-
-          <div className="flex justify-center mb-16 px-4 sm:px-8 lg:px-20">
-            <Link href="/founders-word" className="ceo-card w-full max-w-6xl cursor-pointer relative overflow-hidden rounded-[2.5rem] shadow-2xl flex flex-col lg:flex-row group border border-white/10 hover:border-[#FECB0F]/30 transition-all duration-500">
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/95 to-black/80 z-0"></div>
-              
-              {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-96 h-96 bg-[#FECB0F]/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 animate-pulse"></div>
-              
-              {/* Top accent line */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#FECB0F] to-transparent z-10"></div>
-              
-              <div className="relative z-10 w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-center text-white lg:border-r border-white/10 bg-black/40 backdrop-blur-md">
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 bg-[#FECB0F]/10 border border-[#FECB0F]/30 rounded-full px-5 py-2 mb-8 w-fit">
-                  <div className="w-2 h-2 bg-[#FECB0F] rounded-full animate-pulse"></div>
-                  <span className="text-[#FECB0F] text-[10px] font-bold tracking-[0.2em] uppercase">Founder & CEO</span>
-                </div>
-                
-                {/* Name */}
-                <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 tracking-tighter leading-tight">
-                  {teamMembers[0].name}
-                </h3>
-                
-                {/* Description */}
-                <p className="text-gray-300 text-lg sm:text-xl leading-relaxed mb-10 max-w-md font-medium">
-                  {teamMembers[0].description}
+            {/* Content */}
+            <div className="relative z-10 container mx-auto px-4 pb-8">
+              <div className="text-center max-w-5xl mx-auto">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#FECB0F] mb-6 tracking-tight">
+                  B2B leads that get accepted, with proof on every one
+                </h1>
+                <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+                  PMG B2B is a B2B lead generation company for media agencies and enterprise technology teams. Proffer.ai and two human audits check every lead before it reaches you.
                 </p>
-                
-                {/* Stats/Highlights */}
-                <div className="grid grid-cols-2 gap-6 mb-10">
-                  <div className="bg-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm group-hover:border-[#FECB0F]/20 transition-colors">
-                    <div className="text-3xl sm:text-4xl font-black text-[#FECB0F] mb-1">15+</div>
-                    <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Years Experience</div>
-                  </div>
-                  <div className="bg-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm group-hover:border-[#FECB0F]/20 transition-colors">
-                    <div className="text-3xl sm:text-4xl font-black text-[#FECB0F] mb-1">120+</div>
-                    <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Strategic Wins</div>
-                  </div>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                  <Link href="/contact-us" className="bg-[#FECB0F] text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">
+                    Talk to our team
+                  </Link>
+                  <Link href="/our-services/proffer-ai" className="border-2 border-[#FECB0F] text-[#FECB0F] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#FECB0F] hover:text-black transition-all inline-block">
+                    See how Proffer.ai works
+                  </Link>
                 </div>
-                
-                {/* CTA Button */}
-                <div className="group/btn relative w-fit">
-                  <div className="absolute -inset-1 bg-[#FECB0F] rounded-full blur opacity-20 group-hover/btn:opacity-40 transition-opacity"></div>
-                  <div className="relative bg-[#FECB0F] text-black px-10 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 transform group-hover/btn:scale-105 flex items-center gap-3">
-                    <span>Read Founder's Story</span>
-                    <svg className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
+
+                {/* Two Doors */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                  <Link href="/solutions/for-media-agencies" className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all group">
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#FECB0F] transition-colors">I run lead programs for clients</h3>
+                    <p className="text-gray-400">For Media Agencies →</p>
+                  </Link>
+                  <Link href="/industries/technology-saas" className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all group">
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#FECB0F] transition-colors">I&apos;m building pipeline for my company</h3>
+                    <p className="text-gray-400">For Enterprise Teams →</p>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Stat Band and Trust Strip */}
+          <section className="py-20 bg-black border-t border-white/10">
+            <div className="container mx-auto px-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div className="text-center">
+                  <h3 className="text-4xl md:text-5xl font-bold text-[#FECB0F] mb-2">200+</h3>
+                  <p className="text-gray-400">Campaigns managed</p>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-4xl md:text-5xl font-bold text-[#FECB0F] mb-2">94%</h3>
+                  <p className="text-gray-400">Delivery satisfaction</p>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-4xl md:text-5xl font-bold text-[#FECB0F] mb-2">25M+</h3>
+                  <p className="text-gray-400">US contacts</p>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-4xl md:text-5xl font-bold text-[#FECB0F] mb-2">48h</h3>
+                  <p className="text-gray-400">First leads</p>
+                </div>
+              </div>
+
+              {/* Trust Strip */}
+              <div className="flex flex-wrap justify-center gap-6 md:gap-12 pt-8 border-t border-white/10">
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-5 h-5 text-[#FECB0F]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>ISO 27001</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-5 h-5 text-[#FECB0F]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>GDPR</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-5 h-5 text-[#FECB0F]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>CCPA</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-5 h-5 text-[#FECB0F]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Two audits per lead</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-5 h-5 text-[#FECB0F]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>In-house teams</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Most Rejected Leads Section */}
+          <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Most rejected leads should never have been delivered</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A rejected lead costs more than a replacement. It costs margin, time and the client&apos;s trust. Most rejections trace back to the same three gaps, and all three can be caught before delivery.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <div className="w-12 h-12 bg-[#FECB0F]/10 rounded-xl flex items-center justify-center mb-6">
+                      <svg className="w-6 h-6 text-[#FECB0F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Bad data slips through</h3>
+                    <p className="text-gray-600">Wrong titles, dead emails, the wrong company size.</p>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <div className="w-12 h-12 bg-[#FECB0F]/10 rounded-xl flex items-center justify-center mb-6">
+                      <svg className="w-6 h-6 text-[#FECB0F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Consent nobody can prove</h3>
+                    <p className="text-gray-600">The client asks for proof and there isn&apos;t any.</p>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <div className="w-12 h-12 bg-[#FECB0F]/10 rounded-xl flex items-center justify-center mb-6">
+                      <svg className="w-6 h-6 text-[#FECB0F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Delivery you can&apos;t see</h3>
+                    <p className="text-gray-600">You find out a campaign is behind when it&apos;s already late.</p>
                   </div>
                 </div>
               </div>
-              
-              <div className="relative z-10 w-full lg:w-1/2 min-h-[400px] sm:min-h-[500px] lg:min-h-0 flex items-center justify-center p-8 lg:p-12 overflow-hidden bg-black/20">
-                {/* Image container with decorative frame */}
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="absolute -inset-12 bg-[#FECB0F]/5 rounded-full blur-[100px] animate-pulse"></div>
-                  <img
-                    src={teamMembers[0].imageUrl}
-                    alt={teamMembers[0].name}
-                    className="relative w-full max-w-[450px] object-contain drop-shadow-[0_20px_50px_rgba(254,203,15,0.15)] group-hover:scale-105 transition-transform duration-1000"
-                  />
+            </div>
+          </section>
+
+          {/* Proffer.ai Section */}
+          <section className="py-20 bg-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Proffer.ai checks every lead before you see it</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Proffer.ai is PMG&apos;s own AI validation suite. It runs inside every campaign, and a human audit confirms its work.
+                  </p>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6">
+                    <div className="w-2 h-2 bg-[#FECB0F] rounded-full"></div>
+                    <span className="text-gray-900 text-lg">LeadCert AI validates every contact</span>
+                  </div>
+                  <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6">
+                    <div className="w-2 h-2 bg-[#FECB0F] rounded-full"></div>
+                    <span className="text-gray-900 text-lg">VerifySure AI records recall and consent</span>
+                  </div>
+                  <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6">
+                    <div className="w-2 h-2 bg-[#FECB0F] rounded-full"></div>
+                    <span className="text-gray-900 text-lg">TrustCheck AI checks authority on every call</span>
+                  </div>
+                  <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6">
+                    <div className="w-2 h-2 bg-[#FECB0F] rounded-full"></div>
+                    <span className="text-gray-900 text-lg">ClearBoard AI shows pacing and quality live</span>
+                  </div>
+                  <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6">
+                    <div className="w-2 h-2 bg-[#FECB0F] rounded-full"></div>
+                    <span className="text-gray-900 text-lg">PredictWise AI sharpens targeting as the campaign runs</span>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <Link href="/our-services/proffer-ai" className="text-[#FECB0F] font-bold text-lg hover:underline">
+                    How Proffer.ai works →
+                  </Link>
                 </div>
               </div>
-            </Link>
-          </div>
-        </section>
- <TimelineHero />
-        {/* Contact Form Section */}
-        <section className="py-20 bg-black">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4 text-white">Send Us a Message</h2>
-                <p className="text-gray-300 max-w-2xl mx-auto">
-                  Have questions about our B2B lead generation services? We'd love to hear from you. Fill out the form below and we'll get back to you shortly.
+            </div>
+          </section>
+
+          {/* Services Section */}
+          <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">B2B lead generation services built around acceptance</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">B2B Lead Generation</h3>
+                    <p className="text-[#FECB0F] text-sm mb-4">Prospect Pinnacle™</p>
+                    <p className="text-gray-600 mb-6">Qualified leads and meetings, delivered to your specs.</p>
+                    <Link href="/our-services/prospect-pinnacle-targeted-b2b-lead-gen-solutions" className="text-[#FECB0F] font-medium hover:underline">Learn more →</Link>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Account-Based Marketing</h3>
+                    <p className="text-[#FECB0F] text-sm mb-4">Impact Sphere™</p>
+                    <p className="text-gray-600 mb-6">Reach the whole buying group at your named accounts.</p>
+                    <Link href="/services/impact-sphere" className="text-[#FECB0F] font-medium hover:underline">Learn more →</Link>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">B2B Email Marketing</h3>
+                    <p className="text-[#FECB0F] text-sm mb-4">Inbox Oracle™</p>
+                    <p className="text-gray-600 mb-6">Verified opt-in email programs that turn into leads.</p>
+                    <Link href="/services/inbox-oracle-email-marketing-solutions" className="text-[#FECB0F] font-medium hover:underline">Learn more →</Link>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">B2B Data Solutions</h3>
+                    <p className="text-[#FECB0F] text-sm mb-4">Data Dynamo™</p>
+                    <p className="text-gray-600 mb-6">Data built around your ICP, enriched from 1,000+ sources.</p>
+                    <Link href="/services/data-dynamo" className="text-[#FECB0F] font-medium hover:underline">Learn more →</Link>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm relative">
+                    <div className="absolute top-4 right-4">
+                      <span className="px-3 py-1 bg-[#FECB0F] text-black text-xs font-bold uppercase rounded-full">New</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Conversational Qualified Leads</h3>
+                    <p className="text-gray-600 mb-6">Buyers who&apos;ve taken an assessment and agreed to talk.</p>
+                    <Link href="/services/conversational-qualified-leads" className="text-[#FECB0F] font-medium hover:underline">Learn more →</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Agency and Enterprise Section */}
+          <section className="py-20 bg-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Built for agencies. Ready for enterprise teams.</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-gradient-to-br from-[#FECB0F]/10 to-transparent border border-[#FECB0F]/20 rounded-2xl p-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">For Agencies</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      We deliver your clients&apos; programs under your brand, with 3X reserved bandwidth so pacing never slips, and consent proof you can hand to your client.
+                    </p>
+                    <Link href="/solutions/for-media-agencies" className="text-[#FECB0F] font-bold hover:underline">
+                      For Media Agencies →
+                    </Link>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-[#FECB0F]/10 to-transparent border border-[#FECB0F]/20 rounded-2xl p-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">For Enterprise Teams</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      Leads your sales team accepts, across the full buying group, from one accountable partner instead of several vendors.
+                    </p>
+                    <Link href="/industries/technology-saas" className="text-[#FECB0F] font-bold hover:underline">
+                      Technology & SaaS →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Process Section */}
+          <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">From your brief to accepted leads</h2>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex gap-6">
+                    <div className="w-12 h-12 bg-[#FECB0F] rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-black font-bold text-xl">1</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-900 text-lg">You share specs, TAL and targets.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-6">
+                    <div className="w-12 h-12 bg-[#FECB0F] rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-black font-bold text-xl">2</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-900 text-lg">We build the audience from 25M+ verified US contacts, filtered down to tech stack and install base.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-6">
+                    <div className="w-12 h-12 bg-[#FECB0F] rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-black font-bold text-xl">3</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-900 text-lg">Our in-house team reaches and qualifies buyers in US business hours.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-6">
+                    <div className="w-12 h-12 bg-[#FECB0F] rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-black font-bold text-xl">4</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-900 text-lg">Proffer.ai and two audits check every lead; you get delivery with consent proof and live pacing on ClearBoard. First leads within 48 hours.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Agency Results Section */}
+          <section className="py-20 bg-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">What changed for one agency partner</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                  <div className="text-center">
+                    <h3 className="text-5xl md:text-6xl font-bold text-[#FECB0F] mb-2">&lt;12%</h3>
+                    <p className="text-gray-600">Final rejection rate</p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-5xl md:text-6xl font-bold text-[#FECB0F] mb-2">40%</h3>
+                    <p className="text-gray-600">Faster verification cycles</p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-5xl md:text-6xl font-bold text-[#FECB0F] mb-2">25+h</h3>
+                    <p className="text-gray-600">Manual QA saved every month</p>
+                  </div>
+                </div>
+
+                <p className="text-center text-gray-600 italic">
+                  Results for an agency partner running enterprise tech campaigns.
                 </p>
               </div>
+            </div>
+          </section>
 
-              <div className="bg-black rounded-2xl p-8 md:p-12 shadow-lg">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name */}
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-200 mb-2">
-                      Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
-                      placeholder="Enter your name"
-                    />
+          {/* Industries Section */}
+          <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Industries we reach buyers in</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    We reach the decision makers inside these industries for technology brands selling into them.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <Link href="/industries/technology-saas" className="bg-[#FECB0F]/10 border border-[#FECB0F]/30 rounded-2xl p-8 hover:bg-[#FECB0F]/20 transition-all">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Technology & SaaS</h3>
+                    <p className="text-gray-600">Leads for tech brands</p>
+                  </Link>
+
+                  <Link href="/solutions/financial-services" className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Financial Services</h3>
+                    <p className="text-gray-600">Banks, insurers, fintechs</p>
+                  </Link>
+
+                  <Link href="/solutions/healthcare" className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Healthcare & Life Sciences</h3>
+                    <p className="text-gray-600">Health systems, pharma</p>
+                  </Link>
+
+                  <Link href="/solutions/manufacturing" className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Manufacturing</h3>
+                    <p className="text-gray-600">Industrial, operations</p>
+                  </Link>
+
+                  <Link href="/solutions/retail" className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FECB0F]/30 transition-all shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Retail & eCommerce</h3>
+                    <p className="text-gray-600">Retailers, commerce platforms</p>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* FAQ Section */}
+          <section className="py-20 bg-white">
+            <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-[#FECB0F] text-sm font-bold tracking-[0.3em] uppercase mb-4">FAQ</h2>
+                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h3>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 hover:border-[#FECB0F]/30 transition-all duration-300">
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">What does a B2B lead generation company do?</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      It finds the buyers who match your campaign, engages and qualifies them, then delivers them as leads or meetings your sales team can act on. PMG also verifies every lead with Proffer.ai and two human audits before delivery.
+                    </p>
                   </div>
 
-                  {/* Email */}
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-200 mb-2">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
-                      placeholder="Enter your email"
-                    />
+                  <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 hover:border-[#FECB0F]/30 transition-all duration-300">
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">How do you verify each lead?</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      LeadCert AI validates the contact, VerifySure AI records recall and consent, and TrustCheck AI reviews the call for authority. Then our team audits every lead twice.
+                    </p>
                   </div>
 
-                  {/* Phone Number */}
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-200 mb-2">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      required
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors"
-                      placeholder="Enter your phone number"
-                    />
+                  <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 hover:border-[#FECB0F]/30 transition-all duration-300">
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">Do you work white-label for agencies?</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      Yes. Most of our work is delivered behind media agencies, under their brand, to their clients&apos; specs.
+                    </p>
                   </div>
 
-                  {/* Message */}
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-gray-200 mb-2">
-                      Your Message *
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      required
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows={5}
-                      className="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900 text-white rounded-lg focus:outline-none focus:border-[#FECB0F] transition-colors resize-none"
-                      placeholder="Tell us about your requirements..."
-                    />
+                  <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 hover:border-[#FECB0F]/30 transition-all duration-300">
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">Are your leads GDPR and CCPA compliant?</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      Yes. We are ISO 27001 certified, GDPR and CCPA compliant, and every lead carries a consent record.
+                    </p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full py-4 bg-[#FECB0F] text-black font-bold rounded-lg hover:bg-[#FFD54F] transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+          {/* Closing CTA Section */}
+          <section className="relative overflow-hidden bg-white py-16 md:py-20">
+            {/* Dot texture */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-[0.12]"
+              style={{
+                backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+                backgroundSize: "22px 22px",
+              }}
+            />
+            {/* Soft glows */}
+            <div aria-hidden="true" className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-black/5 blur-3xl" />
+            <div aria-hidden="true" className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-black/10 blur-3xl" />
+
+            <div className="container relative mx-auto px-4">
+              <div className="mx-auto max-w-2xl rounded-[2.5rem] border-2 border-black bg-white px-6 py-10 text-center shadow-[10px_10px_0_0_#000] md:px-16 md:py-14">
+                {/* Eyebrow */}
+                <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-black/20 bg-black/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-black">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black opacity-40" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-black" />
+                  </span>
+                  Now booking campaigns
+                </span>
+
+                <h2 className="mb-6 text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl">
+                  Tell us about your{" "}
+                  <span className="relative inline-block">
+                    <span className="relative z-10">next campaign</span>
+                    <span aria-hidden="true" className="absolute inset-x-0 bottom-1 z-0 h-3 -rotate-1 bg-[#FECB0F] md:bottom-2 md:h-4" />
+                  </span>
+                </h2>
+
+                <p className="mx-auto mb-10 max-w-2xl text-lg text-black/75 md:text-xl">
+                  Share the audience, the asset and the volume. We&apos;ll reply within 24 hours.
+                </p>
+
+                <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                  <Link
+                    href="/contact-us"
+                    className="group inline-flex items-center gap-3 rounded-full bg-black px-10 py-5 text-lg font-bold text-white shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-black/30"
                   >
-                    Send Message
-                  </button>
-                </form>
+                    Talk to our team
+                    <svg
+                      className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 10h12m0 0-5-5m5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Link>
+
+                  <a
+                    href="mailto:info@pmg-b2b.com"
+                    className="inline-flex items-center rounded-full border-2 border-black px-8 py-[1.125rem] text-lg font-semibold text-black transition-colors duration-200 hover:bg-black hover:text-[#FECB0F]"
+                  >
+                    Email us instead
+                  </a>
+                </div>
+
+                <p className="mt-8 text-sm font-medium text-black/60">
+                  No commitment · Free campaign review · Response in under 24h
+                </p>
               </div>
             </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-      <PopupForm />
-    </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }

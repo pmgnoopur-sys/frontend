@@ -4,33 +4,34 @@ import Link from 'next/link';
 import { useState } from 'react';
 import RobotRunner from '@/components/RobotRunner';
 import SocialMediaFloating from '@/components/SocialMediaFloating';
+import { serviceGroups, type ServiceGroup } from '@/lib/services';
 
-const servicesMenu = [
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd"/></svg>,
-    label: 'Prospect Pinnacle',
-    description: 'Targeted B2B lead generation',
-    href: '/services/prospect-pinnacle',
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A4.001 4.001 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>,
-    label: 'Impact Sphere',
-    description: 'Account-based engagement',
-    href: '/services/impact-sphere',
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>,
-    label: 'Inbox Oracle',
-    description: 'Email marketing solutions',
-    href: '/services/inbox-oracle',
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"/></svg>,
-    label: 'Data Dynamo',
-    description: 'Data & analytics',
-    href: '/services/data-dynamo',
-  },
-];
+const serviceColumns = [serviceGroups.slice(0, 1), serviceGroups.slice(1, 2), serviceGroups.slice(2)];
+
+function ServiceGroupBlock({ group }: { group: ServiceGroup }) {
+  return (
+    <div>
+      <h3 className="flex items-center gap-2 text-[#FECB0F] text-xs font-bold mb-3 tracking-wider uppercase">
+        {group.heading}
+        {group.isNew && <span className="px-2 py-0.5 bg-[#FECB0F] text-black text-[10px] font-bold uppercase rounded-full tracking-normal">New</span>}
+      </h3>
+      <Link href={group.overview.href} className="block px-3 py-2 rounded-lg text-white text-sm font-semibold hover:bg-white/5 hover:text-[#FECB0F] transition">
+        {group.overview.label}
+      </Link>
+      {group.items.length > 0 && (
+        <ul className="ml-3 mt-1 border-l border-white/10">
+          {group.items.map((item) => (
+            <li key={item.href}>
+              <Link href={item.href} className="block pl-4 pr-3 py-1.5 text-gray-400 text-sm hover:text-[#FECB0F] transition">
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 const aboutMenu = [
   {
@@ -71,39 +72,6 @@ const aboutMenu = [
   },
 ];
 
-const profferMenu = [
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.925-3.087 9.123-7.488 10.74L10 18l-.512-.259C5.087 16.123 2 11.925 2 7.001c0-.681.056-1.35.166-2.002zM10 9a1 1 0 100-2 1 1 0 000 2zm-1 2a1 1 0 100 2h2a1 1 0 100-2H9z" clipRule="evenodd"/></svg>,
-    label: 'LeadCert AI',
-    description: 'Real-time lead validation',
-    href: '/proffer/leadcert',
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>,
-    label: 'VerifySure AI',
-    description: 'AI-powered consent calls',
-    href: '/proffer/verifysure',
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>,
-    label: 'ClearBoard AI',
-    description: 'Live delivery visibility',
-    href: '/proffer/clearboard',
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>,
-    label: 'TrustCheck AI',
-    description: 'Quality you can trust',
-    href: '/proffer/trustcheck',
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/></svg>,
-    label: 'PredictWise AI',
-    description: 'Better campaign results',
-    href: '/proffer/predictwise',
-  },
-];
-
 const insightsMenu = [
   {
     icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clipRule="evenodd"/><path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z"/></svg>,
@@ -127,6 +95,13 @@ const insightsMenu = [
 
 const solutionsMenu = {
   byIndustry: [
+    {
+      icon: <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clipRule="evenodd"/></svg>,
+      label: 'Technology & SaaS',
+      description: 'Software, cloud, security & infrastructure brands',
+      href: '/industries/technology-saas',
+      featured: true,
+    },
     { 
       icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/></svg>,
       label: 'IT Services', 
@@ -157,13 +132,7 @@ const solutionsMenu = {
       description: 'For stores & chains', 
       href: '/solutions/retail' 
     },
-    { 
-      icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd"/></svg>,
-      label: 'Construction', 
-      description: 'For project crews', 
-      href: '/solutions/construction' 
-    },
-    { 
+    {
       icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15.98 3.804a1 1 0 00-1.414-.03L10.5 7.793 8.207 5.5a1 1 0 00-1.414 0l-4 4a1 1 0 101.414 1.414L7.5 7.621l2.293 2.293a1 1 0 001.414 0l4.44-4.44a1 1 0 00.03-1.414z"/><path fillRule="evenodd" d="M3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/></svg>,
       label: 'Marketing & Advertising', 
       description: 'For agencies & brands', 
@@ -171,23 +140,11 @@ const solutionsMenu = {
     },
   ],
   byCompanySize: [
-    { 
-      icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd"/></svg>,
-      label: 'Small Business', 
-      description: 'Growing businesses', 
-      href: '/solutions/small-business' 
-    },
-    { 
+    {
       icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clipRule="evenodd"/><path d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z"/></svg>,
       label: 'Enterprise', 
       description: 'Large organizations', 
       href: '/solutions/enterprise' 
-    },
-    { 
-      icon: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clipRule="evenodd"/></svg>,
-      label: 'Global Companies', 
-      description: 'Worldwide operations', 
-      href: '/solutions/global-companies' 
     },
   ],
   
@@ -198,7 +155,6 @@ export default function Header() {
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
   const [isMobileSolutionsOpen, setIsMobileSolutionsOpen] = useState(false);
-  const [isMobileProfferOpen, setIsMobileProfferOpen] = useState(false);
   const [isMobileInsightsOpen, setIsMobileInsightsOpen] = useState(false);
 
   return (
@@ -215,6 +171,9 @@ export default function Header() {
           
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-2 lg:space-x-4">
+            <Link href="/our-services/proffer-ai" className="text-white hover:text-[#FECB0F] transition px-2 lg:px-4 py-2 rounded-full">
+              Proffer.ai
+            </Link>
             <div className="group">
               <button className="text-white hover:text-[#FECB0F] transition px-2 lg:px-4 py-2 rounded-full flex items-center gap-1">
                 About Us
@@ -278,19 +237,33 @@ export default function Header() {
                       <div>
                         <h3 className="text-[#FECB0F] text-xs font-bold mb-4 tracking-wider">BY INDUSTRY</h3>
                         <div className="space-y-1">
-                          {solutionsMenu.byIndustry.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition group/item"
-                            >
-                              <span className="w-9 h-9 rounded-lg bg-[#FECB0F]/10 text-[#FECB0F] flex items-center justify-center shrink-0">{item.icon}</span>
-                              <div>
-                                <div className="text-white text-sm font-medium group-hover/item:text-[#FECB0F] transition">{item.label}</div>
-                                <div className="text-gray-400 text-xs">{item.description}</div>
-                              </div>
-                            </Link>
-                          ))}
+                          {solutionsMenu.byIndustry.map((item) =>
+                            item.featured ? (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className="flex items-center gap-4 p-4 mb-2 rounded-xl border border-[#FECB0F]/30 bg-[#FECB0F]/10 hover:bg-[#FECB0F]/15 transition group/item"
+                              >
+                                <span className="w-12 h-12 rounded-xl bg-[#FECB0F] text-black flex items-center justify-center shrink-0">{item.icon}</span>
+                                <div>
+                                  <div className="text-white text-base font-bold group-hover/item:text-[#FECB0F] transition">{item.label}</div>
+                                  <div className="text-gray-300 text-xs">{item.description}</div>
+                                </div>
+                              </Link>
+                            ) : (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition group/item"
+                              >
+                                <span className="w-9 h-9 rounded-lg bg-[#FECB0F]/10 text-[#FECB0F] flex items-center justify-center shrink-0">{item.icon}</span>
+                                <div>
+                                  <div className="text-white text-sm font-medium group-hover/item:text-[#FECB0F] transition">{item.label}</div>
+                                  <div className="text-gray-400 text-xs">{item.description}</div>
+                                </div>
+                              </Link>
+                            )
+                          )}
                         </div>
                       </div>
                       {/* BY COMPANY SIZE */}
@@ -327,87 +300,14 @@ export default function Header() {
               <div className="absolute left-0 top-full pt-2 w-full opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
                 <div className="bg-black border-b border-yellow-500/30 shadow-2xl overflow-hidden">
                   <div className="container mx-auto px-4 py-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                      <div>
-                        <h3 className="text-[#FECB0F] text-xs font-bold mb-4 tracking-wider">OUR SERVICES</h3>
-                        <div className="space-y-1">
-                          {servicesMenu.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition group/item"
-                            >
-                              <span className="w-9 h-9 rounded-lg bg-[#FECB0F]/10 text-[#FECB0F] flex items-center justify-center shrink-0">{item.icon}</span>
-                              <div>
-                                <div className="text-white text-sm font-medium group-hover/item:text-[#FECB0F] transition">{item.label}</div>
-                                <div className="text-gray-400 text-xs">{item.description}</div>
-                              </div>
-                            </Link>
+                    <div className="grid grid-cols-3 gap-8 max-w-6xl mx-auto">
+                      {serviceColumns.map((column, i) => (
+                        <div key={i} className="space-y-6">
+                          {column.map((group) => (
+                            <ServiceGroupBlock key={group.heading} group={group} />
                           ))}
                         </div>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="relative rounded-xl overflow-hidden w-full h-full min-h-[240px]">
-                          <img
-                            src="https://res.cloudinary.com/vobojthd/image/upload/v1788441562/ChatGPT_Image_Sep_3_2026_06_48_55_PM_k6ty1q.png"
-                            alt="Our Services"
-                            className="w-full h-full object-cover absolute inset-0"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
-                          <div className="absolute bottom-4 left-4 right-4">
-                            <div className="text-[#FECB0F] text-[10px] font-bold tracking-widest uppercase">What We Do</div>
-                            <div className="text-white font-bold text-lg mt-1">Growth Engine</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="group">
-              <button className="text-white hover:text-[#FECB0F] transition px-2 lg:px-4 py-2 rounded-full flex items-center gap-1">
-                Proffer.ai
-                <svg className="w-3.5 h-3.5 mt-0.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className="absolute left-0 top-full pt-2 w-full opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
-                <div className="bg-black border-b border-yellow-500/30 shadow-2xl overflow-hidden">
-                  <div className="container mx-auto px-4 py-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                      <div>
-                        <h3 className="text-[#FECB0F] text-xs font-bold mb-4 tracking-wider">AI CAPABILITIES</h3>
-                        <div className="space-y-1">
-                          {profferMenu.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition group/item"
-                            >
-                              <span className="w-9 h-9 rounded-lg bg-[#FECB0F]/10 text-[#FECB0F] flex items-center justify-center shrink-0">{item.icon}</span>
-                              <div>
-                                <div className="text-white text-sm font-medium group-hover/item:text-[#FECB0F] transition">{item.label}</div>
-                                <div className="text-gray-400 text-xs">{item.description}</div>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="relative rounded-xl overflow-hidden w-full h-full min-h-[240px]">
-                          <img
-                            src="https://res.cloudinary.com/vobojthd/image/upload/v1788503908/ChatGPT_Image_Sep_4_2026_12_04_42_PM_dim8kh.png"
-                            alt="Proffer AI"
-                            className="w-full h-full object-cover absolute inset-0"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
-                          <div className="absolute bottom-4 left-4 right-4">
-                            <div className="text-[#FECB0F] text-[10px] font-bold tracking-widest uppercase">The Future of Demand Gen</div>
-                            <div className="text-white font-bold text-lg mt-1">AI-Powered Precision</div>
-                          </div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -461,7 +361,7 @@ export default function Header() {
                 </div>
               </div>
             </div>
-            <Link href="/contact" className="text-black px-4 py-2 rounded-full hover:bg-gray-900 transition font-semibold" style={{backgroundColor: '#FECB0F'}}>
+            <Link href="/contact-us" className="text-black px-4 py-2 rounded-full hover:bg-gray-900 transition font-semibold" style={{backgroundColor: '#FECB0F'}}>
               Contact Us
             </Link>
           </div>
@@ -484,6 +384,7 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="lg:hidden mt-4 space-y-4 pb-4">
+            <Link href="/our-services/proffer-ai" className="block text-white hover:text-[#FECB0F] transition">Proffer.ai</Link>
             <div>
               <div className="flex items-center justify-between">
                 <span className="block text-white">About Us</span>
@@ -533,7 +434,7 @@ export default function Header() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="block text-gray-300 hover:text-[#FECB0F] transition text-sm"
+                      className={item.featured ? 'block text-[#FECB0F] font-bold text-base' : 'block text-gray-300 hover:text-[#FECB0F] transition text-sm'}
                     >
                       {item.label}
                     </Link>
@@ -566,15 +467,22 @@ export default function Header() {
                 </button>
               </div>
               {isMobileServicesOpen && (
-                <div className="mt-2 ml-4 space-y-3 border-l border-yellow-500/30 pl-4">
-                  {servicesMenu.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="block text-gray-300 hover:text-[#FECB0F] transition text-sm"
-                    >
-                      {item.label}
-                    </Link>
+                <div className="mt-2 ml-4 space-y-4 border-l border-yellow-500/30 pl-4">
+                  {serviceGroups.map((group) => (
+                    <div key={group.heading}>
+                      <div className="flex items-center gap-2 text-xs text-[#FECB0F] font-bold tracking-wider uppercase mb-2">
+                        {group.heading}
+                        {group.isNew && <span className="px-2 py-0.5 bg-[#FECB0F] text-black text-[10px] font-bold uppercase rounded-full tracking-normal">New</span>}
+                      </div>
+                      <Link href={group.overview.href} className="block text-white hover:text-[#FECB0F] transition text-sm font-medium">
+                        {group.overview.label}
+                      </Link>
+                      {group.items.map((item) => (
+                        <Link key={item.href} href={item.href} className="block mt-2 pl-3 text-gray-400 hover:text-[#FECB0F] transition text-sm">
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
                   ))}
                 </div>
               )}
@@ -607,35 +515,7 @@ export default function Header() {
                 </div>
               )}
             </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="block text-white">Proffer.ai</span>
-                <button
-                  type="button"
-                  onClick={() => setIsMobileProfferOpen(!isMobileProfferOpen)}
-                  className="text-white p-1"
-                  aria-label="Toggle proffer submenu"
-                >
-                  <svg className={`w-4 h-4 transition-transform ${isMobileProfferOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-              </div>
-              {isMobileProfferOpen && (
-                <div className="mt-2 ml-4 space-y-3 border-l border-yellow-500/30 pl-4">
-                  {profferMenu.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="block text-gray-300 hover:text-[#FECB0F] transition text-sm"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-            <Link href="/contact" className="block text-black px-4 py-2 rounded-lg hover:bg-gray-900 transition text-center font-semibold" style={{backgroundColor: '#FECB0F'}}>
+            <Link href="/contact-us" className="block text-black px-4 py-2 rounded-lg hover:bg-gray-900 transition text-center font-semibold" style={{backgroundColor: '#FECB0F'}}>
               Contact Us
             </Link>
           </div>

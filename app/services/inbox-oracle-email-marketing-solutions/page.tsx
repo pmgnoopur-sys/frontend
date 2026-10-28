@@ -63,7 +63,7 @@ export default function InboxOracle() {
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-r from-white to-[#FFF8E7] text-gray-900 overflow-hidden">
+        <section className="relative min-h-[60vh] flex items-center justify-center bg-white text-gray-900 overflow-hidden">
           <div className="container mx-auto px-4 text-center py-20">
             <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
               <div className="flex-1">
@@ -79,9 +79,9 @@ export default function InboxOracle() {
               </div>
               <div className="flex-1 flex justify-end h-full">
                 <img
-                  src="https://res.cloudinary.com/vobojthd/image/upload/v1784817801/B2B-appointment-setting_ks0wwp.png"
+                  src="/images/services/inbox-oracle-hero.jpg"
                   alt="Email Marketing Illustration"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full max-w-md object-contain"
                 />
               </div>
             </div>

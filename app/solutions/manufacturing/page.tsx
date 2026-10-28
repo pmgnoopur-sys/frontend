@@ -84,7 +84,7 @@ export default function Manufacturing() {
                   <a href="#features" className="bg-[#FECB0F] text-black px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform">
                     Explore Industrial Features
                   </a>
-                  <Link href="/contact" className="border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/5 transition-colors">
+                  <Link href="/contact-us" className="border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/5 transition-colors">
                     Request Manufacturing Deck
                   </Link>
                 </div>
@@ -209,7 +209,7 @@ export default function Manufacturing() {
               <p className="text-gray-400 text-lg mb-12 max-w-xl mx-auto font-medium">
                 Connect with our industrial strategists to see how we track RFQs in your specific manufacturing niche.
               </p>
-              <Link href="/contact" className="bg-[#FECB0F] text-black px-12 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">
+              <Link href="/contact-us" className="bg-[#FECB0F] text-black px-12 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">
                 Start Industrial Mapping
               </Link>
             </div>

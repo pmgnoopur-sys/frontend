@@ -1,5 +1,12 @@
+import Link from 'next/link';
+import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ContactDetails from '@/components/LegalContactDetails';
+
+export const metadata: Metadata = {
+  title: 'CCPA Notice | PMG B2B',
+};
 
 export default function CCPA() {
   return (
@@ -118,7 +125,8 @@ export default function CCPA() {
               To exercise the access, data portability, and deletion rights described above, please submit a verifiable consumer request to us by either
             </p>
             <ul className="list-disc pl-6 mb-4">
-              <li>Calling us at 408-763-5612</li>
+              <li>Calling us at <a href="tel:+17817501320" className="underline">+1 781 750 1320</a></li>
+              <li>Emailing us at <a href="mailto:info@pmg-b2b.com" className="underline">info@pmg-b2b.com</a></li>
             </ul>
             <p className="mb-4">
               Only you, or someone legally authorized to act on your behalf, may make a verifiable consumer request related to your personal information. You may also make a verifiable consumer request on behalf of your minor child.
@@ -162,15 +170,9 @@ export default function CCPA() {
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Contact Information</h2>
             <p className="mb-4">
-              If you have any questions or comments about this notice, the ways in which PMG B2B collects and uses your information described below and in the Privacy Policy, your choices and rights regarding such use, or wish to exercise your rights under California law, please do not hesitate to contact us at:
+              If you have any questions or comments about this notice, the ways in which PMG B2B collects and uses your information described above and in the <Link href="/privacy-policy" className="underline">Privacy Policy</Link>, your choices and rights regarding such use, or wish to exercise your rights under California law, please do not hesitate to contact us at:
             </p>
-            <div className="mb-4">
-              <p className="mb-2"><strong>Phone:</strong> +91 7972722487</p>
-              <p className="mb-2"><strong>Headquarters:</strong> Boston, Massachusetts</p>
-              <p className="mb-2"><strong>Address:</strong> City Vista, Kharadi, Pune</p>
-              <p className="mb-2"><strong>Website:</strong> https://pmg-b2b.com/</p>
-              <p className="mb-2"><strong>Email:</strong> info@pmg-b2b.com</p>
-            </div>
+            <ContactDetails />
           </div>
         </div>
       </main>

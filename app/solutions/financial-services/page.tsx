@@ -3,6 +3,12 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Demo from '@/components/Demo';
 import StickyScrollSection from '@/components/StickyScrollSection';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Financial Services Lead Generation | PMG B2B',
+  description: 'Reach IT, risk, operations and digital leaders at banks, insurers and fintechs, with verified, compliant leads for tech brands selling into finance.',
+};
 
 const financialStickyContent = [
   {
@@ -65,7 +71,7 @@ export default function FinancialServices() {
           {/* background elements */}
           <div className="absolute top-0 right-0 w-[50%] h-full bg-gradient-to-l from-[#FECB0F]/10 to-transparent opacity-50" />
           <div className="absolute top-20 right-20 w-64 h-64 bg-[#FECB0F]/5 rounded-full blur-[100px] animate-pulse" />
-          
+
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col lg:flex-row items-center gap-16">
               <div className="flex-1 text-left">
@@ -74,18 +80,19 @@ export default function FinancialServices() {
                   Financial Vertical
                 </div>
                 <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter leading-[0.85]">
-                  BFSI & <br />
-                  <span className="text-[#FECB0F]">Fintech</span>
+                  Financial services <br />
+                  <span className="text-[#FECB0F]">lead generation</span> <br />
+                  for tech brands selling into finance
                 </h1>
                 <p className="text-lg text-gray-400 max-w-lg mb-8 leading-relaxed font-medium">
-                  We navigate committee-based approvals and strict regulatory oversight to connect your financial solutions with key risk and executive stakeholders.
+                  We reach the technology, risk and operations leaders inside banks, insurers, asset managers and fintechs, with consent recorded on every lead.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <a href="#features" className="bg-[#FECB0F] text-black px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform">
-                    View BFSI Capabilities
+                    View Financial Services Capabilities
                   </a>
-                  <Link href="/contact" className="border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/5 transition-colors">
-                    Request BFSI Playbook
+                  <Link href="/contact-us" className="border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/5 transition-colors">
+                    Request Financial Services Playbook
                   </Link>
                 </div>
               </div>
@@ -116,17 +123,89 @@ export default function FinancialServices() {
                 <div>
                   <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">
                     Precision in <br />
-                    <span className="text-gray-500 italic font-serif underline decoration-[#FECB0F]/30">High-Stakes BFSI</span>
+                    <span className="text-gray-500 italic font-serif underline decoration-[#FECB0F]/30">High-Stakes Financial Services</span>
                   </h2>
                 </div>
                 <div className="space-y-6">
                   <p className="text-xl text-gray-400 leading-relaxed font-medium">
-                    Financial services sales don't happen with one click. They happen through consensus between risk, tech, and operations.
+                    Financial services sales don&apos;t happen with one click. They happen through consensus between risk, tech, and operations.
                   </p>
                   <p className="text-gray-500 leading-relaxed">
                     From regional banks to global fintech disruptors, we identify the exact committee members and risk officers who control the budget for new technology and professional services.
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Who We Reach Section */}
+        <section className="py-20 bg-[#050505] relative">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <div className="text-[#FECB0F] text-xs font-bold tracking-[0.3em] uppercase mb-4">Target Audience</div>
+                <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+                  Who we reach
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  'CIOs and IT leaders',
+                  'CISOs',
+                  'Risk and compliance',
+                  'Operations',
+                  'Digital banking and payments leaders'
+                ].map((item, i) => (
+                  <div key={i} className="p-6 rounded-2xl bg-black border border-white/5 hover:border-[#FECB0F]/30 transition-all duration-300">
+                    <p className="text-white font-medium">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why They're Hard to Reach Section */}
+        <section className="py-20 relative">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <div className="text-[#FECB0F] text-xs font-bold tracking-[0.3em] uppercase mb-4">Challenge</div>
+                <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+                  Why they&apos;re hard to reach
+                </h2>
+              </div>
+              <div className="p-10 rounded-[2.5rem] bg-[#050505] border border-white/5 max-w-3xl mx-auto">
+                <p className="text-xl text-gray-400 leading-relaxed font-medium text-center">
+                  Heavy regulation makes these buyers cautious. Security reviews come first and procurement takes time, so every touch must be accurate and compliant.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Programs That Fit Section */}
+        <section className="py-20 bg-[#050505] relative">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <div className="text-[#FECB0F] text-xs font-bold tracking-[0.3em] uppercase mb-4">Solutions</div>
+                <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+                  Programs that fit
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  'Content syndication',
+                  'BANT',
+                  'ABM',
+                  'Appointment setting'
+                ].map((item, i) => (
+                  <div key={i} className="p-6 rounded-2xl bg-black border border-white/5 hover:border-[#FECB0F]/30 transition-all duration-300 text-center">
+                    <p className="text-white font-medium">{item}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -197,20 +276,54 @@ export default function FinancialServices() {
           />
         </section>
 
+        {/* FAQ Section */}
+        <section className="py-20 relative">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <div className="text-[#FECB0F] text-xs font-bold tracking-[0.3em] uppercase mb-4">FAQ</div>
+                <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+                  Frequently Asked Questions
+                </h2>
+              </div>
+              <div className="space-y-4">
+                <div className="p-8 rounded-2xl bg-[#050505] border border-white/5 hover:border-[#FECB0F]/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-white mb-3">Can you reach decision makers at banks and insurers?</h3>
+                  <p className="text-gray-400 leading-relaxed">
+                    Yes, across IT, security, risk, operations and digital roles.
+                  </p>
+                </div>
+                <div className="p-8 rounded-2xl bg-[#050505] border border-white/5 hover:border-[#FECB0F]/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-white mb-3">How do you handle compliance-sensitive outreach?</h3>
+                  <p className="text-gray-400 leading-relaxed">
+                    We are GDPR and CCPA compliant and ISO 27001 certified, and every lead carries a consent record.
+                  </p>
+                </div>
+                <div className="p-8 rounded-2xl bg-[#050505] border border-white/5 hover:border-[#FECB0F]/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-white mb-3">Do you work with fintech brands?</h3>
+                  <p className="text-gray-400 leading-relaxed">
+                    Yes, and with tech brands selling into fintechs.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Area */}
         <section className="py-32 relative overflow-hidden">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto p-20 rounded-[3rem] bg-gradient-to-br from-[#111] to-black border border-white/5 text-center relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#FECB0F] to-transparent" />
               <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">
-                Ready to Secure More <br />
-                <span className="text-[#FECB0F]">BFSI Mandates?</span>
+                Ready to reach financial <br />
+                <span className="text-[#FECB0F]">services leaders?</span>
               </h2>
               <p className="text-gray-400 text-lg mb-12 max-w-xl mx-auto font-medium">
                 Connect with our financial sector strategists to map your ideal institutional and fintech target accounts.
               </p>
-              <Link href="/contact" className="bg-[#FECB0F] text-black px-12 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">
-                Start BFSI Mapping
+              <Link href="/contact-us" className="bg-[#FECB0F] text-black px-12 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">
+                Start Financial Services Mapping
               </Link>
             </div>
           </div>

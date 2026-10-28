@@ -423,8 +423,8 @@ export default function Career() {
           <div className="container mx-auto px-4 text-center">
             <p className="text-gray-700">
               For recruitment inquiries, contact us at: 
-              <a href="mailto:recruitment@pmg-b2b.com" className="text-black font-semibold ml-2 hover:underline">
-                recruitment@pmg-b2b.com
+              <a href="mailto:info@pmg-b2b.com" className="text-black font-semibold ml-2 hover:underline">
+                info@pmg-b2b.com
               </a>
             </p>
           </div>

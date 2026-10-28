@@ -10,7 +10,7 @@ const services = [
   {
     title: 'Targeted Lead Generation™',
     description: 'Experience campaigns and guaranteed MQL/SQL appointments, driving sales with precision-targeted messaging.',
-    link: '/services/prospect-pinnacle',
+    link: '/our-services/prospect-pinnacle-targeted-b2b-lead-gen-solutions',
     features: ['B2B Demand Generation', 'Content Syndication', 'MQL and SQL Generation', 'B2B Appointment Setting']
   },
   {
@@ -22,15 +22,9 @@ const services = [
   {
     title: 'Email Marketing Solutions™',
     description: 'Level up your email strategy with our BANT-qualified, insight-driven approaches for unmatched lead verification.',
-    link: '/services/inbox-oracle',
+    link: '/services/inbox-oracle-email-marketing-solutions',
     features: ['Landing Page Optimization', 'Email Campaign Deployment', 'Targeted B2B Data Segmentation', 'Verified Opt-in B2B Email Lists']
   },
-  {
-    title: 'Contact Discovery™',
-    description: 'Discover and connect with key decision-makers through our advanced contact discovery solutions.',
-    link: '/services/contact-discovery',
-    features: ['Decision Maker Identification', 'Direct Contact Details', 'Company Intelligence', 'Verified Contact Data']
-  }
 ];
 
 export default function Services() {
@@ -294,11 +288,6 @@ const trendServices = [
     title: "Inbox Oracle Email Marketing Solutions™",
     desc: "PMG B2B's B2B email marketing services are designed to deliver high impact campaigns that connect with your audience and drive measurable results. From precise targeting to large scale deployment, we ensure your emails land in the right inbox every time. With strategies that generate 150K verified email leads monthly.",
     points: ["Landing Page Optimization", "Email Campaign Deployment", "Targeted B2B Data Segmentation", "Verified Opt-in B2B Email Lists"],
-  },
-  {
-    title: "Contact Discovery Solutions™",
-    desc: "PMG B2B's contact discovery solutions help you identify and connect with key decision-makers across your target accounts. Leveraging advanced research methodologies and verified data sources, we provide accurate contact information to accelerate your sales outreach.",
-    points: ["Decision Maker Identification", "Direct Contact Details", "Company Intelligence", "Verified Contact Data"],
   },
 ];
 

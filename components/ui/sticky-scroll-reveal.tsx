@@ -54,7 +54,6 @@ const supportingCopy: Record<string, string> = {
   'A Vision for the Future': 'The company vision combines AI-driven innovation with a long-term commitment to scalable, people-centered growth.',
 
   'Talk to a Real Strategist': 'Every inquiry is handled by a team member who understands B2B growth, so your first conversation is already moving toward a useful solution.',
-  'Offices in Mumbai & Pune': 'With teams in both cities, support is grounded in local presence, faster coordination, and direct access to the right people.',
   'A Response You Can Count On': 'Replies are managed promptly so you can move from first contact to a clear next step without unnecessary delay.',
   'Tell Us About Your Goals': 'Sharing your goals early helps the team tailor a solution that matches your current challenges, timelines, and target outcomes.',
 

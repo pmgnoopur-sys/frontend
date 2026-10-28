@@ -69,18 +69,6 @@ const style = `
     50% { transform: translateX(-25px) translateY(10px); }
     100% { transform: translateX(0) translateY(0); }
   }
-  @keyframes waveMove {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(-50px); }
-    100% { transform: translateX(0); }
-  }
-  @keyframes marquee {
-    0% { transform: translateX(100%) translateY(0); }
-    25% { transform: translateX(50%) translateY(-10px); }
-    50% { transform: translateX(0%) translateY(0); }
-    75% { transform: translateX(-50%) translateY(10px); }
-    100% { transform: translateX(-100%) translateY(0); }
-  }
   @keyframes slideDown {
     from { opacity: 0; transform: translateY(-30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -313,9 +301,9 @@ export default function Blog() {
                     stroke="#FECB0F"
                     strokeWidth="2"
                     opacity="0.8"
-                    style={{ animation: 'waveMove 8s ease-in-out infinite' }}
+                    style={{ animation: 'blogWaveMove 8s ease-in-out infinite' }}
                   />
-                  <text x="50" y="30" fill="#FECB0F" fontSize="24" fontWeight="bold" letterSpacing="4" style={{ animation: 'marquee 15s linear infinite' }}>
+                  <text x="50" y="30" fill="#FECB0F" fontSize="24" fontWeight="bold" letterSpacing="4" style={{ animation: 'blogMarquee 15s linear infinite' }}>
                     LEADS
                   </text>
                 </svg>
@@ -330,9 +318,9 @@ export default function Blog() {
                     stroke="#FECB0F"
                     strokeWidth="1.5"
                     opacity="0.75"
-                    style={{ animation: 'waveMove 10s ease-in-out infinite 1s' }}
+                    style={{ animation: 'blogWaveMove 10s ease-in-out infinite 1s' }}
                   />
-                  <text x="100" y="30" fill="#FECB0F" fontSize="20" fontWeight="bold" letterSpacing="3" style={{ animation: 'marquee 18s linear infinite' }}>
+                  <text x="100" y="30" fill="#FECB0F" fontSize="20" fontWeight="bold" letterSpacing="3" style={{ animation: 'blogMarquee 18s linear infinite' }}>
                     TELEMARKETING
                   </text>
                 </svg>
@@ -347,9 +335,9 @@ export default function Blog() {
                     stroke="#FECB0F"
                     strokeWidth="1.2"
                     opacity="0.7"
-                    style={{ animation: 'waveMove 12s ease-in-out infinite 2s' }}
+                    style={{ animation: 'blogWaveMove 12s ease-in-out infinite 2s' }}
                   />
-                  <text x="150" y="30" fill="#FECB0F" fontSize="18" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 20s linear infinite' }}>
+                  <text x="150" y="30" fill="#FECB0F" fontSize="18" fontWeight="bold" letterSpacing="2" style={{ animation: 'blogMarquee 20s linear infinite' }}>
                     CONTACT DISCOVERY
                   </text>
                 </svg>
@@ -364,9 +352,9 @@ export default function Blog() {
                     stroke="#FECB0F"
                     strokeWidth="1"
                     opacity="0.65"
-                    style={{ animation: 'waveMove 14s ease-in-out infinite 3s' }}
+                    style={{ animation: 'blogWaveMove 14s ease-in-out infinite 3s' }}
                   />
-                  <text x="200" y="30" fill="#FECB0F" fontSize="16" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 22s linear infinite' }}>
+                  <text x="200" y="30" fill="#FECB0F" fontSize="16" fontWeight="bold" letterSpacing="2" style={{ animation: 'blogMarquee 22s linear infinite' }}>
                     EMAIL MARKETING
                   </text>
                 </svg>
@@ -381,9 +369,9 @@ export default function Blog() {
                     stroke="#FECB0F"
                     strokeWidth="0.8"
                     opacity="0.6"
-                    style={{ animation: 'waveMove 16s ease-in-out infinite 4s' }}
+                    style={{ animation: 'blogWaveMove 16s ease-in-out infinite 4s' }}
                   />
-                  <text x="250" y="30" fill="#FECB0F" fontSize="14" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 25s linear infinite' }}>
+                  <text x="250" y="30" fill="#FECB0F" fontSize="14" fontWeight="bold" letterSpacing="2" style={{ animation: 'blogMarquee 25s linear infinite' }}>
                     B2B SALES
                   </text>
                 </svg>
@@ -398,9 +386,9 @@ export default function Blog() {
                     stroke="#FECB0F"
                     strokeWidth="0.6"
                     opacity="0.55"
-                    style={{ animation: 'waveMove 18s ease-in-out infinite 5s' }}
+                    style={{ animation: 'blogWaveMove 18s ease-in-out infinite 5s' }}
                   />
-                  <text x="300" y="30" fill="#FECB0F" fontSize="12" fontWeight="bold" letterSpacing="2" style={{ animation: 'marquee 28s linear infinite' }}>
+                  <text x="300" y="30" fill="#FECB0F" fontSize="12" fontWeight="bold" letterSpacing="2" style={{ animation: 'blogMarquee 28s linear infinite' }}>
                     DATA
                   </text>
                 </svg>

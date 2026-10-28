@@ -6,6 +6,7 @@ import BusinessProcess from '@/components/BusinessProcess';
 import Demo from '@/components/Demo';
 import StickyScrollSection from '@/components/StickyScrollSection';
 import ProfileOrbitCard from '@/components/ProfileOrbitCard';
+import Link from 'next/link';
 
 const servicesStickyContent = [
   {
@@ -172,6 +173,25 @@ export default function Services() {
                 <p className="text-gray-600 leading-relaxed">
                   Maintain clean, accurate, and compliant databases. Our database management services ensure your data is always up-to-date and ready for marketing campaigns.
                 </p>
+              </div>
+
+              {/* Conversational Qualified Leads Card */}
+              <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 relative">
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-[#FECB0F] text-black text-xs font-bold uppercase rounded-full">New</span>
+                </div>
+                <div className="w-16 h-16 bg-gradient-to-br from-[#FECB0F] to-[#F5A623] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 4.227 13.574 4.227 12c0-.81.016-1.264-.502-1.95-1.255L2.05 8.683a4.002 4.002 0 003.773 3.705" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900 group-hover:text-[#FECB0F] transition-colors">Conversational Qualified Leads</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Buyers who complete an interactive assessment and confirm their answers, BANT and callback time on a live call. More than a content download.
+                </p>
+                <Link href="/services/conversational-qualified-leads" className="inline-block mt-4 text-[#FECB0F] font-medium hover:text-[#F5A623] transition">
+                  Learn more →
+                </Link>
               </div>
             </div>
           </div>

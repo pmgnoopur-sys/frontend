@@ -244,22 +244,40 @@ html {
   scrollbar-width: none;  /* Firefox */
 }
 
-/* Marquee Animation */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Blog Animations */
+@keyframes blogFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+@keyframes blogWave {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-25px) translateY(10px); }
+  100% { transform: translateX(0) translateY(0); }
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
+@keyframes blogWaveMove {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-50px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes blogMarquee {
+  0% { transform: translateX(100%) translateY(0); }
+  25% { transform: translateX(50%) translateY(-10px); }
+  50% { transform: translateX(0%) translateY(0); }
+  75% { transform: translateX(-50%) translateY(10px); }
+  100% { transform: translateX(-100%) translateY(0); }
+}
+
+@keyframes blogSlideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blogSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* CEO Card Styles */

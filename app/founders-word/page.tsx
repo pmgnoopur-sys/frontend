@@ -105,7 +105,7 @@ export default function FoundersWord() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-6">
                   <a
-                    href="/contact"
+                    href="/contact-us"
                     className="inline-flex items-center gap-2 bg-[#FECB0F] text-black font-bold text-sm uppercase tracking-wide px-6 py-4 rounded-md hover:bg-[#ffd94a] transition"
                   >
                     Dominate Your Market

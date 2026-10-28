@@ -1,5 +1,12 @@
+import Link from 'next/link';
+import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ContactDetails from '@/components/LegalContactDetails';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | PMG B2B',
+};
 
 export default function Privacy() {
   return (
@@ -129,7 +136,7 @@ export default function Privacy() {
               <li>Soliciting information through surveys and polls</li>
               <li>Resolving disputes or troubleshooting problems</li>
               <li>Preventing potentially prohibited or illegal activities</li>
-              <li>Enforcing our Terms and Conditions</li>
+              <li>Enforcing our <Link href="/terms" className="underline">Terms of Use</Link></li>
             </ul>
             <p className="mb-4">
               To the extent we use your personal information to market to you, we will provide you the ability to opt-out of such uses. We use all the information you share with us in accordance with the terms outlined in this Privacy Policy.
@@ -151,11 +158,7 @@ export default function Privacy() {
               <li>Session Cookies</li>
               <li>Security Cookies</li>
               <li>Preference Cookies</li>
-              <li>Flash Local Shared Objects</li>
             </ul>
-            <p className="mb-4">
-              We may use Flash Local Shared Objects to personalize your visit and store your preferences. You cannot control, delete, or disable the acceptance of Flash LSOs through your web browser, they are different from browser cookies.
-            </p>
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Third-Party Links on Our Website</h2>
             <p className="mb-4">
@@ -167,7 +170,7 @@ export default function Privacy() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Service Providers, Vendors, and Other Processors</h3>
             <p className="mb-4">
-              We could share your Personal Data with service providers, agents, vendors, contractors, or any other processors who conduct functions on behalf of our company. For instance, we may share your data with service providers who provide us with data storage, IT services, and technical support services. We may share Personal Data with service providers who analyze our customer data, host our website, and help us detect and prevent security incidents, fraud, and any other form of unlawful information. This will only be done for business purposes as explained in the How Do We Use Your Data section.
+              We could share your Personal Data with service providers, agents, vendors, contractors, or any other processors who conduct functions on behalf of our company. For instance, we may share your data with service providers who provide us with data storage, IT services, and technical support services. We may share Personal Data with service providers who analyze our customer data, host our website, and help us detect and prevent security incidents, fraud, and any other form of unlawful information. This will only be done for business purposes as explained in the How We Use Your Personal Data section.
             </p>
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Business Affiliates and Subsidiaries</h3>
@@ -177,7 +180,7 @@ export default function Privacy() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Advertisers and Analytics Providers</h3>
             <p className="mb-4">
-              We share information with advertisers and analytics providers who help us to execute and evaluate relevant advertising. The data we share with them is often collected through cookies and any other tracking mechanisms employed on our website. See the Third Parties, Cookies, and Other Forms of Tracking section.
+              We share information with advertisers and analytics providers who help us to execute and evaluate relevant advertising. The data we share with them is often collected through cookies and any other tracking mechanisms employed on our website. See the How We Track Personal and Non-Personal Information section.
             </p>
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Business Partners</h3>
@@ -346,7 +349,8 @@ export default function Privacy() {
               To exercise the access, data portability, and deletion rights described above, please submit a verifiable consumer request to us by either
             </p>
             <ul className="list-disc pl-6 mb-4">
-              <li>Calling us at 408-763-5612</li>
+              <li>Calling us at <a href="tel:+17817501320" className="underline">+1 781 750 1320</a></li>
+              <li>Emailing us at <a href="mailto:info@pmg-b2b.com" className="underline">info@pmg-b2b.com</a></li>
             </ul>
             <p className="mb-4">
               Only you, or someone legally authorized to act on your behalf, may make a verifiable consumer request related to your personal information. You may also make a verifiable consumer request on behalf of your minor child.
@@ -390,28 +394,17 @@ export default function Privacy() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Contact Information</h3>
             <p className="mb-4">
-              If you have any questions or comments about this notice, the ways in which PMG B2B collects and uses your information described below and in the Privacy Policy, your choices and rights regarding such use, or wish to exercise your rights under California law, please do not hesitate to contact us at:
+              If you have any questions or comments about this notice, the ways in which PMG B2B collects and uses your information described above and in this Privacy Policy, your choices and rights regarding such use, or wish to exercise your rights under California law, please do not hesitate to contact us at:
             </p>
-            <div className="mb-4">
-              <p className="mb-2"><strong>Phone:</strong> +91 7972722487</p>
-              <p className="mb-2"><strong>Headquarters:</strong> Boston, Massachusetts</p>
-              <p className="mb-2"><strong>Address:</strong> City Vista, Kharadi, Pune</p>
-              <p className="mb-2"><strong>Website:</strong> https://pmg-b2b.com/</p>
-              <p className="mb-2"><strong>Email:</strong> info@pmg-b2b.com</p>
-            </div>
+            <ContactDetails />
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Changes to this Privacy Policy</h2>
             <p className="mb-4">
-              PMG B2B may change this Privacy Policy from time to time and without notice as the company leverages technology to improve its services and develop its website. If we make material changes to this Privacy Policy, we will add a prominent notice on our website that's visible to you as a Business Partner or a Site Visitor. We don't have a way of advising our website users of Privacy Policy updates through a notice. We encourage you to periodically visit this page to check whether the Privacy Policy has been updated. We will always indicate the date when we last modified it. Note that this Privacy is incorporated into the terms stated in our End User Agreement and Terms of Use ("Terms").
+              PMG B2B may change this Privacy Policy from time to time and without notice as the company leverages technology to improve its services and develop its website. If we make material changes to this Privacy Policy, we will add a prominent notice on our website that's visible to you as a Business Partner or a Site Visitor. We don't have a way of advising our website users of Privacy Policy updates through a notice. We encourage you to periodically visit this page to check whether the Privacy Policy has been updated. We will always indicate the date when we last modified it. Note that this Privacy Policy is incorporated into the terms stated in our <Link href="/terms" className="underline">Terms of Use</Link> (&quot;Terms&quot;).
             </p>
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Contact Information</h2>
-            <div className="mb-4">
-              <p className="mb-2"><strong>Phone:</strong> +91 7972722487</p>
-              <p className="mb-2"><strong>Headquarters:</strong> Boston, Massachusetts</p>
-              <p className="mb-2"><strong>Address:</strong> City Vista, Kharadi, Pune</p>
-              <p className="mb-2"><strong>Website:</strong> https://pmg-b2b.com/</p>
-            </div>
+            <ContactDetails />
           </div>
         </div>
       </main>

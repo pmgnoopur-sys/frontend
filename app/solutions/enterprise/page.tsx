@@ -26,7 +26,7 @@ export default function Enterprise() {
               Scalable ABM and demand-generation programs for large organizations with complex buying committees and global market requirements.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Link href="/contact" className="bg-[#FECB0F] text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform inline-block">
+              <Link href="/contact-us" className="bg-[#FECB0F] text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform inline-block">
                 Scale Your Pipeline
               </Link>
               <a href="#features" className="text-white font-bold hover:text-[#FECB0F] transition-colors">

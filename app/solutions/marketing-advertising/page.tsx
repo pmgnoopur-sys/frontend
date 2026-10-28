@@ -85,7 +85,7 @@ export default function MarketingAdvertising() {
                   <a href="#features" className="bg-[#FECB0F] text-black px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform">
                     Explore Capabilities
                   </a>
-                  <Link href="/contact" className="border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/5 transition-colors">
+                  <Link href="/contact-us" className="border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/5 transition-colors">
                     Request Media Playbook
                   </Link>
                 </div>
@@ -210,7 +210,7 @@ export default function MarketingAdvertising() {
               <p className="text-gray-400 text-lg mb-12 max-w-xl mx-auto font-medium">
                 Connect with our strategists to build a custom pipeline mapping your ideal agency and brand clients.
               </p>
-              <Link href="/contact" className="bg-[#FECB0F] text-black px-12 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">
+              <Link href="/contact-us" className="bg-[#FECB0F] text-black px-12 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">
                 Build Your Pipeline
               </Link>
             </div>

@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { getBlogs } from '@/lib/blogStorage'
+import { serviceParents, subpageHref } from '@/lib/services'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://yourdomain.com' // Replace with your actual domain
@@ -11,6 +12,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
+    },
+    {
+      url: `${baseUrl}/our-services/prospect-pinnacle-targeted-b2b-lead-gen-solutions`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/our-services/proffer-ai`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/industries/technology-saas`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/about`,
@@ -25,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${baseUrl}/contact-us`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
@@ -55,7 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/privacy`,
+      url: `${baseUrl}/privacy-policy`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
@@ -88,5 +107,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching blogs for sitemap:', error)
   }
 
-  return [...staticPages, ...blogPages]
+  const serviceSubpages: MetadataRoute.Sitemap = Object.values(serviceParents).flatMap((parent) =>
+    parent.subpages.map((s) => ({
+      url: `${baseUrl}${subpageHref(parent, s)}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
+  )
+
+  return [...staticPages, ...serviceSubpages, ...blogPages]
 }

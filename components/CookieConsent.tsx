@@ -41,7 +41,7 @@ export default function CookieConsent() {
           <p className="text-sm md:text-base text-gray-300">
             We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
             <button
-              onClick={() => window.open("/privacy", "_blank")}
+              onClick={() => window.open("/privacy-policy", "_blank")}
               className="text-blue-400 hover:text-blue-300 underline ml-2"
             >
               Learn more
